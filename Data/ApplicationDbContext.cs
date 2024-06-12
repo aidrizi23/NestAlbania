@@ -35,7 +35,7 @@ namespace NestAlbania.Data
 
         }
         public DbSet<Role> Roles { get; set; }
-            : base(options){}
+           
             public DbSet<JobApply> JobApplications { get; set; } 
     }
     
