@@ -21,7 +21,7 @@ var app = builder.Build();
 
 
 #region Scoped
-builder.Services.AddScoped<UserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 #endregion
 
 #region Transient
