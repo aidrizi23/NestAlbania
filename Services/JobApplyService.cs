@@ -1,42 +1,43 @@
 ﻿using NestAlbania.Data;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
-using System.Threading.Tasks;
+
 
 namespace NestAlbania.Services
 {
     public class JobApplyService : IJobApplyService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly JobApplyRepo _jobApplyRepo;
-
-        public JobApplyService(IWebHostEnvironment webHostEnvironment, JobApplyRepo jobApplyRepo)
+        public JobApplyService(JobApplyRepo jobApplyRepo)
         {
-            _webHostEnvironment = webHostEnvironment;
             _jobApplyRepo = jobApplyRepo;
         }
 
-        public async Task SaveApplicationAsync(JobApply application)
+        public async Task CreateApplicationAsync(JobApply apply)
         {
-            // Save the resume file
-            var fileName = Path.GetFileName(application.Resume.FileName);
-            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "resumes", fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await application.Resume.CopyToAsync(fileStream);
-            }
-
-            // Save application to the database
-            await _jobApplyRepo.Create(application);
+            await _jobApplyRepo.Create(apply);
+        }
+        public async Task EditApplicationAsync(JobApply apply)
+        {
+            await _jobApplyRepo.Edit(apply);
+        }
+        public async Task RemoveApplicationAsync(JobApply apply)
+        {
+            await _jobApplyRepo.Delete(apply);
+        }
+        public async Task<PaginatedList<JobApply>> GetPaginatedApplication(int page = 1, int pageSize = 10)
+        {
+            return await _jobApplyRepo.GetPaginatedApplication(page, pageSize);
+        }
+        public async Task<List<JobApply>> GetAllApplicationsAync()
+        {
+            var applications = await _jobApplyRepo.GetAll();
+            return applications.ToList();
+        }
+        public async Task<JobApply> GetApplicationByIdAsync(int id)
+        {
+            return await _jobApplyRepo.GetById(id);
         }
 
-        public async Task<PaginatedList<JobApply>> GetPaginatedApplicationsAsync(int pageIndex, int pageSize)
-        {
-            return await _jobApplyRepo.GetPaginatedApplicationsAsync(pageIndex, pageSize);
-        }
     }
 }

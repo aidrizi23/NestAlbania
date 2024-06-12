@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Areas;
 using NestAlbania.Data;
+using NestAlbania.Repositories;
 using NestAlbania.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,10 +24,12 @@ builder.Services.AddControllersWithViews();
 
 #region Scoped
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JobApplyRepo, JobApplyRepo>();
 #endregion
 
 #region Transient
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IJobApplyService, JobApplyService>();
 #endregion
 
 

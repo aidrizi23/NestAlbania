@@ -7,18 +7,16 @@ namespace NestAlbania.Data
         public int Id {  get; set; }
         
         [Required]
-        public string Emri { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string NrTel { get; set; }
+        public string PhoneNumber { get; set; }
         
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
-        public string Adresa { get; set; }
+        public string Address { get; set; }
 
-        [Required]
-        public IFormFile Resume { get; set; }
 
     }
 }

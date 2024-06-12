@@ -5,52 +5,71 @@ using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using NestAlbania.Data;
+using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
     public class JobApplyController : Controller
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public JobApplyController(IWebHostEnvironment webHostEnvironment)
+        private readonly IJobApplyService _jobApplyService;
+        public JobApplyController(IJobApplyService jobApplyService)
         {
-            _webHostEnvironment = webHostEnvironment;
+            _jobApplyService = jobApplyService;
         }
-
+        public async Task<IActionResult> Index(int page = 1)
+        {
+            int rows = 10;
+            ViewBag.Page = page;
+            var applications = await _jobApplyService.GetPaginatedApplication(page, rows);
+            return View(applications);
+        }
         [HttpGet]
-        public IActionResult Apply()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            JobApplyModel jobApplyModel = new JobApplyModel();
+
+            return View(jobApplyModel);
         }
-
         [HttpPost]
-        public async Task<IActionResult> Apply(JobApply application)
+        public async Task<IActionResult> Create(JobApplyModel dto)
         {
-            if (ModelState.IsValid)
+            JobApply application = new JobApply()
             {
-                // Save the resume file
-                var fileName = Path.GetFileName(application.Resume.FileName);
-                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "resumes", fileName);
+                Name = dto.Name,
+                Address = dto.Address,
+                PhoneNumber = dto.PhoneNumber,
+                Email = dto.Email,
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await application.Resume.CopyToAsync(fileStream);
-                }
+            };
 
-                // Process application (e.g., save to database)
+            await _jobApplyService.CreateApplicationAsync(application);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
 
-                // Redirect to a success page
-                return RedirectToAction("Success");
-            }
-
+            var application = await _jobApplyService.GetApplicationByIdAsync(id);
             return View(application);
         }
-
-        public IActionResult Success()
+        [HttpPost]
+        public async Task<IActionResult> Edit(JobApply application)
         {
-            return View();
+
+            await _jobApplyService.EditApplicationAsync(application);
+            return RedirectToAction("Index");
         }
 
-
+        public async Task<IActionResult> Delete(int id)
+        {
+            var itemToDelete = await _jobApplyService.GetApplicationByIdAsync(id);
+            await _jobApplyService.RemoveApplicationAsync(itemToDelete);
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var apptoshow = await _jobApplyService.GetApplicationByIdAsync(id);
+            return View(apptoshow);
+        }
     }
 }
