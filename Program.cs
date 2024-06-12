@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
+using NestAlbania.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
