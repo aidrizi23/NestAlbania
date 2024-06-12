@@ -17,8 +17,6 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
-
 
 #region Scoped
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -27,6 +25,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 #region Transient
 builder.Services.AddTransient<IUserService, UserService>();
 #endregion
+
+
+var app = builder.Build();
+
+
 
 
 
