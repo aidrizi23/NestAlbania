@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="Data\Enums\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot\resumes\" />
   </ItemGroup>
 
 </Project>
