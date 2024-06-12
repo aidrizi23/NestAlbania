@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Areas;
+using NestAlbania.Data;
 using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
@@ -7,9 +8,13 @@ namespace NestAlbania.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IRoleService _roleService;
+        private readonly IUserRoleService _userRoleService;
+        public UserController(IUserRepository userRepository, IRoleService roleService, IUserRoleService userRoleService)
         {
             _userRepository = userRepository;
+            _roleService = roleService;
+            _userRoleService = userRoleService;
         }
 
         public async Task<IActionResult> Index()
