@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NestAlbania.Areas;
 using NestAlbania.Data;
+using NestAlbania.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,17 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+
+#region Scoped
+builder.Services.AddScoped<UserRepository, UserRepository>();
+#endregion
+
+#region Transient
+builder.Services.AddTransient<IUserService, UserService>();
+#endregion
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
