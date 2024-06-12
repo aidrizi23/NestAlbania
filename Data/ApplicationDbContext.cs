@@ -34,9 +34,10 @@ namespace NestAlbania.Data
             });
 
         }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
            
             public DbSet<JobApply> JobApplications { get; set; } 
+        public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
     }
     
 }

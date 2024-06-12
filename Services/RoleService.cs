@@ -1,6 +1,5 @@
 ﻿using NestAlbania.Data;
 using NestAlbania.Repositories;
-using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Services
 {
@@ -11,29 +10,31 @@ namespace NestAlbania.Services
         {
             _roleRepository = roleRepository;
         }
-        public async Task<PaginatedList<Role>> GetPaginatedRoles(int page = 1, int pageSize = 10)
+
+        public async Task<ApplicationRole> GetRoleByUserIdAsync(string UserId)
         {
-            return await _roleRepository.GetAllPaginatedRoles(page, pageSize);
+            return await _roleRepository.GetRoleByUserIdAsync(UserId);
         }
-        public async Task<Role> GetRoleById(int id)
-        {
-            return await _roleRepository.GetById(id);
-        }
-        public async Task CreateRole(Role role)
-        {
-            await _roleRepository.Create(role);
-        }
-        public async Task EditRole(Role role)
-        {
-            await _roleRepository.Edit(role);
-        }
-        public async Task Delete(Role role)
-        {
-            await _roleRepository.Delete(role);
-        }
-        public async Task<IEnumerable<Role>> GetAllRoles()
+        public async Task<IEnumerable<ApplicationRole>> GetAllAsync()
         {
             return await _roleRepository.GetAll();
+        }
+
+
+        public async Task CreateAsync(ApplicationRole entity)
+        {
+            await _roleRepository.Create(entity);
+        }
+
+        public async Task UpdateAsync(ApplicationRole entity)
+        {
+            await _roleRepository.Edit(entity);
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            var role = await _roleRepository.GetRoleByUserIdAsync(id);
+            await _roleRepository.Delete(role);
         }
     }
 }

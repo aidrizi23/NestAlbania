@@ -1,20 +1,20 @@
-﻿using NestAlbania.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NestAlbania.Data;
 using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Repositories
 {
-    public class RoleRepository : BaseRepository<Role>
+    public class RoleRepository : BaseRepository<ApplicationRole>
     {
         private readonly ApplicationDbContext _context;
         public RoleRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
-        public async Task<PaginatedList<Role>> GetAllPaginatedRoles(int page = 1, int pageSize = 10)
+
+        public async Task<ApplicationRole> GetRoleByUserIdAsync(string UserId)
         {
-            var rolesResult = _context.Roles.OrderByDescending(x => x.Id).AsQueryable();
-            var role = await PaginatedList<Role>.CreateAsync(rolesResult, page, pageSize);
-            return role;
+            return await _context.ApplicationRoles.FirstOrDefaultAsync(x => x.Id == UserId);
         }
     }
 }
