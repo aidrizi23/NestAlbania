@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NestAlbania.Data;
 using NestAlbania.Models;
 using System.Runtime.CompilerServices;
 
@@ -10,11 +11,11 @@ namespace NestAlbania.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<AplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
 
         public AccountController(UserManager<ApplicationUser> userManager, 
-                                SignInManager<AplicationUser> signInManager, 
+                                SignInManager<ApplicationUser> signInManager, 
                                 ILogger<AccountController> logger)
         {
             _userManager = userManager;
