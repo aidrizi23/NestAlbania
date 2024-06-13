@@ -2,7 +2,7 @@
 
 namespace NestAlbania.Data
 {
-    public class BaseEntity<TEntity>
+    public class BaseEntity
     {
         [Key]
         public int Id { get; set; }

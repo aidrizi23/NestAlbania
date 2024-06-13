@@ -1,24 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NestAlbania.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace NestAlbania.Data
 {
-    public class JobApply
-    {
-        public int Id {  get; set; }
-        
-        [Required]
-        public string Emri { get; set; }
-        [Required]
-        public string NrTel { get; set; }
-        
-        [EmailAddress]
+    public class JobApply : BaseEntity
+    { 
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public string Email { get; set; }
 
-        [Required]
-        public string Adresa { get; set; }
-
-        [Required]
-        public IFormFile Resume { get; set; }
+        public string Message { get; set; }
 
     }
 }

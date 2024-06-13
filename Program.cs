@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Areas;
 using NestAlbania.Data;
+using NestAlbania.Repositories;
 using NestAlbania.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,29 +13,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllersWithViews();
 
 
 #region Scoped
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JobApplyRepository,  JobApplyRepository>();
 #endregion
 
 #region Transient
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IJobApplyService, JobApplyService>();
 #endregion
 
 
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -58,6 +53,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-app.MapRazorPages();
 
 app.Run();

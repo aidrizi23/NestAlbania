@@ -5,7 +5,12 @@ namespace NestAlbania.Services
 {
     public interface IJobApplyService
     {
-        Task SaveApplicationAsync(JobApply application);
-        Task<PaginatedList<JobApply>> GetPaginatedApplicationsAsync(int pageIndex, int pageSize);
+        Task<IEnumerable<JobApply>> GetAllJobApplicationsAsync();
+        Task<JobApply> GetJobApplicatonByIdAsync(int id);
+        Task CreateJobApplicationAsync(JobApply application);
+        Task EditJobApplicationAsync(JobApply application);
+        Task DeleteJobApplicationAsync(JobApply application);
+        Task<PaginatedList<JobApply>> GetAllPaginatedJobApplicationsAsync(int pageIndex = 1, int pageSize = 10);
+
     }
 }

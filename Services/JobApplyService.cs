@@ -10,33 +10,75 @@ namespace NestAlbania.Services
 {
     public class JobApplyService : IJobApplyService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly JobApplyRepo _jobApplyRepo;
+        private readonly JobApplyRepository _jobApplyRepo;
 
-        public JobApplyService(IWebHostEnvironment webHostEnvironment, JobApplyRepo jobApplyRepo)
+        public async Task<IEnumerable<JobApply>> GetAllJobApplicationsAsync()
         {
-            _webHostEnvironment = webHostEnvironment;
-            _jobApplyRepo = jobApplyRepo;
+            return await _jobApplyRepo.GetAll();
         }
 
-        public async Task SaveApplicationAsync(JobApply application)
+        public async Task<JobApply> GetJobApplicatonByIdAsync(int id)
         {
-            // Save the resume file
-            var fileName = Path.GetFileName(application.Resume.FileName);
-            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "resumes", fileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await application.Resume.CopyToAsync(fileStream);
+                return await _jobApplyRepo.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw; 
+            }
+        }
+
+        public async Task CreateJobApplicationAsync(JobApply application)
+        {
+            try
+            {
+                await _jobApplyRepo.Create(application);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public async Task EditJobApplicationAsync(JobApply application)
+        {
+            try
+            {
+                await _jobApplyRepo.Edit(application);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async Task DeleteJobApplicationAsync(JobApply application)
+        {
+            try
+            {
+                await _jobApplyRepo.Delete(application);
+            }
+            catch 
+            {
+                throw;            
             }
 
-            // Save application to the database
-            await _jobApplyRepo.Create(application);
         }
 
-        public async Task<PaginatedList<JobApply>> GetPaginatedApplicationsAsync(int pageIndex, int pageSize)
+        public async Task<PaginatedList<JobApply>> GetAllPaginatedJobApplicationsAsync(int pageIndex=1, int pageSize = 10)
         {
-            return await _jobApplyRepo.GetPaginatedApplicationsAsync(pageIndex, pageSize);
+            try
+            {
+                return await _jobApplyRepo.GetPaginatedJobApplications(pageIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
+
     }
 }

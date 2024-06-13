@@ -12,6 +12,11 @@ namespace NestAlbania.Data
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<JobApply> JobApplications { get; set; } 
+       
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,22 +27,18 @@ namespace NestAlbania.Data
             builder.Entity<ApplicationUser>().HasData(new ApplicationUser
             {
                 Id = ADMIN_ID,
-                UserName = "admin@admin.com", // username i userit
-                NormalizedUserName = "admin@admin.com", // 
+                UserName = "admin@admin.com", 
+                NormalizedUserName = "admin@admin.com", 
                 Email = "admin@admin.com",
                 NormalizedEmail = "admin@admin.com",
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "P@ssw0rd"),
-                SecurityStamp = string.Empty // property e cila merr vlere kur nje user ndryshon password, ose kur behet logout nga sistemi. (Deactivate)
-                // pas kesaj duhet migrim dhe update
+                SecurityStamp = string.Empty 
 
             });
 
         }
-        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
-           
-            public DbSet<JobApply> JobApplications { get; set; } 
-        public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
+
     }
     
 }
