@@ -76,6 +76,8 @@ namespace NestAlbania.Data
         public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<JobApply> JobApplications { get; set; }
+        public DbSet<Property> Properties { get; set; }
+
         public DbSet<Country> Countries { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
