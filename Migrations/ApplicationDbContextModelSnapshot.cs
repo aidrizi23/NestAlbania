@@ -8,7 +8,7 @@ using NestAlbania.Data;
 
 #nullable disable
 
-namespace NestAlbania.Data.Migrations
+namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -217,13 +217,13 @@ namespace NestAlbania.Data.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "10597b33-49e9-4f96-a14a-d25cc2f41a72",
+                            ConcurrencyStamp = "4aa66f1f-d8ab-47cc-8cd0-2e3dac6cb1b5",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPey/JCYHY/acJ31oPiDnUzcY3aEb/Tjk4xPiAsJqwCdn9YanPPz+ju5J/rUgoz7vQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPWgOsnmLRVfTutLqMyjAxTbPZ1qaCm/+ed9YcQ3PIy5A+KcZGnOE36WZXoqJ6qEfQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

@@ -51,6 +51,19 @@ namespace NestAlbania.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobApplications",
                 columns: table => new
                 {
@@ -64,6 +77,29 @@ namespace NestAlbania.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobApplications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Properties",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    FullArea = table.Column<int>(type: "int", nullable: false),
+                    InsideArea = table.Column<int>(type: "int", nullable: false),
+                    BedroomCount = table.Column<int>(type: "int", nullable: false),
+                    BathroomCount = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Documentation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Properties", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,7 +216,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "42b0f33a-5aed-4b84-aad8-b5c2da1ddb2a", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEMG4KoXZIfgIlE2HUhHcpDH6VY3pOPoGYuPlZ1Be5TmRr3Zg77x+Db7joKJx5huNkQ==", null, false, "", false, "admin@admin.com" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "4aa66f1f-d8ab-47cc-8cd0-2e3dac6cb1b5", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEPWgOsnmLRVfTutLqMyjAxTbPZ1qaCm/+ed9YcQ3PIy5A+KcZGnOE36WZXoqJ6qEfQ==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -246,7 +282,13 @@ namespace NestAlbania.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
                 name: "JobApplications");
+
+            migrationBuilder.DropTable(
+                name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

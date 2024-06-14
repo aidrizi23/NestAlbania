@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240614084437_property1")]
-    partial class property1
+    [Migration("20240614090552_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,13 +220,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "44827b22-fbdc-4e4b-805c-7e21140cb3d9",
+                            ConcurrencyStamp = "4aa66f1f-d8ab-47cc-8cd0-2e3dac6cb1b5",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECNMs1cidKpR5wSDMl2Wvipyw+AlXfnwFeLU9ih/Zo3vm2ilC726WFg4MzPyKEBZdQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPWgOsnmLRVfTutLqMyjAxTbPZ1qaCm/+ed9YcQ3PIy5A+KcZGnOE36WZXoqJ6qEfQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -254,6 +254,23 @@ namespace NestAlbania.Migrations
                             UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             RoleId = "b18be9c0-aa65-4af8-bd17-00bd9344e576"
                         });
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.JobApply", b =>
