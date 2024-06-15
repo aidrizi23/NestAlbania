@@ -16,7 +16,7 @@ namespace NestAlbania.Repositories.Pagination
             AddRange(items);
         }
 
-        public bool HasPreviosPage => PageIndex > 1;
+        public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalCount;
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)

@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<NestAlbania.Data.ApplicationUserRole>
 
 @{
+
     ViewData["Title"] = "UserRoleIndex";
+    var userId = ViewBag.UserId as string;
 }
 
 <h1>UserRoleIndex</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="UserRoleCreate" asp-route-userId="@userId">Create New</a>
 </p>
 <table class="table">
     <thead>
