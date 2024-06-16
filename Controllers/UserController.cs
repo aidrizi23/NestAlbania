@@ -43,6 +43,13 @@ namespace NestAlbania.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(ApplicationUser user)
+        {
+            await _userRepository.UpdateUserAsync(user);
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Details(string id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);

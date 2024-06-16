@@ -55,6 +55,7 @@ namespace NestAlbania.Controllers
                 MainImage = dto.MainImage,
                 OtherImages = dto.OtherImages,
                 Price = dto.Price,
+                
             };
 
             try
@@ -68,5 +69,29 @@ namespace NestAlbania.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var itemToShowDetails = await _propertyService.GetPropertyByIdAsync(id);
+            return View(itemToShowDetails);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var itemToEdit = await _propertyService.GetPropertyByIdAsync(id);
+            return View(itemToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Property property)
+        {
+                await _propertyService.EditPropertyAsync(property);
+                return RedirectToAction("Index");
+         
+            
+        }
+
+
     }
 }

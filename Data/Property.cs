@@ -18,7 +18,7 @@ namespace NestAlbania.Data
 
         public List<string> OtherImages { get; set; }   
             
-        // mbetet per tu bere lidhja me userin.
+        // mbetet per tu bere lidhja me Agjentin, kategorine, city.
 
         
 
