@@ -21,16 +21,10 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-            try
-            {
-                var property =await  _propertyService.GetPropertyByIdAsync(id);
-                await _propertyService.DeletePropertyAsync(property);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+           
+            var property =await  _propertyService.GetPropertyByIdAsync(id);
+            await _propertyService.DeletePropertyAsync(property);
+            
             return RedirectToAction("Index");
         }
 
@@ -57,16 +51,9 @@ namespace NestAlbania.Controllers
                 Price = dto.Price,
                 
             };
-
-            try
-            {
-                await _propertyService.CreatePropertyAsync(property);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            await _propertyService.CreatePropertyAsync(property);
+            
+           
             return RedirectToAction("Index");
         }
 
