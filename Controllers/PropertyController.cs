@@ -76,7 +76,7 @@ namespace NestAlbania.Controllers
         {
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
-                 }
+        }
 
 
        
