@@ -113,6 +113,49 @@ namespace NestAlbania.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("NestAlbania.Data.Agent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LicenseNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Motto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YearsOfExeperience")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agents");
+                });
+
             modelBuilder.Entity("NestAlbania.Data.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -217,13 +260,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8209cb66-8afd-417b-b3d5-f20466f77371",
+                            ConcurrencyStamp = "3d2ca575-f233-4197-a3f7-4eb8cbb2dcb5",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEO8c2m82AxA1ng4eMN3dfb5bdCWp8aCqRxcgBuSCd6WaHohK9YKvgBI3yfpH7++ow==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPdQ8CmhsiaiX4NHVy8LrDWoDYK+i23BZxda9kaBwqt/jIufEKKi19dmdaHXsS+GwA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -251,30 +294,6 @@ namespace NestAlbania.Migrations
                             UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             RoleId = "b18be9c0-aa65-4af8-bd17-00bd9344e576"
                         });
-                });
-
-            modelBuilder.Entity("NestAlbania.Data.City", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CityEnum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Citys");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Country", b =>
