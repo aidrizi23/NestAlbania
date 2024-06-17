@@ -78,7 +78,7 @@ namespace NestAlbania.Data
         public DbSet<JobApply> JobApplications { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<City> Citys { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

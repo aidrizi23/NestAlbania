@@ -16,10 +16,11 @@ namespace NestAlbania.Data
 
         public string? Documentation { get; set; }
 
-        public List<string> OtherImages { get; set; }   
+        public List<string>? OtherImages { get; set; }   
             
         // mbetet per tu bere lidhja me Agjentin, kategorine, city.
 
+        public City City { get; set; }
         
 
     }

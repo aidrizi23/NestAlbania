@@ -1,4 +1,4 @@
-﻿@model NestAlbania.Data.Property
+﻿@model NestAlbania.Models.PropertyForCreationDto
 
 @{
     ViewData["Title"] = "Create";
@@ -62,6 +62,12 @@
                 <input asp-for="Documentation" class="form-control" />
                 <span asp-validation-for="Documentation" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="SelectedCity" class="control-label"></label>
+                @Html.DropDownListFor(model => model.SelectedCity, new SelectList(ViewBag.Cities, "Value", "Text"), "Select a City", new { @class = "form-control" })
+                <span asp-validation-for="SelectedCity" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

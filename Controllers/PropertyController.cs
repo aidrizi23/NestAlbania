@@ -49,7 +49,7 @@ namespace NestAlbania.Controllers
                 MainImage = dto.MainImage,
                 OtherImages = dto.OtherImages,
                 Price = dto.Price,
-                
+                City = dto.SelectedCity,
             };
             await _propertyService.CreatePropertyAsync(property);
             
