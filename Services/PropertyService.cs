@@ -35,5 +35,12 @@ namespace NestAlbania.Services
         {
             await _repository.Edit(property);   
         }
+
+        public async Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10)
+        {
+            return await _repository.GetPropertiesByNumberOfBedroomsAsync(nrOfBedrooms);    
+        }
+
+
     }
 }

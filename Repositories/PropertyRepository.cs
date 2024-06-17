@@ -19,5 +19,12 @@ namespace NestAlbania.Repositories
             var source = _context.Properties.OrderByDescending(x => x.Id).AsQueryable();
             return await PaginatedList<Property>.CreateAsync(source, PageIndex, PageSize);
         }
+
+        public async Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10)
+        {
+            var paginatedProperties = _context.Properties.OrderByDescending(x => x.Id).AsQueryable();
+            paginatedProperties = paginatedProperties.Where(x => x.BedroomCount == nrOfBedrooms);
+            return await PaginatedList<Property>.CreateAsync(paginatedProperties, pageIndex, pageSize);
+        }
     }
 }

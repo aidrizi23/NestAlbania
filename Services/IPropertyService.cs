@@ -11,5 +11,7 @@ namespace NestAlbania.Services
         Task DeletePropertyAsync(Property property);
         Task EditPropertyAsync(Property property);
 
+        Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10);
+
     }
 }
