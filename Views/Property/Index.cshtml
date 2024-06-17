@@ -6,6 +6,15 @@
     int no = ((page - 1) * 10);
 }
 
+<div>
+    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get">
+        <input type="number" name="nrOfBedrooms" />
+        <button class="btn btn-gradient-info btn-rounded" type="submit">Search</button>
+    </form>
+</div>
+
+
+
 <h1>Index</h1>
 
 

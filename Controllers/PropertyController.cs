@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Data;
 using NestAlbania.Models;
+using NestAlbania.Repositories.Pagination;
 using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
@@ -85,6 +86,17 @@ namespace NestAlbania.Controllers
             ViewBag.Price = Price;
             return View( "Index" ,propertiesByPrice);
 
+        }
+
+
+        // ------------------------------ Filters ------------------------------
+
+        public async Task<IActionResult> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int page = 1)
+        {
+            const int pageSize = 10;
+            var propertiesByNumberOfBedrooms = await _propertyService.GetPropertiesByNumberOfBedroomsAsync(nrOfBedrooms, page, pageSize);
+            ViewBag.NumberOfBedrooms = nrOfBedrooms;
+            return View("Index", propertiesByNumberOfBedrooms);
         }
 
 
