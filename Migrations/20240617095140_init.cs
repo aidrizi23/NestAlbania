@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class latestttt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -135,7 +135,12 @@ namespace NestAlbania.Migrations
                     BathroomCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Documentation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+<<<<<<<< HEAD:Migrations/20240617095140_init.cs
                     OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: true)
+========
+                    OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false)
+>>>>>>>> glenis-propertycategoryadd:Migrations/20240617085629_latestttt.cs
                 },
                 constraints: table =>
                 {
@@ -256,7 +261,11 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+<<<<<<<< HEAD:Migrations/20240617095140_init.cs
                 values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "b7ed9416-3da5-44b8-bec2-711241b5f171", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEB82LRv/d/CfzGc9BGRPHTd2+lclhvT0ItNnyOyF/10mYXea9XDmEGcRiqxgj8dLcw==", null, false, "", false, "admin@admin.com" });
+========
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "bf02d645-c864-4326-8ff9-0ec2692ea222", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEFW/7yEkmKaoz0lM1nast/glDVtXWxiobsDGYWMBjgxLEmXtU81h4ImRq0zam7x0jA==", null, false, "", false, "admin@admin.com" });
+>>>>>>>> glenis-propertycategoryadd:Migrations/20240617085629_latestttt.cs
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

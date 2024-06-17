@@ -17,6 +17,7 @@ namespace NestAlbania.Models
 
         public string? Documentation { get; set; }
 
-        public List<string> OtherImages { get; set; }
+        public List<string>? OtherImages { get; set; }
+        public Category Category { get; set; }
     }
 }

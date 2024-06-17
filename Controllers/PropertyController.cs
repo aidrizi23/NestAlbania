@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NestAlbania.Data;
+using NestAlbania.Data.Enums;
 using NestAlbania.Models;
 using NestAlbania.Repositories.Pagination;
 using NestAlbania.Services;
@@ -31,6 +33,20 @@ namespace NestAlbania.Controllers
 
         public async Task<IActionResult> Create()
         {
+            ViewBag.Categories = Enum.GetValues(typeof(Category))
+                          .Cast<Category>()
+                          .Select(e => new SelectListItem
+                          {
+                              Value = e.ToString(),
+                              Text = e.ToString()
+                          }).ToList();
+            ViewBag.Statuses = Enum.GetValues(typeof(PropertyStatus))
+                          .Cast<PropertyStatus>()
+                          .Select(e => new SelectListItem
+                          {
+                              Value = e.ToString(),
+                              Text = e.ToString()
+                          }).ToList();
             var dto = new PropertyForCreationDto();
             return View(dto);
         }
@@ -68,6 +84,28 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var itemToEdit = await _propertyService.GetPropertyByIdAsync(id);
+            var model = new Property
+            {
+                Category = itemToEdit.Category,
+                Status = itemToEdit.Status,
+              
+            };
+            ViewBag.Categories = Enum.GetValues(typeof(Category))
+                                      .Cast<Category>()
+                                      .Select(e => new SelectListItem
+                                      {
+                                          Value = e.ToString(),
+                                          Text = e.ToString()
+                                      }).ToList();
+
+            ViewBag.Statuses = Enum.GetValues(typeof(PropertyStatus))
+                                            .Cast<PropertyStatus>()
+                                            .Select(e => new SelectListItem
+                                            {
+                                                Value = e.ToString(),
+                                                Text = e.ToString()
+                                            }).ToList();
+
             return View(itemToEdit);
         }
 

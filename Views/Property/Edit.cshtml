@@ -53,9 +53,10 @@
                 <span asp-validation-for="BathroomCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Status" class="control-label">Property Status</label>
+                <select asp-for="Status" class="form-control" asp-items="@(new SelectList(ViewBag.Statuses, "Value", "Text"))">
+                    <option value="" selected>Choose the status of the property</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Documentation" class="control-label"></label>
