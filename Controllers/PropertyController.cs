@@ -79,14 +79,7 @@ namespace NestAlbania.Controllers
                  }
 
 
-        public async Task<IActionResult> GetAllPaginatedPropertiesByPrice(int Price, int page = 1)
-        {
-            const int PageSize = 10;
-            var propertiesByPrice = await _propertyService.GetAllPaginatedPropertiesByPrice(Price, page, PageSize);
-            ViewBag.Price = Price;
-            return View( "Index" ,propertiesByPrice);
-
-        }
+       
 
 
         // ------------------------------ Filters ------------------------------
@@ -97,6 +90,15 @@ namespace NestAlbania.Controllers
             var propertiesByNumberOfBedrooms = await _propertyService.GetPropertiesByNumberOfBedroomsAsync(nrOfBedrooms, page, pageSize);
             ViewBag.NumberOfBedrooms = nrOfBedrooms;
             return View("Index", propertiesByNumberOfBedrooms);
+        }
+
+        public async Task<IActionResult> GetAllPaginatedPropertiesByPrice(int Price, int page = 1)
+        {
+            const int PageSize = 10;
+            var propertiesByPrice = await _propertyService.GetAllPaginatedPropertiesByPrice(Price, page, PageSize);
+            ViewBag.Price = Price;
+            return View("Index", propertiesByPrice);
+
         }
 
 
