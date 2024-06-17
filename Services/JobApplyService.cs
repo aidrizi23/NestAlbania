@@ -11,6 +11,10 @@ namespace NestAlbania.Services
     public class JobApplyService : IJobApplyService
     {
         private readonly JobApplyRepository _jobApplyRepo;
+        public JobApplyService(JobApplyRepository jobApplyRepo)
+        {
+            _jobApplyRepo = jobApplyRepo;
+        }
 
         public async Task<IEnumerable<JobApply>> GetAllJobApplicationsAsync()
         {
