@@ -75,8 +75,16 @@ namespace NestAlbania.Controllers
         {
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
-         
-            
+                 }
+
+
+        public async Task<IActionResult> GetAllPaginatedPropertiesByPrice(int Price, int page = 1)
+        {
+            const int PageSize = 10;
+            var propertiesByPrice = await _propertyService.GetAllPaginatedPropertiesByPrice(Price, page, PageSize);
+            ViewBag.Price = Price;
+            return View( "Index" ,propertiesByPrice);
+
         }
 
 

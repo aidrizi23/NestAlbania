@@ -2,13 +2,30 @@
 
 @{
     ViewData["Title"] = "Index";
+    var page = Convert.ToInt32(ViewBag.Page);
+    int no = ((page - 1) * 10);
 }
 
 <h1>Index</h1>
 
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+
+
+
+<div>
+    <form asp-action="GetAllPaginatedPropertiesByPrice" method="get">
+        <input type="number" name="Price" />
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+
+
 <table class="table">
     <thead>
         <tr>

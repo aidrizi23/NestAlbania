@@ -10,6 +10,7 @@ namespace NestAlbania.Services
         Task CreatePropertyAsync(Property property);
         Task DeletePropertyAsync(Property property);
         Task EditPropertyAsync(Property property);
+        Task<PaginatedList<Property>> GetAllPaginatedPropertiesByPrice(int Price, int PageIndex = 1, int pageSize = 10);
 
     }
 }
