@@ -12,6 +12,26 @@ namespace NestAlbania.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Agents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    LicenseNumber = table.Column<int>(type: "int", nullable: false),
+                    Motto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -216,7 +236,11 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+<<<<<<<< HEAD:Migrations/20240617081952_init.cs
                 values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "67447afe-7f40-49b2-a692-60525e85d119", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEADTnxsHhtZvN/XtI3P2V44DWdC4b2TYM54C5x1zWQHX/WuoQlmNQm+ATSlMP7EqGQ==", null, false, "", false, "admin@admin.com" });
+========
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "3d2ca575-f233-4197-a3f7-4eb8cbb2dcb5", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEPdQ8CmhsiaiX4NHVy8LrDWoDYK+i23BZxda9kaBwqt/jIufEKKi19dmdaHXsS+GwA==", null, false, "", false, "admin@admin.com" });
+>>>>>>>> agjenti:Migrations/20240617085345_init.cs
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -266,6 +290,9 @@ namespace NestAlbania.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Agents");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

@@ -62,6 +62,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NestAlbania.Data.Enums;
+using NestAlbania.Models;
 
 namespace NestAlbania.Data
 {
@@ -79,6 +81,7 @@ namespace NestAlbania.Data
         public DbSet<Property> Properties { get; set; }
         public DbSet<Country> Countries { get; set; }
         
+        public DbSet<Agent> Agents { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -112,6 +115,7 @@ namespace NestAlbania.Data
                 UserId = ADMIN_ID
             });
         }
+        public DbSet<NestAlbania.Models.AgentForCreationDto> AgentForCreationDto { get; set; } = default!;
     }
 }
 

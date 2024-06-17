@@ -26,6 +26,7 @@ builder.Services.AddScoped<RoleRepository, RoleRepository>();
 builder.Services.AddScoped<JobApplyRepository,  JobApplyRepository>();
 builder.Services.AddScoped<CountryRepository, CountryRepository>();
 builder.Services.AddScoped<PropertyRepository , PropertyRepository>();
+builder.Services.AddScoped<AgentRepository, AgentRepository>();
 #endregion
 
 #region Transient
@@ -35,6 +36,7 @@ builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IJobApplyService, JobApplyService>();
 builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
+builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
 #endregion
 
