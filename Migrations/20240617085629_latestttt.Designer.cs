@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240614144541_Enum")]
-    partial class Enum
+    [Migration("20240617085629_latestttt")]
+    partial class latestttt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,13 +220,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8209cb66-8afd-417b-b3d5-f20466f77371",
+                            ConcurrencyStamp = "bf02d645-c864-4326-8ff9-0ec2692ea222",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEO8c2m82AxA1ng4eMN3dfb5bdCWp8aCqRxcgBuSCd6WaHohK9YKvgBI3yfpH7++ow==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFW/7yEkmKaoz0lM1nast/glDVtXWxiobsDGYWMBjgxLEmXtU81h4ImRq0zam7x0jA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -254,30 +254,6 @@ namespace NestAlbania.Migrations
                             UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             RoleId = "b18be9c0-aa65-4af8-bd17-00bd9344e576"
                         });
-                });
-
-            modelBuilder.Entity("NestAlbania.Data.City", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CityEnum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Citys");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Country", b =>
@@ -338,6 +314,9 @@ namespace NestAlbania.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("BedroomCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Category")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
