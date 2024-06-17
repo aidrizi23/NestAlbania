@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240614090552_init")]
-    partial class init
+    [Migration("20240617085907_allwork")]
+    partial class allwork
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,13 +220,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4aa66f1f-d8ab-47cc-8cd0-2e3dac6cb1b5",
+                            ConcurrencyStamp = "8f694902-2fa5-41c8-9646-32b7743828b3",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPWgOsnmLRVfTutLqMyjAxTbPZ1qaCm/+ed9YcQ3PIy5A+KcZGnOE36WZXoqJ6qEfQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAoeI6bezPq0HefOVIZWWjp6HyfP3kBzsKM7NxQuBbbqi0ResSthIIjKgPl1+nqJdw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

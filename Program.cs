@@ -4,6 +4,7 @@ using NestAlbania.Areas;
 using NestAlbania.Data;
 using NestAlbania.Repositories;
 using NestAlbania.Services;
+using NestAlbania.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IJobApplyService, JobApplyService>();
 builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
+builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
 #endregion
 
 
