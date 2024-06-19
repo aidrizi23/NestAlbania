@@ -3,15 +3,20 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using NestAlbania.Data;
 using NestAlbania.Models;
 using NestAlbania.Services;
+using NestAlbania.Services.Extensions;
 
 namespace NestAlbania.Controllers
 {
     public class AgentController : Controller
     {
         public readonly IAgentService _agent;
-        public AgentController(IAgentService agentService)
+        private readonly IConfiguration _configuration;
+        private readonly IFileHandlerService _fileHandlerService;
+        public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService)
         {
             _agent = agentService;
+            _configuration = configuration;
+            _fileHandlerService = fileHandlerService;
         }
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
@@ -20,13 +25,12 @@ namespace NestAlbania.Controllers
         }
 
 
-        public async Task<IActionResult> DeleteAgent(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
          
-
-            await _agent.DeleteAgent(id);
-            return NoContent();
+            await _agent.DeleteAgent(agent);
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Create()
         {
@@ -44,15 +48,23 @@ namespace NestAlbania.Controllers
                 Motto = dto.Motto,
                 PhoneNumber = dto.PhoneNumber,
                Email = dto.Email,
-               Image = dto.Image,
+              
                 YearsOfExeperience = dto.YearsOfExeperience,
           
-
             };
-            await _agent.CreateAgent(agentss);
+             await _agent.CreateAgent(agentss);
 
-
-            return RedirectToAction("Index");
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+            if (file != null)
+            {
+                var uploadDir = _configuration["Uploads:AgentImg"];
+                var fileName = agentss.Name + "_" + agentss.Id;
+                fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+                agentss.Image = fileName;
+                await _agent.EditAgent(agentss);
+            }
+           
+                return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details(int id)

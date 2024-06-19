@@ -36,13 +36,11 @@ namespace NestAlbania.Services
             await _agentRepository.Edit(agent);
         }
 
-        public async Task DeleteAgent(int id)
+        public async Task DeleteAgent(Agent agent)
         {
-            var agent = await _agentRepository.GetById(id);
-            if (agent != null)
-            {
+            
                 await _agentRepository.Delete(agent);
-            }
+            
         }
         public async Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10)
         {
