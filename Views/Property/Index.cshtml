@@ -12,29 +12,16 @@
         <button class="btn btn-gradient-info btn-rounded" type="submit">Search</button>
     </form>
 </div>
-
-
-
-<h1>Index</h1>
-
-
+<h1>PROPERTY</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-
-
-
-
 <div>
     <form asp-action="GetAllPaginatedPropertiesByPrice" method="get">
         <input type="number" name="Price" />
         <button type="submit">Search</button>
     </form>
 </div>
-
-
-
 <table class="table">
     <thead>
         <tr>
@@ -71,54 +58,58 @@
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-        
-
+            css
+            Copy code
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullArea)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsideArea)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BedroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BathroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Documentation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainImage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullArea)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsideArea)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BedroomCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BathroomCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Documentation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
 
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                python
+                Copy code
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
+
 </table>
