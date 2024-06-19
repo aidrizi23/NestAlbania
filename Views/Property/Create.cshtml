@@ -1,96 +1,79 @@
-﻿@model NestAlbania.Models.PropertyForCreationDto
+﻿@model PropertyForCreationDto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create Property";
 }
 
-<h1>Create</h1>
+<h2>Create Property</h2>
 
-<h4>Property</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainImage" class="control-label"></label>
-                <input asp-for="MainImage" class="form-control" />
-                <span asp-validation-for="MainImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FullArea" class="control-label"></label>
-                <input asp-for="FullArea" class="form-control" />
-                <span asp-validation-for="FullArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InsideArea" class="control-label"></label>
-                <input asp-for="InsideArea" class="form-control" />
-                <span asp-validation-for="InsideArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BedroomCount" class="control-label"></label>
-                <input asp-for="BedroomCount" class="form-control" />
-                <span asp-validation-for="BedroomCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label">Property Status</label>
-                <select asp-for="Status" class="form-control" asp-items="@(new SelectList(ViewBag.Statuses, "Value", "Text"))">
-                    <option value="" selected>Choose the status of the property</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BathroomCount" class="control-label"></label>
-                <input asp-for="BathroomCount" class="form-control" />
-                <span asp-validation-for="BathroomCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Documentation" class="control-label"></label>
-                <input asp-for="Documentation" class="form-control" />
-                <span asp-validation-for="Documentation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedCity" class="control-label"></label>
-                @Html.DropDownListFor(model => model.SelectedCity, new SelectList(ViewBag.Cities, "Value", "Text"), "Select a City", new { @class = "form-control" })
-                <span asp-validation-for="SelectedCity" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Category" class="control-label">Category</label>
-                <select asp-for="Category" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Value", "Text"))">
-                    <option value="" selected>Choose a Category</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-
-        </form>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FullArea" class="control-label"></label>
+        <input asp-for="FullArea" class="form-control" />
+        <span asp-validation-for="FullArea" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InsideArea" class="control-label"></label>
+        <input asp-for="InsideArea" class="form-control" />
+        <span asp-validation-for="InsideArea" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BedroomCount" class="control-label"></label>
+        <input asp-for="BedroomCount" class="form-control" />
+        <span asp-validation-for="BedroomCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BathroomCount" class="control-label"></label>
+        <input asp-for="BathroomCount" class="form-control" />
+        <span asp-validation-for="BathroomCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Documentation" class="control-label"></label>
+        <textarea asp-for="Documentation" class="form-control"></textarea>
+        <span asp-validation-for="Documentation" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Category" class="control-label"></label>
+        <select asp-for="Category" class="form-control" asp-items="ViewBag.Categories ?? new List<SelectListItem>()"></select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses ?? new List<SelectListItem>()"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedCity" class="control-label"></label>
+        <input asp-for="SelectedCity" class="form-control" />
+        <span asp-validation-for="SelectedCity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MainImageFile" class="control-label">Main Image</label>
+        <input asp-for="MainImageFile" type="file" class="form-control-file" />
+        <span asp-validation-for="MainImageFile" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
