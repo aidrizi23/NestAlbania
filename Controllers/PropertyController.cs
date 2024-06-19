@@ -24,10 +24,10 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-           
-            var property =await  _propertyService.GetPropertyByIdAsync(id);
+
+            var property = await _propertyService.GetPropertyByIdAsync(id);
             await _propertyService.DeletePropertyAsync(property);
-            
+
             return RedirectToAction("Index");
         }
 
@@ -69,8 +69,8 @@ namespace NestAlbania.Controllers
                 City = dto.SelectedCity,
             };
             await _propertyService.CreatePropertyAsync(property);
-            
-           
+
+
             return RedirectToAction("Index");
         }
 
@@ -88,7 +88,7 @@ namespace NestAlbania.Controllers
             {
                 Category = itemToEdit.Category,
                 Status = itemToEdit.Status,
-              
+
             };
             ViewBag.Categories = Enum.GetValues(typeof(Category))
                                       .Cast<Category>()
@@ -112,12 +112,12 @@ namespace NestAlbania.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Property property)
         {
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
+            await _propertyService.EditPropertyAsync(property);
+            return RedirectToAction("Index");
         }
 
 
-       
+
 
 
         // ------------------------------ Filters ------------------------------
