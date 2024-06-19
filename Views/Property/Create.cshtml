@@ -68,6 +68,12 @@
                 <span asp-validation-for="Documentation" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SelectedCity" class="control-label"></label>
+                @Html.DropDownListFor(model => model.SelectedCity, new SelectList(ViewBag.Cities, "Value", "Text"), "Select a City", new { @class = "form-control" })
+                <span asp-validation-for="SelectedCity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Category" class="control-label">Category</label>
                 <select asp-for="Category" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Value", "Text"))">
                     <option value="" selected>Choose a Category</option>

@@ -16,7 +16,7 @@ namespace NestAlbania.Data
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
 
-        public List<string>? OtherImages { get; set; }   
+
             
         // mbetet per tu bere lidhja me Agjentin, kategorine, city.
         //lidhja me Agjentin, kategorine, city dhe status.
@@ -24,7 +24,8 @@ namespace NestAlbania.Data
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
 
-
+        public City City { get; set; }
+        
 
     }
    

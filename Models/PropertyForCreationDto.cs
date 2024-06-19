@@ -19,5 +19,7 @@ namespace NestAlbania.Models
 
         public List<string>? OtherImages { get; set; }
         public Category Category { get; set; }
+      
+        public City SelectedCity { get; set; }
     }
 }
