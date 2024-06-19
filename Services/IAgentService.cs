@@ -11,7 +11,7 @@ namespace NestAlbania.Services
         Task<Agent> GetAgentById(int id);
         Task CreateAgent(Agent agent);
         Task EditAgent(Agent agent);
-        Task DeleteAgent(int id);
+        Task DeleteAgent(Agent agent);
         Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10);
     }
 }
