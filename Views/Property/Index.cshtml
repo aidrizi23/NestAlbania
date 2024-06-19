@@ -12,6 +12,9 @@
         <button class="btn btn-gradient-info btn-rounded" type="submit">Search</button>
     </form>
 </div>
+
+
+
 <h1>PROPERTY</h1>
 <p>
     <a asp-action="Create">Create New</a>
@@ -58,8 +61,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            css
-            Copy code
+
+
             <th></th>
         </tr>
     </thead>
@@ -101,8 +104,6 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
 
-                python
-                Copy code
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
@@ -111,5 +112,4 @@
             </tr>
         }
     </tbody>
-
 </table>
