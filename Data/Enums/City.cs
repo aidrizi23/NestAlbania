@@ -1,4 +1,6 @@
-﻿namespace NestAlbania.Data.Enums
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NestAlbania.Data.Enums
 {
     public enum City
     {
@@ -21,5 +23,7 @@
         Kruja,
         Koçova,
         Saranda,
-    }
+
+    
+}
 }

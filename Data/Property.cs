@@ -24,7 +24,8 @@ namespace NestAlbania.Data
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
 
-
+        public City City { get; set; }
+        
 
     }
    
