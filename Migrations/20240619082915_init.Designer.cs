@@ -12,7 +12,7 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240617095140_init")]
+    [Migration("20240619082915_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -263,13 +263,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b7ed9416-3da5-44b8-bec2-711241b5f171",
+                            ConcurrencyStamp = "936321d4-557e-40a7-bc54-6173bf5e54d3",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEB82LRv/d/CfzGc9BGRPHTd2+lclhvT0ItNnyOyF/10mYXea9XDmEGcRiqxgj8dLcw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGEB9FZtOx7IOkWA9nZgQL7y/Lpp4qw6V1GsWN2MfWx3jqbXVcFP9XRHh4LPJSPeGw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -357,6 +357,12 @@ namespace NestAlbania.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("BedroomCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<int>("City")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
