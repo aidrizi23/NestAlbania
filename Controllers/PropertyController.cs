@@ -16,12 +16,15 @@ namespace NestAlbania.Controllers
     {
         private readonly IPropertyService _propertyService;
         private readonly IFileHandlerService _fileHandlerService;
+        private readonly IConfiguration _configuration;
 
-        public PropertyController(IPropertyService propertyService, IFileHandlerService fileHandlerService)
+        public PropertyController(IPropertyService propertyService, IFileHandlerService fileHandlerService, IConfiguration configuration)
         {
             _propertyService = propertyService;
             _fileHandlerService = fileHandlerService;
+            _configuration = configuration;
         }
+
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
@@ -46,37 +49,49 @@ namespace NestAlbania.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
-            if (ModelState.IsValid)
-            {
-                string mainImagePath = null;
-                if (dto.MainImageFile != null)
-                {
-                    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "uploads/main_images", Guid.NewGuid().ToString());
-                }
-
+            
+        
+               
                 Property property = new Property()
                 {
                     Name = dto.Name,
                     Description = dto.Description,
-                    MainImage = mainImagePath,
                     Price = dto.Price,
                     FullArea = dto.FullArea,
                     InsideArea = dto.InsideArea,
                     BedroomCount = dto.BedroomCount,
                     BathroomCount = dto.BathroomCount,
                     Documentation = dto.Documentation,
-                    OtherImages = dto.OtherImages,
                     Category = dto.Category,
                     Status = dto.Status,
-                    City = dto.SelectedCity
+                    City = dto.SelectedCity,
+                    OtherImages = dto.OtherImages,
+                    
+                    
                 };
 
                 await _propertyService.CreatePropertyAsync(property);
-                return RedirectToAction("Index");
-            }
+
+                var files = HttpContext.Request.Form.Files;
+            var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
+                //if (dto.OtherImages != null && dto.OtherImages.Count > 0)
+                //{
+                    var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir );
+
+                    for(int i = 0; i< fileNames.Count; i++)
+                    {
+                        property.OtherImages.Add(fileNames[i]);
+                    }
+                    await _propertyService.EditPropertyAsync(property);
+                //}
+            
+                
 
             PopulateViewBags();
-            return View(dto);
+            return RedirectToAction("Index");
+
+
+            
         }
 
         private void PopulateViewBags()
