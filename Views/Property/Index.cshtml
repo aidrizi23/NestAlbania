@@ -6,119 +6,144 @@
     int no = ((page - 1) * 10);
 }
 
-<div>
-    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get">
-        <input type="number" name="nrOfBedrooms" />
-        <button class="btn btn-gradient-info btn-rounded" type="submit">Search</button>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jk3DRfzx2Y8AChM/p5Q..." crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <style>
+        /* Custom styles for cards */
+        .custom-card {
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out;
+            height: 100%;
+        }
 
+            .custom-card:hover {
+                transform: translateY(-5px);
+            }
 
+            .custom-card .card-img-top {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
 
-<h1>Index</h1>
+            .custom-card .card-body {
+                padding: 1.25rem;
+            }
 
+            .custom-card .card-title {
+                font-size: 1.25rem;
+                font-weight: bold;
+                margin-bottom: 0.75rem;
+            }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+            .custom-card .card-text {
+                font-size: 1rem;
+                color: #6c757d;
+                margin-bottom: 1rem;
+            }
 
+            .custom-card .property-details {
+                font-size: 0.95rem;
+                color: #495057;
+                line-height: 1.6;
+            }
 
+            .custom-card .card-footer {
+                background-color: #f8f9fa;
+                border-top: none;
+                padding: 0.75rem;
+                text-align: center;
+            }
 
+        .btn-create {
+            background-color: #17a2b8;
+            color: #fff;
+            border-color: #17a2b8;
+            transition: background-color 0.3s;
+        }
 
+            .btn-create:hover {
+                background-color: #138496;
+                border-color: #138496;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+  
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    @*    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get" class="form-inline search-form">
+                    <div class="input-group">
+                    <input type="number" name="nrOfBedrooms" class="form-control" placeholder="Number of Bedrooms">
+                    <div class="input-group-append">
+                    <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                    </div>
+                    </form> *@
+                </div>
+                <div class="col-md-6">
+                    @*  <form asp-action="GetAllPaginatedPropertiesByPrice" method="get" class="form-inline search-form">
+                    <div class="input-group">
+                    <input type="number" name="Price" class="form-control" placeholder="Price">
+                    <div class="input-group-append">
+                    <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                    </div>
+                    </form> *@
+                </div>
+            </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card custom-card">
+                        <img class="card-img-top" src="@item.MainImage" alt="Main Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                            <div class="property-details">
+                                <p><i class="fas fa-map-marker-alt location-icon"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
+                                <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
+                                <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea) m</p>
+                                <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) m</p>
+                                <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
+                                <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
+                                <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
+                                <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
 
-<div>
-    <form asp-action="GetAllPaginatedPropertiesByPrice" method="get">
-        <input type="number" name="Price" />
-        <button type="submit">Search</button>
-    </form>
-</div>
+        <div class="text-center">
+            <!-- Link to create new property -->
+            <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
+        </div>
+    </div>
 
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MainImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullArea)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InsideArea)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BedroomCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BathroomCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Documentation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-        
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullArea)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsideArea)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BedroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BathroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Documentation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
+</body>
+</html>
