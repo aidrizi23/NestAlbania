@@ -46,19 +46,17 @@ namespace NestAlbania.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
-            if (ModelState.IsValid)
-            {
-                string mainImagePath = null;
-                if (dto.MainImageFile != null)
-                {
-                    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "uploads/main_images", Guid.NewGuid().ToString());
-                }
+             //string mainImagePath = null;
+                //if (dto.MainImageFile != null)
+                //{
+                //    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "uploads/main_images", Guid.NewGuid().ToString());
+                //}
 
                 Property property = new Property()
                 {
                     Name = dto.Name,
                     Description = dto.Description,
-                    MainImage = mainImagePath,
+                    MainImage = dto.MainImage,
                     Price = dto.Price,
                     FullArea = dto.FullArea,
                     InsideArea = dto.InsideArea,
@@ -73,10 +71,9 @@ namespace NestAlbania.Controllers
 
                 await _propertyService.CreatePropertyAsync(property);
                 return RedirectToAction("Index");
-            }
+            
 
-            PopulateViewBags();
-            return View(dto);
+
         }
 
         private void PopulateViewBags()
