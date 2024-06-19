@@ -1,4 +1,5 @@
 ﻿using NestAlbania.Data.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NestAlbania.Data
 {
@@ -12,15 +13,18 @@ namespace NestAlbania.Data
         public int InsideArea { get; set; }
          public int BedroomCount { get; set; }
         public int BathroomCount { get; set; }
-        public PropertyStatus Status { get; set; }
-
         public string? Documentation { get; set; }
+        public List<string>? OtherImages { get; set; }
 
         public List<string>? OtherImages { get; set; }   
             
         // mbetet per tu bere lidhja me Agjentin, kategorine, city.
+        //lidhja me Agjentin, kategorine, city dhe status.
 
-        
+        public Category Category { get; set; }
+        public PropertyStatus Status { get; set; }
+
+
 
     }
    
