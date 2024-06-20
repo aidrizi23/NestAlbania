@@ -12,7 +12,7 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240619082915_init")]
+    [Migration("20240620091153_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -191,6 +191,12 @@ namespace NestAlbania.Migrations
                             Id = "b18be9c0-aa65-4af8-bd17-00bd9344e576",
                             Name = "admin",
                             NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "a14bs9c0-aa65-4af8-bd17-00bd9344e575",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
                         });
                 });
 
@@ -263,13 +269,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "936321d4-557e-40a7-bc54-6173bf5e54d3",
+                            ConcurrencyStamp = "0306cb91-f7b2-41f8-96f7-94573e268e4b",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGEB9FZtOx7IOkWA9nZgQL7y/Lpp4qw6V1GsWN2MfWx3jqbXVcFP9XRHh4LPJSPeGw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPR24mn9LrmjzXelBhopB5q+BpZZG9ZQAPcPvfwPL7P3eJslIkJ7iaMM5m9g7OadLQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -323,6 +329,9 @@ namespace NestAlbania.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CV")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -397,49 +406,6 @@ namespace NestAlbania.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Properties");
-                });
-
-            modelBuilder.Entity("NestAlbania.Models.AgentForCreationDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LicenseNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Motto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("YearsOfExeperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AgentForCreationDto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

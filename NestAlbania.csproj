@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\JobApplyDocuments\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\images\properties\" />
     <Folder Include="wwwroot\PropertyOtherImages\" />
   </ItemGroup>

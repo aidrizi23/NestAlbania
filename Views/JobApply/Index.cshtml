@@ -21,6 +21,9 @@
                Email
             </th>
             <th>
+                CV
+                </th>
+            <th>
                Message
             </th>
             <th>
@@ -32,6 +35,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
@@ -41,6 +45,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
+             
+            <td>
+                        @if (!String.IsNullOrEmpty(item.CV))
+                        {
+                        <a target="_blank">
+                            <img src="~/files/jobApplyImg/@item.CV" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.CV" style="object-fit:cover; width:40px; height: 40px; border-radius:20px;" class="card-img"/>
+                        </a>
+                        }
+            </td>
+ 
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
             </td>
