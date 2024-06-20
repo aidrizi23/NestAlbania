@@ -7,24 +7,26 @@ using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace NestAlbania.Controllers
 {
     public class PropertyController : Controller
-    {
+    {   
         private readonly IPropertyService _propertyService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PropertyController(IPropertyService propertyService, IFileHandlerService fileHandlerService, IConfiguration configuration)
+        public PropertyController(IPropertyService propertyService, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _propertyService = propertyService;
             _fileHandlerService = fileHandlerService;
             _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
-
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
@@ -35,6 +37,11 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
             await _propertyService.DeletePropertyAsync(property);
             return RedirectToAction("Index");
         }
@@ -42,17 +49,24 @@ namespace NestAlbania.Controllers
         public IActionResult Create()
         {
             PopulateViewBags();
-            var dto = new PropertyForCreationDto();
-            return View(dto);
+            return View(new PropertyForCreationDto());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]  //e padobishme per mom po le tjet
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
-            
-        
-               
-                Property property = new Property()
+            if (ModelState.IsValid)
+            {
+                string mainImagePath = null;
+                if (dto.MainImageFile != null)
+                {
+                    var fileName = Guid.NewGuid().ToString();
+                    //krijohet pathi per foton e caktuar
+                    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
+                }
+
+                var property = new Property
                 {
                     Name = dto.Name,
                     Description = dto.Description,
@@ -65,33 +79,23 @@ namespace NestAlbania.Controllers
                     Category = dto.Category,
                     Status = dto.Status,
                     City = dto.SelectedCity,
-                    OtherImages = dto.OtherImages,
-                    
-                    
+                    MainImage = mainImagePath,
+                    OtherImages = new List<string>()
                 };
 
+                var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
+                if (files.Count > 0)
+                {
+                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties"); //njeh uploadin
+                    property.OtherImages.AddRange(fileNames); //e shton ne list
+                }
+
                 await _propertyService.CreatePropertyAsync(property);
-
-                var files = HttpContext.Request.Form.Files;
-            var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
-                //if (dto.OtherImages != null && dto.OtherImages.Count > 0)
-                //{
-                    var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir );
-
-                    for(int i = 0; i< fileNames.Count; i++)
-                    {
-                        property.OtherImages.Add(fileNames[i]);
-                    }
-                    await _propertyService.EditPropertyAsync(property);
-                //}
-            
-                
+                return RedirectToAction("Index");
+            }
 
             PopulateViewBags();
-            return RedirectToAction("Index");
-
-
-            
+            return View(dto);
         }
 
         private void PopulateViewBags()
@@ -115,39 +119,88 @@ namespace NestAlbania.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var itemToShowDetails = await _propertyService.GetPropertyByIdAsync(id);
-            return View(itemToShowDetails);
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            return View(property);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var itemToEdit = await _propertyService.GetPropertyByIdAsync(id);
-            var model = new Property
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                Category = itemToEdit.Category,
-                Status = itemToEdit.Status,
-                // Populate other fields if necessary
+                return NotFound();
+            }
+
+            var dto = new PropertyForCreationDto
+            {
+                Name = property.Name,
+                Description = property.Description,
+                Price = property.Price,
+                FullArea = property.FullArea,
+                InsideArea = property.InsideArea,
+                BedroomCount = property.BedroomCount,
+                BathroomCount = property.BathroomCount,
+                Documentation = property.Documentation,
+                Category = property.Category,
+                Status = property.Status,
+                SelectedCity = property.City,
+                OtherImages = property.OtherImages
             };
 
             PopulateViewBags();
-            return View(itemToEdit);
+            return View(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Property property)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, PropertyForCreationDto dto)
         {
             if (ModelState.IsValid)
             {
+                var property = await _propertyService.GetPropertyByIdAsync(id);
+                if (property == null)
+                {
+                    return NotFound();
+                }
+
+                property.Name = dto.Name;
+                property.Description = dto.Description;
+                property.Price = dto.Price;
+                property.FullArea = dto.FullArea;
+                property.InsideArea = dto.InsideArea;
+                property.BedroomCount = dto.BedroomCount;
+                property.BathroomCount = dto.BathroomCount;
+                property.Documentation = dto.Documentation;
+                property.Category = dto.Category;
+                property.Status = dto.Status;
+                property.City = dto.SelectedCity;
+
+                //sherben per editimin e fotove 
+                if (dto.MainImageFile != null)
+                {
+                    var fileName = Guid.NewGuid().ToString();
+                    property.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
+                }
+
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
+                {
+                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
+                    property.OtherImages.AddRange(fileNames);
+                }
+
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
             }
 
             PopulateViewBags();
-            return View(property);
+            return View(dto);
         }
-
-        // Additional filter actions...
-
     }
 }
