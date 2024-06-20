@@ -84,11 +84,11 @@ namespace NestAlbania.Controllers
                 };
 
                 var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
-                if (files.Count > 0)
-                {
-                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties"); //njeh uploadin
-                    property.OtherImages.AddRange(fileNames); //e shton ne list
-                }
+
+                var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
+                    var fileNames = await _fileHandlerService.UploadAsync(files,uploadDir); //njeh uploadin
+                property.OtherImages = fileNames; //e shton ne list
+                
 
                 await _propertyService.CreatePropertyAsync(property);
                 return RedirectToAction("Index");
@@ -115,6 +115,17 @@ namespace NestAlbania.Controllers
                     Value = e.ToString(),
                     Text = e.ToString()
                 }).ToList();
+           
+            
+            ViewBag.Cities = Enum.GetValues(typeof(City))
+                   .Cast<City>()
+                   .Select(e => new SelectListItem
+                   {
+                       Value = e.ToString(),
+                       Text = e.ToString()
+                   }).ToList();
+
+
         }
 
         public async Task<IActionResult> Details(int id)
