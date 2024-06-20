@@ -1,66 +1,106 @@
 ﻿@model NestAlbania.Data.Agent
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Agent Details";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust if needed
 }
 
-<h1>Details</h1>
+<!-- Link the agent-details.css file -->
+<link rel="stylesheet" href="~/css/agent-details.css" />
 
-<div>
-    <h4>Agent</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LicenseNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LicenseNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Motto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Motto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearsOfExeperience)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearsOfExeperience)
-        </dd>
-    </dl>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col-md-4">
+            <div class="card text-center">
+                <img src="@Url.Content("~/agentImg/" + Model.Image)" class="card-img-top" alt="@Model.Name @Model.Surname">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Name @Model.Surname</h5>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Details -->
+        <div class="col-md-8">
+            <h2 class="mb-4">@Model.Name @Model.Surname</h2>
+            
+            <h3 class="card-text">@Model.Motto</h3>
+            <hr />
+            
+            <div class="row">
+                <div class="col-sm-4 detail-label">
+                    @Html.DisplayNameFor(model => model.Email)
+                </div>
+                <div class="col-sm-8 detail-value">
+                    @Html.DisplayFor(model => model.Email)
+                </div>
+
+                <div class="col-sm-4 detail-label">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </div>
+                <div class="col-sm-8 detail-value">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </div>
+
+                <div class="col-sm-4 detail-label">
+                    @Html.DisplayNameFor(model => model.LicenseNumber)
+                </div>
+                <div class="col-sm-8 detail-value">
+                    @Html.DisplayFor(model => model.LicenseNumber)
+                </div>
+
+                <div class="col-sm-4 detail-label">
+                    @Html.DisplayNameFor(model => model.YearsOfExeperience)
+                </div>
+                <div class="col-sm-8 detail-value">
+                    @Html.DisplayFor(model => model.YearsOfExeperience)
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4">
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<!-- Bootstrap Tooltip Initialization -->
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<style>
+    /* agent-details.css */
+    .card-img-top {
+        border-radius: 50%;
+        object-fit: cover;
+        height: 300px;
+        width: 300px;
+        margin: auto;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .detail-label {
+        font-weight: bold;
+    }
+
+    .detail-value {
+        margin-bottom: 15px;
+    }
+
+</style>
