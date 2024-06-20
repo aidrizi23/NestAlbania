@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<NestAlbania.Data.Property>
+@using NestAlbania.FilterHelpers
 
 @{
     ViewData["Title"] = "Index";
@@ -82,27 +83,42 @@
 <body>
     <div class="container">
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                @*    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get" class="form-inline search-form">
-                <div class="input-group">
-                <input type="number" name="nrOfBedrooms" class="form-control" placeholder="Number of Bedrooms">
-                <div class="input-group-append">
-                <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> Search</button>
+            @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+            {
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Name:</label>
+                        <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Price:</label>
+                        <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
+                    </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Full Area:</label>
+                        <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Inside Area:</label>
+                        <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
+                    </div>
                 </div>
-                </form> *@
-            </div>
-            <div class="col-md-6">
-                @*  <form asp-action="GetAllPaginatedPropertiesByPrice" method="get" class="form-inline search-form">
-                <div class="input-group">
-                <input type="number" name="Price" class="form-control" placeholder="Price">
-                <div class="input-group-append">
-                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Bedroom Count:</label>
+                        <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Bathroom Count:</label>
+                        <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
+                    </div>
                 </div>
-                </div>
-                </form> *@
-            </div>
+                <button type="submit" class="btn btn-info">Filter</button>
+            }
+
+
         </div>
         <div class="row">
             @foreach (var item in Model)
