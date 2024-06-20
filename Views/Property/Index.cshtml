@@ -37,7 +37,6 @@
                 height: 200px;
                 object-fit: fill;
             }
-
             .custom-card .card-body {
                 padding: 1.25rem;
             }
@@ -82,29 +81,29 @@
 </head>
 <body>
     <div class="container">
-  
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    @*    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get" class="form-inline search-form">
-                    <div class="input-group">
-                    <input type="number" name="nrOfBedrooms" class="form-control" placeholder="Number of Bedrooms">
-                    <div class="input-group-append">
-                    <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> Search</button>
-                    </div>
-                    </div>
-                    </form> *@
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                @*    <form asp-action="GetPropertiesByNumberOfBedroomsAsync" method="get" class="form-inline search-form">
+                <div class="input-group">
+                <input type="number" name="nrOfBedrooms" class="form-control" placeholder="Number of Bedrooms">
+                <div class="input-group-append">
+                <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> Search</button>
                 </div>
-                <div class="col-md-6">
-                    @*  <form asp-action="GetAllPaginatedPropertiesByPrice" method="get" class="form-inline search-form">
-                    <div class="input-group">
-                    <input type="number" name="Price" class="form-control" placeholder="Price">
-                    <div class="input-group-append">
-                    <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
-                    </div>
-                    </div>
-                    </form> *@
                 </div>
+                </form> *@
             </div>
+            <div class="col-md-6">
+                @*  <form asp-action="GetAllPaginatedPropertiesByPrice" method="get" class="form-inline search-form">
+                <div class="input-group">
+                <input type="number" name="Price" class="form-control" placeholder="Price">
+                <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
+                </div>
+                </div>
+                </form> *@
+            </div>
+        </div>
         <div class="row">
             @foreach (var item in Model)
             {
@@ -119,8 +118,8 @@
                             <div class="property-details">
                                 <p><i class="fas fa-map-marker-alt location-icon"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
                                 <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
-                                <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea) m</p>
-                                <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) m</p>
+                                <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
+                                <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
                                 <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
                                 <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
                                 <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
@@ -136,14 +135,11 @@
                 </div>
             }
         </div>
-
-        <div class="text-center">
-            <!-- Link to create new property -->
+          <div class="text-center">
             <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
