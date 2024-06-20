@@ -82,15 +82,19 @@ namespace NestAlbania.Controllers
                     MainImage = mainImagePath,
                     OtherImages = new List<string>()
                 };
+                await _propertyService.CreatePropertyAsync(property);
+
+
+
 
                 var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
-                if (files.Count > 0)
-                {
-                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties"); //njeh uploadin
-                    property.OtherImages.AddRange(fileNames); //e shton ne list
-                }
+                var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
+                    var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
+                property.OtherImages = fileNames; //e shton ne list
+                await _propertyService.EditPropertyAsync(property);
+                
 
-                await _propertyService.CreatePropertyAsync(property);
+               
                 return RedirectToAction("Index");
             }
 
