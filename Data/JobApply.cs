@@ -12,5 +12,7 @@ namespace NestAlbania.Data
 
         public string Message { get; set; }
 
+        public string? CV { get; set; }
+
     }
 }

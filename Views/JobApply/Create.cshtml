@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form id="uploadForm" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -33,6 +33,15 @@
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <p>CV</p>
+                <label asp-for="CV" class="control-label"></label>
+                <input type="file" asp-for="CV" class="form-control" />
+                <span asp-validation-for="CV" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -43,6 +52,29 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", 
+        function (event) {
+            const permittedExtensions = ['.pdf', '.jpg', '.jpeg', '.png', '.gif'];
+            const files = document.querySelectorAll("input[type='file']");
+            for (let fileInput of files) {
+                const file = fileInput.files[0];
+                if (file) {
+                    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                    if (!permittedExtensions.includes(fileExtension)) {
+                        alert("Invalid file type. Only PDF and image files are allowed.");
+                        event.preventDefault();
+                        return;
+                    }
+                }
+            }
+        });
+    </script>
 }

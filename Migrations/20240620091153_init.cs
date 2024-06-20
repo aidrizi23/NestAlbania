@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
@@ -11,26 +13,6 @@ namespace NestAlbania.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AgentForCreationDto",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    LicenseNumber = table.Column<int>(type: "int", nullable: false),
-                    Motto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AgentForCreationDto", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Agents",
                 columns: table => new
@@ -112,7 +94,8 @@ namespace NestAlbania.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CV = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -253,12 +236,16 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b18be9c0-aa65-4af8-bd17-00bd9344e576", null, "admin", "ADMIN" });
+                values: new object[,]
+                {
+                    { "a14bs9c0-aa65-4af8-bd17-00bd9344e575", null, "Agent", "AGENT" },
+                    { "b18be9c0-aa65-4af8-bd17-00bd9344e576", null, "admin", "ADMIN" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "936321d4-557e-40a7-bc54-6173bf5e54d3", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEGEB9FZtOx7IOkWA9nZgQL7y/Lpp4qw6V1GsWN2MfWx3jqbXVcFP9XRHh4LPJSPeGw==", null, false, "", false, "admin@admin.com" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "0306cb91-f7b2-41f8-96f7-94573e268e4b", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEPR24mn9LrmjzXelBhopB5q+BpZZG9ZQAPcPvfwPL7P3eJslIkJ7iaMM5m9g7OadLQ==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -308,9 +295,6 @@ namespace NestAlbania.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AgentForCreationDto");
-
             migrationBuilder.DropTable(
                 name: "Agents");
 
