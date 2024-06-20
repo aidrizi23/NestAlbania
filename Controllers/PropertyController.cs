@@ -119,6 +119,17 @@ namespace NestAlbania.Controllers
                     Value = e.ToString(),
                     Text = e.ToString()
                 }).ToList();
+           
+            
+            ViewBag.Cities = Enum.GetValues(typeof(City))
+                   .Cast<City>()
+                   .Select(e => new SelectListItem
+                   {
+                       Value = e.ToString(),
+                       Text = e.ToString()
+                   }).ToList();
+
+
         }
 
         public async Task<IActionResult> Details(int id)
