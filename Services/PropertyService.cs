@@ -1,4 +1,5 @@
 ﻿using NestAlbania.Data;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
 
@@ -41,11 +42,14 @@ namespace NestAlbania.Services
             return await _repository.GetPropertiesByNumberOfBedroomsAsync(nrOfBedrooms);    
         }
 
-
-
         public async Task <PaginatedList<Property>> GetAllPaginatedPropertiesByPrice( int Price , int PageIndex = 1, int pageSize = 10)
         {
             return await _repository.GetAllPaginatedPropertiesByPrice(Price, PageIndex, pageSize);
+        }
+
+        public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            return await _repository.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
         }
     }
 }

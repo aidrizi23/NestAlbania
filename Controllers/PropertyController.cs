@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NestAlbania.Data;
 using NestAlbania.Data.Enums;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Models;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
@@ -168,5 +169,23 @@ namespace NestAlbania.Controllers
             //PopulateViewBags();
             //return View(dto);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            // first lets get all the properties
+            var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
+
+            ViewData["CurrentNameFilter"] = query.Name;
+            ViewData["CurrentPriceFilter"] = query.Price;
+            ViewData["CurrentFullAreaFilter"] = query.FullArea;
+            ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
+            ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
+            ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+
+            return View("Index", properties);
+        }
+
     }
 }

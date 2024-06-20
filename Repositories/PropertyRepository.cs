@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Repositories
@@ -33,6 +34,41 @@ namespace NestAlbania.Repositories
             var paginatedProperties = _context.Properties.OrderByDescending(x => x.Id).AsQueryable();
             paginatedProperties = paginatedProperties.Where(x => x.BedroomCount == nrOfBedrooms);
             return await PaginatedList<Property>.CreateAsync(paginatedProperties, pageIndex, pageSize);
+        }
+
+
+        public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            // marrim te gjithe Properties
+            var properties = _context.Properties.AsQueryable(); // i marrim si queryable qe te na funksionojne filtrat
+            // pasi i morem te gjithe, do ti filtrojme sipas filtrave qe jane te aplikuar
+
+            if (!String.IsNullOrWhiteSpace(query.Name))
+            {
+                properties = properties.Where(x => x.Name.Contains(query.Name));
+            }
+            // nuk do te behen me else if pasi duam ti kontrollojme te gjitha.
+            if (query.Price.HasValue)
+            {
+                properties = properties.Where(x => x.Price ==  query.Price);
+            }
+            if (query.BedroomCount.HasValue)
+            {
+                properties = properties.Where(x => x.BedroomCount == query.BedroomCount);
+            }
+            if (query.BathroomCount.HasValue)
+            {
+                properties = properties.Where(x => x.BathroomCount == query.BathroomCount);
+            }
+            if(query.FullArea.HasValue)
+            {
+                properties = properties.Where(x => x.FullArea == query.FullArea);
+            }
+            if (query.InsideArea.HasValue)
+            {
+                properties = properties.Where(x => x.InsideArea == query.InsideArea);
+            }
+            return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
     }
 }
