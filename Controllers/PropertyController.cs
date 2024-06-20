@@ -137,70 +137,36 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
 
-            var dto = new PropertyForCreationDto
-            {
-                Name = property.Name,
-                Description = property.Description,
-                Price = property.Price,
-                FullArea = property.FullArea,
-                InsideArea = property.InsideArea,
-                BedroomCount = property.BedroomCount,
-                BathroomCount = property.BathroomCount,
-                Documentation = property.Documentation,
-                Category = property.Category,
-                Status = property.Status,
-                SelectedCity = property.City,
-                OtherImages = property.OtherImages
-            };
-
-            PopulateViewBags();
-            return View(dto);
+            return View(property);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, PropertyForCreationDto dto)
+
+        public async Task<IActionResult> Edit(Property property)
         {
-            if (ModelState.IsValid)
-            {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
+            //if (ModelState.IsValid)
+            //{
 
-                property.Name = dto.Name;
-                property.Description = dto.Description;
-                property.Price = dto.Price;
-                property.FullArea = dto.FullArea;
-                property.InsideArea = dto.InsideArea;
-                property.BedroomCount = dto.BedroomCount;
-                property.BathroomCount = dto.BathroomCount;
-                property.Documentation = dto.Documentation;
-                property.Category = dto.Category;
-                property.Status = dto.Status;
-                property.City = dto.SelectedCity;
+                ////sherben per editimin e fotove 
+                //if (property.MainImageFile != null)
+                //{
+                //    var fileName = Guid.NewGuid().ToString();
+                //    property.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(property.MainImageFile, "images/properties", fileName);
+                //}
 
-                //sherben per editimin e fotove 
-                if (dto.MainImageFile != null)
-                {
-                    var fileName = Guid.NewGuid().ToString();
-                    property.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
-                }
-
-                var files = HttpContext.Request.Form.Files;
-                if (files.Count > 0)
-                {
-                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
-                    property.OtherImages.AddRange(fileNames);
-                }
+                //var files = HttpContext.Request.Form.Files;
+                //if (files.Count > 0)
+                //{
+                //    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
+                //    property.OtherImages.AddRange(fileNames);
+                //}
 
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
-            }
+            //}
 
-            PopulateViewBags();
-            return View(dto);
+            //PopulateViewBags();
+            //return View(dto);
         }
     }
 }
