@@ -40,7 +40,7 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
             // marrim te gjithe Properties
-            var properties = _context.Properties.AsQueryable(); // i marrim si queryable qe te na funksionojne filtrat
+            var properties = _context.Properties.AsNoTracking().AsQueryable(); // i marrim si queryable qe te na funksionojne filtrat
             // pasi i morem te gjithe, do ti filtrojme sipas filtrave qe jane te aplikuar
 
             if (!String.IsNullOrWhiteSpace(query.Name))
