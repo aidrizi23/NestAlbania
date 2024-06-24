@@ -82,6 +82,11 @@ namespace NestAlbania.Data
 
 // if we ever need to access the users CustomuserName in any view, we can do it by thisds methodd 
 /*
+ * @using Microsoft.AspNetCore.Identity
+@using NestAlbania.Data
+
+@inject UserManager<ApplicationUser> UserManager
+
  * @if (User.Identity.IsAuthenticated)
 {
     var user = await UserManager.GetUserAsync(User);
