@@ -15,8 +15,8 @@ namespace NestAlbania.Controllers
         }
         public async Task<IActionResult> Index(int page =1)
         {
-            int pageSize = 10;
-            var countries = await _countryService.GetPaginatedCountries(page = 1, pageSize = 10);
+            const int pageSize = 10;
+            var countries = await _countryService.GetPaginatedCountries(page = 1, pageSize );
             return View(countries);
         }
         public async Task<IActionResult> Details(int id)

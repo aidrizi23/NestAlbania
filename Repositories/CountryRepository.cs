@@ -12,7 +12,7 @@ namespace NestAlbania.Repositories
         }
         public async Task<PaginatedList<Country>> GetPaginatedCountries(int pageIndex = 1, int pageSize = 10)
         {
-            var countries = _context.Countries/*.AsNoTracking()*/.OrderByDescending(x => x.Id).AsQueryable();
+            var countries = _context.Countries.OrderByDescending(x => x.Id).AsQueryable();
             return await PaginatedList<Country>.CreateAsync(countries, pageIndex, pageSize);
         }
     }
