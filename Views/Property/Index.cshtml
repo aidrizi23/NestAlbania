@@ -115,7 +115,21 @@
                         
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                            <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+
+                            <p class="card-text">
+                                @if (item.Description.Length > 100)
+                                {
+                                    var shortDescription = item.Description.Substring(0, 100);
+                                    <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
+                                    <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
+                                    <a href="#" class="read-more-link">Read More</a>
+                                }
+                                else
+                                {
+                                    @Html.Raw(item.Description)
+                                }
+                            </p>
+
                             <div class="property-details">
                                 <p><i class="fas fa-map-marker-alt location-icon"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
                                 <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
@@ -147,5 +161,24 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+    <script>
+        @*script per butonin read more *@
+
+        $(document).ready(function () {
+            // Hide the additional description initially
+            $('.more').hide();
+
+            // Toggle description visibility on clicking Read More link
+            $('.read-more-link').click(function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                var $moreText = $this.prev('.more');
+                $moreText.slideToggle();
+                $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+            });
+        });
+    </script>
 </body>
 </html>

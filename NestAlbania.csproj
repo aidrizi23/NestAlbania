@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\assets\icons\" />
     <Folder Include="wwwroot\images\properties\" />
     <Folder Include="wwwroot\PropertyOtherImages\" />
   </ItemGroup>

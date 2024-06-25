@@ -1,90 +1,96 @@
 ﻿@model NestAlbania.Data.Property
-
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/styles.css">
+<script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
 
 <div>
-    <h4>Property</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MainImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MainImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullArea)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullArea)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InsideArea)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InsideArea)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BedroomCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BedroomCount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BathroomCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BathroomCount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Documentation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Documentation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-    </dl>
+    <main class="container mt-4">
+        <section class="property-details">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 style="font-weight:bold; text-transform:uppercase">@Html.DisplayFor(model => model.Name)</h2>
+                    <img src="@Url.Content("~/images/properties/" + Model.MainImage)" alt="Property Image" class="img-fluid mb-3">
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;" class="col-6">
+                    <dl style="border: 1px solid #ccc; margin-bottom: 10px;" class="row">
+                        <hr class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-file-text" aria-hidden="true" style="margin-right: 5px;"></i>Description:</dt>
+                        <dd class="col-sm-8">
+                            <div id="description" class="description">@Html.DisplayFor(model => model.Description)</div>
+                            <button id="toggleButton" class="btn btn-link">Read More</button>
+                        </dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-usd" aria-hidden="true" style="margin-right: 5px;"></i>Price:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Price) $</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-map-o" aria-hidden="true" style="margin-right: 5px;"></i>Full Area:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.FullArea) m²</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-home" aria-hidden="true" style="margin-right: 5px;"></i>Inside Area:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.InsideArea) m²</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+
+                        <dt class="col-sm-4"><i class="fa fa-bed" aria-hidden="true" style="margin-right: 5px;"></i>Bedrooms:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.BedroomCount)</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-bath" aria-hidden="true" style="margin-right: 5px;"></i>Bathrooms:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.BathroomCount)</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-cogs" aria-hidden="true" style="margin-right: 5px;"></i>Status:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Status)</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-book" aria-hidden="true" style="margin-right: 5px;"></i>Documentation:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Documentation)</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-globe" aria-hidden="true" style="margin-right: 5px;"></i>City:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.City)</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="container mt-3 centered-div">
+                <div class="d-flex justify-content-start">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary mr-2" })
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+        </section>
+    </main>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<style>
+    .centered-div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .description {
+        max-height: 100px; /* Set a fixed height */
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+        .description.expanded {
+            max-height: none;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var description = document.getElementById('description');
+        var toggleButton = document.getElementById('toggleButton');
+
+        toggleButton.addEventListener('click', function () {
+            if (description.classList.contains('expanded')) {
+                description.classList.remove('expanded');
+                toggleButton.textContent = 'Read More';
+            } else {
+                description.classList.add('expanded');
+                toggleButton.textContent = 'Read Less';
+            }
+        });
+    });
+</script>
