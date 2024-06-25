@@ -86,7 +86,15 @@ namespace NestAlbania.Controllers
                 await _propertyService.CreatePropertyAsync(property);
 
 
-
+                var file1 = HttpContext.Request.Form.Files.FirstOrDefault();
+                if (file1 != null)
+                {
+                    var upload = _configuration["Uploads:PropertyDocumentation"];
+                    var fileName = property.Name + "_" + property.Id;
+                    fileName = await _fileHandlerService.UploadAndRenameFileAsync(file1, upload, fileName);
+                    property.Documentation = fileName;
+                    await _propertyService.EditPropertyAsync(property);
+                }
 
                 var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
                 var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
@@ -98,7 +106,7 @@ namespace NestAlbania.Controllers
                
                 return RedirectToAction("Index");
             }
-
+            
             PopulateViewBags();
             return View(dto);
         }

@@ -23,8 +23,6 @@ namespace NestAlbania.Controllers
             var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
             return View(agent);
         }
-
-
         public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
@@ -44,11 +42,10 @@ namespace NestAlbania.Controllers
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
-               LicenseNumber = dto.LicenseNumber,
+                LicenseNumber = dto.LicenseNumber,
                 Motto = dto.Motto,
                 PhoneNumber = dto.PhoneNumber,
-               Email = dto.Email,
-              
+                Email = dto.Email,
                 YearsOfExeperience = dto.YearsOfExeperience,
           
             };
@@ -63,8 +60,7 @@ namespace NestAlbania.Controllers
                 agentss.Image = fileName;
                 await _agent.EditAgent(agentss);
             }
-           
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details(int id)
@@ -79,14 +75,11 @@ namespace NestAlbania.Controllers
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
-
         [HttpPost]
         public async Task<IActionResult> Edit(Agent agent)
         {
             await _agent.EditAgent(agent);
             return RedirectToAction("Index");
-
-
         }
 
     }
