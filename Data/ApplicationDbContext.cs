@@ -20,16 +20,16 @@ namespace NestAlbania.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Agent> Agents { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder); // Call base method to configure identity
 
             const string ADMIN_ID = "a18be9c0-aa65-4af8-bd17-00bd9344e575";
             const string ADMIN_ROLE_ID = "b18be9c0-aa65-4af8-bd17-00bd9344e576";
             const string AGENT_ROLE_ID = "a14bs9c0-aa65-4af8-bd17-00bd9344e575";
 
             var hasher = new PasswordHasher<ApplicationUser>();
-            builder.Entity<ApplicationUser>().HasData(new ApplicationUser
+            modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
             {
                 Id = ADMIN_ID,
                 UserName = "admin@admin.com",
@@ -41,28 +41,32 @@ namespace NestAlbania.Data
                 SecurityStamp = string.Empty
             });
 
-            builder.Entity<ApplicationRole>().HasData(new ApplicationRole
+            modelBuilder.Entity<ApplicationRole>().HasData(new ApplicationRole
             {
                 Id = ADMIN_ROLE_ID,
                 Name = "admin",
                 NormalizedName = "ADMIN"
             });
 
-            builder.Entity<ApplicationRole>().HasData(new ApplicationRole
+            modelBuilder.Entity<ApplicationRole>().HasData(new ApplicationRole
             {
                 Id = AGENT_ROLE_ID,
                 Name = "Agent",
                 NormalizedName = "AGENT"
             });
 
-            builder.Entity<ApplicationUserRole>().HasData(new ApplicationUserRole
+            modelBuilder.Entity<ApplicationUserRole>().HasData(new ApplicationUserRole
             {
                 RoleId = ADMIN_ROLE_ID,
                 UserId = ADMIN_ID
             });
 
-          
 
+            modelBuilder.Entity<Property>()
+                .HasOne(p => p.Agents) 
+                .WithMany(a => a.Properties)
+                .HasForeignKey(p => p.AgentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NestAlbania.Data.Enums;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NestAlbania.Data.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NestAlbania.Data
@@ -15,18 +16,19 @@ namespace NestAlbania.Data
         public int BathroomCount { get; set; }
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
-
-
-            
+      
         // mbetet per tu bere lidhja me Agjentin, kategorine, city.
         //lidhja me Agjentin, kategorine, city dhe status.
 
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
-
         public City City { get; set; }
-        
 
+
+        [ForeignKey("AgentId")]
+        public int? AgentId { get; set; }
+        public virtual Agent? Agents { get; set; }
+    
     }
    
 }

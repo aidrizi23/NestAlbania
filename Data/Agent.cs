@@ -12,5 +12,8 @@
         public string Motto { get; set; }
         public string YearsOfExeperience { get; set; }
 
+
+        public ICollection<Property>? Properties { get; set;}
+
     }
 }
