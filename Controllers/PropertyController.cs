@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NestAlbania.Data;
 using NestAlbania.Data.Enums;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Models;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
@@ -82,15 +83,19 @@ namespace NestAlbania.Controllers
                     MainImage = mainImagePath,
                     OtherImages = new List<string>()
                 };
+                await _propertyService.CreatePropertyAsync(property);
+
+
+
 
                 var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
-                if (files.Count > 0)
-                {
-                    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties"); //njeh uploadin
-                    property.OtherImages.AddRange(fileNames); //e shton ne list
-                }
+                var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
+                    var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
+                property.OtherImages = fileNames; //e shton ne list
+                await _propertyService.EditPropertyAsync(property);
+                
 
-                await _propertyService.CreatePropertyAsync(property);
+               
                 return RedirectToAction("Index");
             }
 
@@ -115,6 +120,17 @@ namespace NestAlbania.Controllers
                     Value = e.ToString(),
                     Text = e.ToString()
                 }).ToList();
+           
+            
+            ViewBag.Cities = Enum.GetValues(typeof(City))
+                   .Cast<City>()
+                   .Select(e => new SelectListItem
+                   {
+                       Value = e.ToString(),
+                       Text = e.ToString()
+                   }).ToList();
+
+
         }
 
         public async Task<IActionResult> Details(int id)
@@ -168,5 +184,23 @@ namespace NestAlbania.Controllers
             //PopulateViewBags();
             //return View(dto);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            // first lets get all the properties
+            var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
+
+            ViewData["CurrentNameFilter"] = query.Name;
+            ViewData["CurrentPriceFilter"] = query.Price;
+            ViewData["CurrentFullAreaFilter"] = query.FullArea;
+            ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
+            ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
+            ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+
+            return View("Index", properties);
+        }
+
     }
 }

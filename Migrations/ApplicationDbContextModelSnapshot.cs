@@ -187,6 +187,12 @@ namespace NestAlbania.Migrations
                             Id = "b18be9c0-aa65-4af8-bd17-00bd9344e576",
                             Name = "admin",
                             NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "a14bs9c0-aa65-4af8-bd17-00bd9344e575",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
                         });
                 });
 
@@ -259,13 +265,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4032b55-c026-4526-a7d7-899fdd5ddfd4",
+                            ConcurrencyStamp = "ed5396ba-a0c2-4c5d-bd60-d7394ddf08f7",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH4qYY3Mh093HfAjzfgj9QoQPYeE0QBzUdmhf6w2OZp7Menah4EGBpgaX70ZveG+DA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHndxt1WbXMTBrGA7ft/g9029Y7wLGvDx0KYbzzAnsHRmDmdweVBc3UT7mMBStZeCQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -319,6 +325,9 @@ namespace NestAlbania.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CV")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -393,48 +402,6 @@ namespace NestAlbania.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Properties");
-                });
-
-            modelBuilder.Entity("NestAlbania.Models.AgentForCreationDto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LicenseNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Motto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("YearsOfExeperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AgentForCreationDto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

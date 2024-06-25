@@ -7,9 +7,20 @@ namespace NestAlbania.Services.Extensions
     public class FileHandlerService : IFileHandlerService
     {
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        private readonly List<string> _permittedExtensions = new List<string> { ".pdf", ".jpg", ".jpeg", ".png", ".gif" };
+        private readonly Dictionary<string, string> _mimeTypes = new Dictionary<string, string>
+        {
+            { ".pdf", "application/pdf" },
+            { ".jpg", "image/jpeg" },
+            { ".jpeg", "image/jpeg" },
+            { ".png", "image/png" },
+            { ".gif", "image/gif" }
+        };
+
         public FileHandlerService(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+
         }
         public async Task<List<string>> UploadAsync(IFormFileCollection files, string uploadDir)
         {
