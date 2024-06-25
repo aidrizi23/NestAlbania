@@ -11,7 +11,7 @@ namespace NestAlbania.Controllers
     {
         public readonly IAgentService _agent;
         private readonly IConfiguration _configuration;
-        private readonly IFileHandlerService _fileHandlerService;
+        private readonly IFileHandlerService _fileHandlerService;                                                                                                                   
         public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService)
         {
             _agent = agentService;

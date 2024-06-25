@@ -63,8 +63,7 @@ namespace NestAlbania.Controllers
                 if (dto.MainImageFile != null)
                 {
                     var fileName = Guid.NewGuid().ToString();
-                    //krijohet pathi per foton e caktuar
-                    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
+                     mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
                 }
 
                 var property = new Property
@@ -84,8 +83,7 @@ namespace NestAlbania.Controllers
                     OtherImages = new List<string>()
                 };
                 await _propertyService.CreatePropertyAsync(property);
-
-
+       
                 var file1 = HttpContext.Request.Form.Files.FirstOrDefault();
                 if (file1 != null)
                 {
@@ -98,7 +96,7 @@ namespace NestAlbania.Controllers
 
                 var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
                 var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
-                    var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
+                 var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
                 property.OtherImages = fileNames; //e shton ne list
                 await _propertyService.EditPropertyAsync(property);
                 
