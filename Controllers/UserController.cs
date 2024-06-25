@@ -131,7 +131,8 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> UserRoleDelete(string id)
         {
-            await _userRoleService.DeleteAsync(id);
+            var user = await _userRoleService.GetUserRoleByIdAsync(id);
+            await _userRoleService.DeleteAsync(user);
             return RedirectToAction("UserRoleIndex");
         }
 

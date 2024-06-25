@@ -26,10 +26,10 @@ namespace NestAlbania.Services
             await _userRoleRepository.Edit(entity);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(ApplicationUserRole entity)
         {
-            var userRole = await _userRoleRepository.GetUserRoleByIdAsync(id);
-            await _userRoleRepository.Delete(userRole);
+           
+            await _userRoleRepository.Delete(entity);
         }
 
         public async Task<ApplicationUserRole> GetUserRoleByIdAsync(string id)

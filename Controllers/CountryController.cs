@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Data;
 using NestAlbania.Models;
 using NestAlbania.Services;
@@ -6,6 +7,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace NestAlbania.Controllers
 {
+    [Authorize]
     public class CountryController : Controller
     {
         private readonly ICountryService _countryService;

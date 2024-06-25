@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NestAlbania.Data;
@@ -8,6 +10,7 @@ using NestAlbania.Services.Extensions;
 
 namespace NestAlbania.Controllers
 {
+    [Authorize]
     public class AgentController : Controller
     {
         public readonly IAgentService _agent;
@@ -21,14 +24,16 @@ namespace NestAlbania.Controllers
 
         public readonly IRoleService _roleService;
         public readonly IUserRoleService _userRoleService;
+        public readonly IUserService _userService;
 
-        public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager)
+        public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _agent = agentService;
             _configuration = configuration;
             _fileHandlerService = fileHandlerService;
             _userManager = userManager;
             _userRoleService = userRoleService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
@@ -40,8 +45,25 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
-         
-            await _agent.DeleteAgent(agent);
+            if (agent.UserId != null)
+            {
+                var user = await _userService.GetUserByIdAsync(agent.UserId);
+                if (user != null)
+                {
+                    await _userService.DeleteUserAsync(user);
+                }
+                var userRole = await _userRoleService.GetUserRoleByIdAsync(agent.UserId);
+                if (userRole != null)
+                {
+                    await _userRoleService.DeleteAsync(userRole);
+                }
+                await _agent.DeleteAgent(agent);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
             return RedirectToAction("Index");
         }
 

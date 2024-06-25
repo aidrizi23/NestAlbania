@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace NestAlbania.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

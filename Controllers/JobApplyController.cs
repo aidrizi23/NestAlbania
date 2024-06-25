@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Data;
 using NestAlbania.Models;
 using NestAlbania.Services;
@@ -7,6 +8,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace NestAlbania.Controllers
 {
+    [Authorize]
     public class JobApplyController : Controller
     {
         private readonly IJobApplyService _jobapplyService;

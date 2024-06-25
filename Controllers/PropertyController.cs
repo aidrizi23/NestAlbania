@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NestAlbania.Data;
 using NestAlbania.Data.Enums;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace NestAlbania.Controllers
 {
+    [Authorize]
     public class PropertyController : Controller
     {   
         private readonly IPropertyService _propertyService;
