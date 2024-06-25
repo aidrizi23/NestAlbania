@@ -22,27 +22,23 @@ namespace NestAlbania.Controllers
             _propertyService = propertyService;
             _fileHandlerService = fileHandlerService;
         }
-
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
             var properties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
             return View(properties);
         }
-
         public async Task<IActionResult> Delete(int id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
             await _propertyService.DeletePropertyAsync(property);
             return RedirectToAction("Index");
         }
-
         public IActionResult Create()
         {
             PopulateViewBags();
             var dto = new PropertyForCreationDto();
             return View(dto);
         }
-
         [HttpPost]
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
