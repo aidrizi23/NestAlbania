@@ -12,11 +12,13 @@ namespace NestAlbania.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IRoleService _roleService;
         private readonly IUserRoleService _userRoleService;
-        public UserController(IUserRepository userRepository, IRoleService roleService, IUserRoleService userRoleService)
+        private readonly IAgentService _agentService;
+        public UserController(IUserRepository userRepository, IRoleService roleService, IUserRoleService userRoleService, IAgentService agentService)
         {
             _userRepository = userRepository;
             _roleService = roleService;
             _userRoleService = userRoleService;
+            _agentService = agentService;
         }
 
         public async Task<IActionResult> Index()
@@ -29,6 +31,9 @@ namespace NestAlbania.Controllers
         {
             var user = await _userRepository.GetUserByIdAsync(id);
             await _userRepository.DeleteUserAsync(user);
+            var agent = await _userRepository.GetAgentByUserIdAsync(user.Id);
+            if (agent != null) await _agentService.DeleteAgent(agent);
+            
             return RedirectToAction("Index");
         }
 
