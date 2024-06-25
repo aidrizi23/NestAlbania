@@ -24,11 +24,15 @@
         <!-- Agent Details -->
         <div class="col-md-8">
             <h2 class="mb-4">@Model.Name @Model.Surname</h2>
-            
-            <h3 class="card-text">@Model.Motto</h3>
-            <hr />
-            
+
             <div class="row">
+                <div class="col-sm-4 detail-label">
+                    @Html.DisplayNameFor(model => model.Motto)
+                </div>
+                <div class="col-sm-8 detail-value">
+                    @Html.DisplayFor(model => model.Motto)
+                </div>
+
                 <div class="col-sm-4 detail-label">
                     @Html.DisplayNameFor(model => model.Email)
                 </div>
