@@ -2,9 +2,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NestAlbania.Data;
 using NestAlbania.Models;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace NestAlbania.Controllers
 {
@@ -34,25 +41,52 @@ namespace NestAlbania.Controllers
         }
 
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+        //    if (result.Succeeded)
+        //    {
+        //        _logger.LogInformation($"User with email {model.Email} logged in.");
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Error = true;
+        //        ModelState.AddModelError(string.Empty, "Invalid login attempt");
+        //        return View(model);
+        //    }
+        //}
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                _logger.LogInformation($"User with email {model.Email} logged in.");
-                return RedirectToAction("Index", "Home");
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    // Successful login
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
             }
-            else
-            {
-                ViewBag.Error = true;
-                ModelState.AddModelError(string.Empty, "Invalid login attempt");
-                return View(model);
-            }
+
+            // If model state is not valid, return to login view with errors
+            return View(model);
         }
 
 
@@ -99,4 +133,7 @@ namespace NestAlbania.Controllers
 
 
     }
+
+
+
 }
