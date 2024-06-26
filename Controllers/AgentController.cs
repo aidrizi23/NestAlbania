@@ -40,8 +40,6 @@ namespace NestAlbania.Controllers
             var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
             return View(agent);
         }
-
-
         public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
@@ -164,14 +162,11 @@ namespace NestAlbania.Controllers
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
-
         [HttpPost]
         public async Task<IActionResult> Edit(Agent agent)
         {
             await _agent.EditAgent(agent);
             return RedirectToAction("Index");
-
-
         }
 
     }
