@@ -20,5 +20,8 @@ namespace NestAlbania.Data
         public string Password { get; set; }
 
         public string? RoleId { get; set; }
+
+        public ICollection<Property>? Properties { get; set;}
+
     }
 }
