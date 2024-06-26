@@ -59,8 +59,7 @@ namespace NestAlbania.Controllers
         [ValidateAntiForgeryToken]  //e padobishme per mom po le tjet
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
-            if (ModelState.IsValid)
-            {
+          
                 string mainImagePath = null;
                 if (dto.MainImageFile != null)
                 {
@@ -85,30 +84,30 @@ namespace NestAlbania.Controllers
                     OtherImages = new List<string>()
                 };
                 await _propertyService.CreatePropertyAsync(property);
-       
-                var file1 = HttpContext.Request.Form.Files.FirstOrDefault();
-                if (file1 != null)
-                {
-                    var upload = _configuration["Uploads:PropertyDocumentation"];
-                    var fileName = property.Name + "_" + property.Id;
-                    fileName = await _fileHandlerService.UploadAndRenameFileAsync(file1, upload, fileName);
-                    property.Documentation = fileName;
-                    await _propertyService.EditPropertyAsync(property);
-                }
 
-                var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
+
+            // Upload new documentation photo if provided
+            var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
+            if (documentationFile != null && documentationFile.Length > 0)
+            {
+                var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"]; // Unique variable name
+                var documentationFileName = property.Name + "_" + property.Id;
+                documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, documentationFileName);
+                property.Documentation = documentationFileName;
+                await _propertyService.EditPropertyAsync(property); // Update property with new documentation photo
+            }
+
+
+            var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
                 var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
                  var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
                 property.OtherImages = fileNames; //e shton ne list
                 await _propertyService.EditPropertyAsync(property);
-                
-
                
-                return RedirectToAction("Index");
-            }
-            
+          
             PopulateViewBags();
-            return View(dto);
+            return RedirectToAction("Index");
+
         }
 
         private void PopulateViewBags()

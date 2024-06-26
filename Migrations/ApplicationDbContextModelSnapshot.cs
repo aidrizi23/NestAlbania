@@ -278,13 +278,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "116a6969-bef3-483e-bf71-897998a66630",
+                            ConcurrencyStamp = "99745bd6-ddd6-4f85-9dcf-1797dbd37638",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECgrs/xNWGLKRLUuAdFJprsu48kAYaYIGH5bc08r5fxcF3D85bt8Tk88+r970JPSgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENzpBYzxgXVJFs65JoU9QHNxhcst2fuR8Gvi1oGbtimGKH5gY3va8f7nycYjY4RPfA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -478,7 +478,7 @@ namespace NestAlbania.Migrations
                     b.HasOne("NestAlbania.Data.Agent", "Agents")
                         .WithMany("Properties")
                         .HasForeignKey("AgentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Agents");
                 });
