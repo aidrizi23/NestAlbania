@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
+using NuGet.Protocol.Core.Types;
 
 namespace NestAlbania.Services
 {
@@ -46,5 +47,12 @@ namespace NestAlbania.Services
         {
             return await _agentRepository.GetPaginatedAgent(pageIndex, pageSize);
         }
+
+
+        public async Task<Agent> GetAgentByPropertyIdAsync(int id)
+        {
+            return await _agentRepository.GetAgentByPropertyIdAsync(id);
+        }
+
     }
 }

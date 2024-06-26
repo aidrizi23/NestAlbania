@@ -28,6 +28,8 @@ namespace NestAlbania.Data
         [ForeignKey("AgentId")]
         public int? AgentId { get; set; }
         public virtual Agent? Agents { get; set; }
+
+        
     
     }
    

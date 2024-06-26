@@ -11,5 +11,7 @@
         public int LicenseNumber { get; set; }
         public string Motto { get; set; }
         public string YearsOfExeperience { get; set; }
+
+        public int? PropertyId { get; set; }
     }
 }
