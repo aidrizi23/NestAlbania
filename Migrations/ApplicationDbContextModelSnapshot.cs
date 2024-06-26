@@ -371,6 +371,9 @@ namespace NestAlbania.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AgentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("BathroomCount")
                         .HasColumnType("int");
 
@@ -413,6 +416,8 @@ namespace NestAlbania.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgentId");
 
                     b.ToTable("Properties");
                 });
@@ -466,6 +471,21 @@ namespace NestAlbania.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Property", b =>
+                {
+                    b.HasOne("NestAlbania.Data.Agent", "Agents")
+                        .WithMany("Properties")
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Agents");
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Agent", b =>
+                {
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

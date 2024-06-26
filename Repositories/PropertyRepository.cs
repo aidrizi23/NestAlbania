@@ -37,6 +37,7 @@ namespace NestAlbania.Repositories
         }
 
 
+
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
             // marrim te gjithe Properties
@@ -70,5 +71,13 @@ namespace NestAlbania.Repositories
             }
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
+
+        public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)
+        {
+            var properties = _context.Properties.Include(x => x.Agents).Where(x => x.AgentId == id);
+            return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
+        }
     }
 }
+
+

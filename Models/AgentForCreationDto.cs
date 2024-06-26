@@ -21,5 +21,7 @@
         // kjo do te perdoret per krijimin automatik te nje roli
         public string RoleId = "a14bs9c0-aa65-4af8-bd17-00bd9344e575"; // id e ketij roli eshte marre nga ApplicationDbContext.
         // per momentin eshte pa set sepse nuk do ndryshohet. te gjithe agjetnet do te kene te njejtin rol
+
+        public int? PropertyId { get; set; }
     }
 }

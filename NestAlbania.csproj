@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\properties\" />
+    <Folder Include="wwwroot\PropertyDocumentation2\" />
     <Folder Include="wwwroot\PropertyOtherImages\" />
   </ItemGroup>
 

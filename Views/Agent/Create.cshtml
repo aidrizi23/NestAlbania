@@ -1,44 +1,58 @@
-﻿@model NestAlbania.Models.AgentForCreationDto
+﻿
+@model NestAlbania.Models.AgentForCreationDto
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>AgentForCreationDto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="card mx-auto" style="max-width: 500px;">
+    <div class="card-body">
+        <h4 class="card-title">Create Agent</h4>
+        <hr />
+
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Name</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
+                <label asp-for="Surname" class="control-label">Surname</label>
                 <input asp-for="Surname" class="form-control" />
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="LicenseNumber" class="control-label"></label>
+                <label asp-for="LicenseNumber" class="control-label">License Number</label>
                 <input asp-for="LicenseNumber" class="form-control" />
                 <span asp-validation-for="LicenseNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Motto" class="control-label"></label>
+                <label asp-for="Motto" class="control-label">Motto</label>
                 <input asp-for="Motto" class="form-control" />
                 <span asp-validation-for="Motto" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="YearsOfExeperience" class="control-label"></label>
+                <label asp-for="YearsOfExeperience" class="control-label">Years of Experience</label>
                 <input asp-for="YearsOfExeperience" class="form-control" />
                 <span asp-validation-for="YearsOfExeperience" class="text-danger"></span>
             </div>
@@ -61,13 +75,37 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputImage" aria-describedby="inputImageAddon" name="Image" accept="image/*">
+                             
+                                </div>
+                            </div>
+                            </form>
+                    </div>
+
+                    <div class="form-group">
+                        
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                     
+                                <a asp-action="Index" class="btn btn-link">Back to List</a>
+                            </div>
+                    </div>
+
+        </form>
+                    </div>
+    
+                    </div>
+    
+                </div>
+       
+            </div>
+   
 
 @section Scripts {
     @{

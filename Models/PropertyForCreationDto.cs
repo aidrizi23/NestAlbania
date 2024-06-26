@@ -23,5 +23,9 @@ namespace NestAlbania.Models
         public Category Category { get; set; }
       
         public City SelectedCity { get; set; }
+
+
+        public IEnumerable<Agent> Agents { get; set; }
+        public int? AgentId { get; set; }
     }
 }
