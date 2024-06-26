@@ -9,6 +9,7 @@ namespace NestAlbania.Services
         Task CreateAsync(ApplicationUserRole entity);
         Task UpdateAsync(ApplicationUserRole entity);
         Task DeleteAsync(ApplicationUserRole entity);
-        Task<ApplicationUserRole> GetUserRoleByIdAsync(string id);
+        Task<ApplicationUserRole> GetUserRoleByRoleIdAsync(string id);
+        Task<ApplicationUserRole> GetUserRoleByUserIdAsync(string id);
     }
 }

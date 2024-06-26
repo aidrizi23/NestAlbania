@@ -1,11 +1,8 @@
-﻿
-@model NestAlbania.Models.AgentForCreationDto
+﻿@model NestAlbania.Models.AgentForCreationDto
 
 @{
     ViewData["Title"] = "Create";
 }
-
-
 
 <div class="card mx-auto" style="max-width: 500px;">
     <div class="card-body">
@@ -56,14 +53,9 @@
                 <input asp-for="YearsOfExeperience" class="form-control" />
                 <span asp-validation-for="YearsOfExeperience" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
+                <label asp-for="Password" class="control-label">Password</label>
                 <input type="password" asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
@@ -72,40 +64,14 @@
                 <label asp-for="Image" class="control-label">Image</label>
                 <input class="form-control" type="file" asp-for="Image" />
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-link">Back to List</a>
             </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <form method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputImage" aria-describedby="inputImageAddon" name="Image" accept="image/*">
-                             
-                                </div>
-                            </div>
-                            </form>
-                    </div>
-
-                    <div class="form-group">
-                        
-                            <input type="submit" value="Create" class="btn btn-primary" />
-                     
-                                <a asp-action="Index" class="btn btn-link">Back to List</a>
-                            </div>
-                    </div>
-
         </form>
-                    </div>
-    
-                    </div>
-    
-                </div>
-       
-            </div>
-   
+    </div>
+</div>
 
 @section Scripts {
     @{
