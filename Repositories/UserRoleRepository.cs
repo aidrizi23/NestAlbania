@@ -20,9 +20,13 @@ namespace NestAlbania.Repositories
         {
             return (IEnumerable<ApplicationUser>)await _context.ApplicationUserRoles.Where(x => x.RoleId == RoleId).ToListAsync();
         }
-        public async Task<ApplicationUserRole> GetUserRoleByIdAsync(string id)
+        public async Task<ApplicationUserRole> GetUserRoleByRoleIdAsync(string id)
         {
             return await _context.ApplicationUserRoles.FirstOrDefaultAsync(x => x.RoleId == id);
+        }
+        public async Task<ApplicationUserRole> GetUserRoleByUserIdAsync(string id)
+        {
+            return await _context.ApplicationUserRoles.FirstOrDefaultAsync(x => x.UserId == id);
         }
     }
 }

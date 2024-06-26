@@ -75,9 +75,9 @@
             <div class="col-md-12 mb-3">
                 <div class="form-group">
                     <label asp-for="Documentation" class="control-label">
-                        <i class="fas fa-file-alt"></i> @Html.DisplayNameFor(m => m.Documentation)
+                        <i class="fas fa-file-alt"></i> Documentation Photo
                     </label>
-                    <textarea asp-for="Documentation" class="form-control"></textarea>
+                    <input type="file" id="documentationInput" asp-for="Documentation" name="Documentation" accept="image/*" class="form-control-file" />
                     <span asp-validation-for="Documentation" class="text-danger"></span>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <label asp-for="Category" class="control-label">
                         <i class="fas fa-tags"></i> @Html.DisplayNameFor(m => m.Category)
                     </label>
-                    <select asp-for="Category" class="form-control" asp-items="ViewBag.Categories ?? new List<SelectListItem>()"></select>
+                    <select asp-for="Category" class="form-control" asp-items="ViewBag.Categories"></select>
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                     <label asp-for="Status" class="control-label">
                         <i class="fas fa-info-circle"></i> @Html.DisplayNameFor(m => m.Status)
                     </label>
-                    <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses ?? new List<SelectListItem>()"></select>
+                    <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses"></select>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
             </div>
@@ -110,10 +110,10 @@
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
-                    <label class="control-label">
-                        <i class="fas fa-image"></i> Upload the main image:
+                    <label asp-for="MainImageFile" class="control-label">
+                        <i class="fas fa-image"></i> Upload Main Image
                     </label>
-                    <input asp-for="MainImageFile" type="file" class="form-control-file" />
+                    <input type="file" id="mainImageInput" asp-for="MainImageFile" class="form-control-file" />
                     <span asp-validation-for="MainImageFile" class="text-danger"></span>
                 </div>
             </div>
@@ -122,7 +122,7 @@
                     <label asp-for="OtherImages" class="control-label">
                         <i class="fas fa-images"></i> @Html.DisplayNameFor(m => m.OtherImages)
                     </label>
-                    <input type="file" id="imageInput" asp-for="OtherImages" name="OtherImages" accept="image/*" multiple class="form-control-file" />
+                    <input type="file" id="otherImagesInput" asp-for="OtherImages" name="OtherImages" accept="image/*" multiple class="form-control-file" />
                     <span asp-validation-for="OtherImages" class="text-danger"></span>
                 </div>
             </div>

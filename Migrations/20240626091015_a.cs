@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class a : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,11 +22,14 @@ namespace NestAlbania.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
                     LicenseNumber = table.Column<int>(type: "int", nullable: false),
                     Motto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,6 +55,7 @@ namespace NestAlbania.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -120,11 +124,18 @@ namespace NestAlbania.Migrations
                     OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    City = table.Column<int>(type: "int", nullable: false)
+                    City = table.Column<int>(type: "int", nullable: false),
+                    AgentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Properties_Agents_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "Agents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -244,8 +255,8 @@ namespace NestAlbania.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "5a59ac6a-9287-4a86-ba24-cc2d9d7271bf", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEH8yeBccn86aB1T0T4Tz3tpOUcK44Mt+2nQydJW90WiexAQNORZgpVyfmtOHWBkQ/Q==", null, false, "", false, "admin@admin.com" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "99745bd6-ddd6-4f85-9dcf-1797dbd37638", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAENzpBYzxgXVJFs65JoU9QHNxhcst2fuR8Gvi1oGbtimGKH5gY3va8f7nycYjY4RPfA==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -290,14 +301,16 @@ namespace NestAlbania.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_AgentId",
+                table: "Properties",
+                column: "AgentId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Agents");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -327,6 +340,9 @@ namespace NestAlbania.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Agents");
         }
     }
 }
