@@ -29,8 +29,13 @@ namespace NestAlbania.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
+            if (string.IsNullOrEmpty(id)) return NotFound();
             var user = await _userRepository.GetUserByIdAsync(id);
             await _userRepository.DeleteUserAsync(user);
+
+            var userRole = await _userRoleService.GetUserRoleByUserIdAsync(user.Id);
+            if(userRole != null)await _userRoleService.DeleteAsync(userRole);
+
             var agent = await _userRepository.GetAgentByUserIdAsync(user.Id);
             if (agent != null) await _agentService.DeleteAgent(agent);
             
@@ -136,7 +141,7 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> UserRoleDelete(string id)
         {
-            var user = await _userRoleService.GetUserRoleByIdAsync(id);
+            var user = await _userRoleService.GetUserRoleByRoleIdAsync(id);
             await _userRoleService.DeleteAsync(user);
             return RedirectToAction("UserRoleIndex");
         }
@@ -164,7 +169,7 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> UserRoleEdit(string id)
         {
-            var userRole = await _userRoleService.GetUserRoleByIdAsync(id);
+            var userRole = await _userRoleService.GetUserRoleByRoleIdAsync(id);
 
             return View(userRole);
         }
@@ -178,7 +183,7 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> UserRoleDetails(string id)
         {
-            var userRole = await _userRoleService.GetUserRoleByIdAsync(id);
+            var userRole = await _userRoleService.GetUserRoleByRoleIdAsync(id);
             return View(userRole);
         }
     }

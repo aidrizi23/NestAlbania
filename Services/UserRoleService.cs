@@ -32,9 +32,13 @@ namespace NestAlbania.Services
             await _userRoleRepository.Delete(entity);
         }
 
-        public async Task<ApplicationUserRole> GetUserRoleByIdAsync(string id)
+        public async Task<ApplicationUserRole> GetUserRoleByRoleIdAsync(string id)
         {
-            return await _userRoleRepository.GetUserRoleByIdAsync(id);
+            return await _userRoleRepository.GetUserRoleByRoleIdAsync(id);
+        }
+        public async Task<ApplicationUserRole> GetUserRoleByUserIdAsync(string id)
+        {
+            return await _userRoleRepository.GetUserRoleByUserIdAsync(id);
         }
 
     }

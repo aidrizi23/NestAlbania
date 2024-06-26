@@ -50,7 +50,7 @@ namespace NestAlbania.Controllers
                 {
                     await _userService.DeleteUserAsync(user);
                 }
-                var userRole = await _userRoleService.GetUserRoleByIdAsync(agent.UserId);
+                var userRole = await _userRoleService.GetUserRoleByUserIdAsync(agent.UserId);
                 if (userRole != null)
                 {
                     await _userRoleService.DeleteAsync(userRole);
