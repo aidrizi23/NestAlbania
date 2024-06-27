@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NestAlbania.Data;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Services
@@ -16,6 +17,6 @@ namespace NestAlbania.Services
 
         Task<Agent> GetAgentByPropertyIdAsync(int id);
 
-
+        Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10);
     }
 }

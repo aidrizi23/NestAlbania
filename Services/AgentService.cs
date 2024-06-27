@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
 using NuGet.Protocol.Core.Types;
@@ -54,5 +55,10 @@ namespace NestAlbania.Services
             return await _agentRepository.GetAgentByPropertyIdAsync(id);
         }
 
+
+        public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            return await _agentRepository.GetFilteredAgents(query, pageIndex, pageSize);
+        }
     }
 }

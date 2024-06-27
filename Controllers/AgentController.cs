@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NestAlbania.Data;
+using NestAlbania.FilterHelpers;
 using NestAlbania.Models;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
@@ -167,6 +168,20 @@ namespace NestAlbania.Controllers
         {
             await _agent.EditAgent(agent);
             return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetFilteredAgents([FromQuery] AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        {
+            var agents = await _agent.GetFilteredAgents(query, pageIndex, pageSize);
+
+            ViewData["CurrentNameFilter"] = query.Name;
+            ViewData["CurrentSurnameFilter"] = query.Surname;
+            ViewData["CurrentYearsOfExperienceFilter"] = query.YearsOfExeperience;
+            ViewData["CurrentEmailFilter"] = query.Email;
+
+            return View("Index", agents);
         }
 
     }
