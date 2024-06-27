@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NestAlbania.Areas;
 using NestAlbania.Data;
 using NestAlbania.Data.Enums;
 using NestAlbania.FilterHelpers;
@@ -22,13 +24,19 @@ namespace NestAlbania.Controllers
         private readonly IFileHandlerService _fileHandlerService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public PropertyController(IPropertyService propertyService, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAgentService _agentService;
+        public PropertyController(IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _propertyService = propertyService;
             _fileHandlerService = fileHandlerService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
+            _userRepository = userRepository;
+            _agentService = agentService;
+
         }
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
@@ -131,6 +139,11 @@ namespace NestAlbania.Controllers
                 documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
             }
 
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _userRepository.GetAgentByUserIdAsync(userId);
+
+
             // Create property object
             var property = new Property
             {
@@ -146,7 +159,9 @@ namespace NestAlbania.Controllers
                 Status = dto.Status,
                 City = dto.SelectedCity,
                 MainImage = mainImagePath,
-                OtherImages = new List<string>() // Initialize empty list for other images
+                OtherImages = new List<string>(), 
+                // Initialize empty list for other images
+                AgentId = agent.Id
             };
 
             // Save the property
