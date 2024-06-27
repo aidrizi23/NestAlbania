@@ -24,11 +24,11 @@ namespace NestAlbania.Services.Extensions
         }
         public async Task<List<string>> UploadAsync(IFormFileCollection files, string uploadDir)
         {
-            var usedFileName = default(string);
             List<string> imagesName = new List<string>();
-            foreach(var Image in files)
+
+            foreach (var Image in files)
             {
-                if(Image != null && Image.Length > 0)
+                if (Image != null && Image.Length > 0)
                 {
                     var file = Image;
 
@@ -37,17 +37,39 @@ namespace NestAlbania.Services.Extensions
                     {
                         var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                         Console.WriteLine(fileName);
-                        using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+
+                        // Generate a unique file name to avoid overwriting existing files
+                        var uniqueFileName = GetUniqueFileName(fileName, uploads);
+
+                        using (var fileStream = new FileStream(Path.Combine(uploads, uniqueFileName), FileMode.Create))
                         {
                             await file.CopyToAsync(fileStream);
-                            usedFileName = file.FileName;
+                            imagesName.Add(uniqueFileName);
                         }
                     }
-                    imagesName.Add(usedFileName);
                 }
             }
             return imagesName;
         }
+
+        private string GetUniqueFileName(string fileName, string uploadDir)
+        {
+            // Create a unique file name by appending a GUID to the file name
+            var uniqueFileName = Path.GetFileNameWithoutExtension(fileName)
+                                 + "_" + Guid.NewGuid().ToString().Substring(0, 8)
+                                 + Path.GetExtension(fileName);
+
+            // Check if the file already exists, if so, generate a new unique file name
+            while (File.Exists(Path.Combine(uploadDir, uniqueFileName)))
+            {
+                uniqueFileName = Path.GetFileNameWithoutExtension(fileName)
+                                 + "_" + Guid.NewGuid().ToString().Substring(0, 8)
+                                 + Path.GetExtension(fileName);
+            }
+
+            return uniqueFileName;
+        }
+
 
         public async Task<string> UploadAndRenameFileAsync(IFormFile file, string uploadDir, string fileName)
         {
