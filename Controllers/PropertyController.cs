@@ -161,7 +161,7 @@ namespace NestAlbania.Controllers
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), 
                 // Initialize empty list for other images
-                AgentId = agent.Id
+                AgentId = agent?.Id
             };
 
             // Save the property
@@ -242,33 +242,64 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Property property)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Retrieve the existing property from the database
+                    var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
+                    if (existingProperty == null)
+                    {
+                        return NotFound();
+                    }
 
-                ////sherben per editimin e fotove 
-                //if (property.MainImageFile != null)
-                //{
-                //    var fileName = Guid.NewGuid().ToString();
-                //    property.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(property.MainImageFile, "images/properties", fileName);
-                //}
+                    // Update editable fields
+                    existingProperty.Name = property.Name;
+                    existingProperty.Description = property.Description;
+                    existingProperty.Price = property.Price;
+                    existingProperty.FullArea = property.FullArea;
+                    existingProperty.InsideArea = property.InsideArea;
+                    existingProperty.BedroomCount = property.BedroomCount;
+                    existingProperty.BathroomCount = property.BathroomCount;
+                    existingProperty.Category = property.Category;
+                    existingProperty.Status = property.Status;
+                    existingProperty.City = property.City;
 
-                //var files = HttpContext.Request.Form.Files;
-                //if (files.Count > 0)
-                //{
-                //    var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
-                //    property.OtherImages.AddRange(fileNames);
-                //}
+                    //// Check if new main image is provided
+                    //if (property.MainImage != null && property.MainImage.Length > 0)
+                    //{
+                    //    var fileName = Guid.NewGuid().ToString();
+                    //    existingProperty.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(property.MainImage, "images/properties", fileName);
+                    //}
 
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
-            //}
+                    // Check if new additional images are provided
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Count > 0)
+                    {
+                        var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
+                        existingProperty.OtherImages.AddRange(fileNames);
+                    }
 
-            //PopulateViewBags();
-            //return View(dto);
+                    // Save the updated property
+                    await _propertyService.EditPropertyAsync(existingProperty);
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception as needed
+                    ModelState.AddModelError("", "Error editing property: " + ex.Message);
+                }
+            }
+
+            // If ModelState is not valid or an error occurred, populate necessary view bags and return to view
+            PopulateViewBags();
+            return View(property);
         }
+
 
 
         [HttpGet]

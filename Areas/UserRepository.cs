@@ -47,7 +47,7 @@ namespace NestAlbania.Areas
         }
         public async Task<Agent> GetAgentByUserIdAsync(string id)
         {
-            return await _context.Agents.Where(x => x.UserId == id).FirstOrDefaultAsync();
+            return await _context.Agents.FirstOrDefaultAsync(x => x.UserId == id);
         }
 
     }
