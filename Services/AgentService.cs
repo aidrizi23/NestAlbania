@@ -60,5 +60,9 @@ namespace NestAlbania.Services
         {
             return await _agentRepository.GetFilteredAgents(query, pageIndex, pageSize);
         }
+        public async Task<Agent> GetAgentByUserIdAsync(string userId)
+        {
+            return await _agentRepository.GetAgentByUserIdAsync(userId);
+        }
     }
 }

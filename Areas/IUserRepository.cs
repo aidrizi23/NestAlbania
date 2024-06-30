@@ -11,6 +11,6 @@ namespace NestAlbania.Areas
         Task UpdateUserAsync(ApplicationUser user);
         Task DeleteUserAsync(ApplicationUser user);
         Task SaveChangesAsync();
-        Task<Agent> GetAgentByUserIdAsync(string id);
+        //Task<Agent> GetAgentByUserIdAsync(string id);
     }
 }

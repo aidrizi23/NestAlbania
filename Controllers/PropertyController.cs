@@ -118,6 +118,76 @@ namespace NestAlbania.Controllers
 
         //}
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(PropertyForCreationDto dto)
+        //{
+        //    // Handle main image upload
+        //    string mainImagePath = null;
+        //    if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
+        //    {
+        //        var fileName = Guid.NewGuid().ToString();
+        //        mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
+        //    }
+
+        //    // Handle documentation file upload if provided
+        //    string documentationFileName = null;
+        //    var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
+        //    if (documentationFile != null && documentationFile.Length > 0)
+        //    {
+        //        var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"];
+        //        documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
+        //    }
+
+        //    var user = await _userManager.GetUserAsync(User);
+        //    var userId = await _userManager.GetUserIdAsync(user);
+        //    var agent = await _agentService.GetAgentByUserIdAsync(userId);
+
+
+        //    // Create property object
+        //    var property = new Property
+        //    {
+        //        Name = dto.Name,
+        //        Description = dto.Description,
+        //        Price = dto.Price,
+        //        FullArea = dto.FullArea,
+        //        InsideArea = dto.InsideArea, 
+        //        BedroomCount = dto.BedroomCount,
+        //        BathroomCount = dto.BathroomCount,
+        //        Documentation = documentationFileName,
+        //        Category = dto.Category,
+        //        Status = dto.Status,
+        //        City = dto.SelectedCity,
+        //        MainImage = mainImagePath,
+        //        OtherImages = new List<string>(), 
+        //        // Initialize empty list for other images
+        //        AgentId = agent?.Id
+        //    };
+
+        //    // Save the property
+        //    await _propertyService.CreatePropertyAsync(property);
+
+        //    // Handle additional images upload
+        //    var otherFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();
+        //    if (otherFiles.Count > 0)
+        //    {
+        //        var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
+        //        var fileCollection = new FormFileCollection();
+        //        foreach (var file in otherFiles)
+        //        {
+        //            fileCollection.Add(file);
+        //        }
+        //        var fileNames = await _fileHandlerService.UploadAsync(fileCollection, uploadDir);
+        //        property.OtherImages.AddRange(fileNames);
+        //        await _propertyService.EditPropertyAsync(property); // Update property with additional images
+        //    }
+
+
+        //    PopulateViewBags();
+        //    return RedirectToAction("Index");
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
@@ -139,10 +209,10 @@ namespace NestAlbania.Controllers
                 documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
             }
 
+            // Retrieve agent based on current user
             var user = await _userManager.GetUserAsync(User);
             var userId = await _userManager.GetUserIdAsync(user);
-            var agent = await _userRepository.GetAgentByUserIdAsync(userId);
-
+            var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
             // Create property object
             var property = new Property
@@ -151,7 +221,7 @@ namespace NestAlbania.Controllers
                 Description = dto.Description,
                 Price = dto.Price,
                 FullArea = dto.FullArea,
-                InsideArea = dto.InsideArea, 
+                InsideArea = dto.InsideArea,
                 BedroomCount = dto.BedroomCount,
                 BathroomCount = dto.BathroomCount,
                 Documentation = documentationFileName,
@@ -159,9 +229,8 @@ namespace NestAlbania.Controllers
                 Status = dto.Status,
                 City = dto.SelectedCity,
                 MainImage = mainImagePath,
-                OtherImages = new List<string>(), 
-                // Initialize empty list for other images
-                AgentId = agent?.Id
+                OtherImages = new List<string>(), // Initialize empty list for other images
+                AgentId = agent.Id // Assign agent ID to property
             };
 
             // Save the property
@@ -181,7 +250,6 @@ namespace NestAlbania.Controllers
                 property.OtherImages.AddRange(fileNames);
                 await _propertyService.EditPropertyAsync(property); // Update property with additional images
             }
-
 
             PopulateViewBags();
             return RedirectToAction("Index");
@@ -267,6 +335,8 @@ namespace NestAlbania.Controllers
                     existingProperty.Category = property.Category;
                     existingProperty.Status = property.Status;
                     existingProperty.City = property.City;
+                    existingProperty.AgentId = property.AgentId;
+                    
 
                     //// Check if new main image is provided
                     //if (property.MainImage != null && property.MainImage.Length > 0)

@@ -47,6 +47,10 @@ namespace NestAlbania.Repositories
 
             return await PaginatedList<Agent>.CreateAsync(agents, pageIndex, pageSize);
         }
-
+        
+        public async Task<Agent> GetAgentByUserIdAsync(string userId)
+        {
+            return await _context.Agents.Include(p => p.Properties).FirstOrDefaultAsync(x => x.UserId == userId);
+        }
     }
 }
