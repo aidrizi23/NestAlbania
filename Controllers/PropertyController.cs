@@ -56,136 +56,14 @@ namespace NestAlbania.Controllers
             await _propertyService.DeletePropertyAsync(property);
             return RedirectToAction("Index");
         }
+        
 
+        [HttpGet]
         public IActionResult Create()
         {
             PopulateViewBags();
             return View(new PropertyForCreationDto());
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]  //e padobishme per mom po le tjet
-        //public async Task<IActionResult> Create(PropertyForCreationDto dto)
-        //{
-
-        //        string mainImagePath = null;
-        //        if (dto.MainImageFile != null)
-        //        {
-        //            var fileName = Guid.NewGuid().ToString();
-        //             mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
-        //        }
-
-        //        var property = new Property
-        //        {
-        //            Name = dto.Name,
-        //            Description = dto.Description,
-        //            Price = dto.Price,
-        //            FullArea = dto.FullArea,
-        //            InsideArea = dto.InsideArea,
-        //            BedroomCount = dto.BedroomCount,
-        //            BathroomCount = dto.BathroomCount,
-        //            Documentation = dto.Documentation,
-        //            Category = dto.Category,
-        //            Status = dto.Status,
-        //            City = dto.SelectedCity,
-        //            MainImage = mainImagePath,
-        //            OtherImages = new List<string>()
-        //        };
-        //        await _propertyService.CreatePropertyAsync(property);
-
-
-        //    // Upload new documentation photo if provided
-        //    var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
-        //    if (documentationFile != null && documentationFile.Length > 0)
-        //    {
-        //        var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"]; // Unique variable name
-        //        var documentationFileName = property.Name + "_" + property.Id;
-        //        documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, documentationFileName);
-        //        property.Documentation = documentationFileName;
-        //        await _propertyService.EditPropertyAsync(property); // Update property with new documentation photo
-        //    }
-
-
-        //    var files = HttpContext.Request.Form.Files; //akseson filet qe ti ke ber upload 
-        //        var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
-        //         var fileNames = await _fileHandlerService.UploadAsync(files, uploadDir); //njeh uploadin
-        //        property.OtherImages = fileNames; //e shton ne list
-        //        await _propertyService.EditPropertyAsync(property);
-
-
-        //    PopulateViewBags();
-        //    return RedirectToAction("Index");
-
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(PropertyForCreationDto dto)
-        //{
-        //    // Handle main image upload
-        //    string mainImagePath = null;
-        //    if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
-        //    {
-        //        var fileName = Guid.NewGuid().ToString();
-        //        mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
-        //    }
-
-        //    // Handle documentation file upload if provided
-        //    string documentationFileName = null;
-        //    var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
-        //    if (documentationFile != null && documentationFile.Length > 0)
-        //    {
-        //        var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"];
-        //        documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
-        //    }
-
-        //    var user = await _userManager.GetUserAsync(User);
-        //    var userId = await _userManager.GetUserIdAsync(user);
-        //    var agent = await _agentService.GetAgentByUserIdAsync(userId);
-
-
-        //    // Create property object
-        //    var property = new Property
-        //    {
-        //        Name = dto.Name,
-        //        Description = dto.Description,
-        //        Price = dto.Price,
-        //        FullArea = dto.FullArea,
-        //        InsideArea = dto.InsideArea, 
-        //        BedroomCount = dto.BedroomCount,
-        //        BathroomCount = dto.BathroomCount,
-        //        Documentation = documentationFileName,
-        //        Category = dto.Category,
-        //        Status = dto.Status,
-        //        City = dto.SelectedCity,
-        //        MainImage = mainImagePath,
-        //        OtherImages = new List<string>(), 
-        //        // Initialize empty list for other images
-        //        AgentId = agent?.Id
-        //    };
-
-        //    // Save the property
-        //    await _propertyService.CreatePropertyAsync(property);
-
-        //    // Handle additional images upload
-        //    var otherFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();
-        //    if (otherFiles.Count > 0)
-        //    {
-        //        var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
-        //        var fileCollection = new FormFileCollection();
-        //        foreach (var file in otherFiles)
-        //        {
-        //            fileCollection.Add(file);
-        //        }
-        //        var fileNames = await _fileHandlerService.UploadAsync(fileCollection, uploadDir);
-        //        property.OtherImages.AddRange(fileNames);
-        //        await _propertyService.EditPropertyAsync(property); // Update property with additional images
-        //    }
-
-
-        //    PopulateViewBags();
-        //    return RedirectToAction("Index");
-        //}
 
 
         [HttpPost]
@@ -215,7 +93,7 @@ namespace NestAlbania.Controllers
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
             // Create property object
-            var property = new Property
+            var property = new Property()
             {
                 Name = dto.Name,
                 Description = dto.Description,
@@ -230,7 +108,7 @@ namespace NestAlbania.Controllers
                 City = dto.SelectedCity,
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), // Initialize empty list for other images
-                AgentId = agent.Id // Assign agent ID to property
+                AgentId = agent?.Id // Assign agent ID to property
             };
 
             // Save the property
