@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
     var page = Convert.ToInt32(ViewBag.Page);
     int no = ((page - 1) * 10);
+    var currentSortOrder = ViewData["CurrentSortOrder"] as string;
 }
 
 <!DOCTYPE html>
@@ -114,7 +115,24 @@
                         <label>Bathroom Count:</label>
                         <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
                     </div>
+             
+                    <div>
+                    </div>
                 </div>
+                 <div class="row mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form asp-action="GetFilteredPropertiesFromLower" asp-controller="Property" method="post">
+                            <button type="submit" name="sortOrder" value="asc" class="btn btn-primary">Price: High to Low</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form asp-action="GetFilteredPropertiesFromUpper" asp-controller="Property" method="post">
+                            <button type="submit" name="sortOrder" value="desc" class="btn btn-primary ml-2">Price: Low to High </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
                 <button type="submit" class="btn btn-info">Filter</button>
             }
 

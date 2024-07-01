@@ -7,6 +7,7 @@ using NestAlbania.Data;
 using NestAlbania.Data.Enums;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Models;
+using NestAlbania.Repositories.Pagination;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
 using System;
@@ -161,7 +162,7 @@ namespace NestAlbania.Controllers
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), 
                 // Initialize empty list for other images
-                AgentId = agent.Id
+                AgentId = agent?.Id
             };
 
             // Save the property
@@ -270,7 +271,7 @@ namespace NestAlbania.Controllers
             //return View(dto);
         }
 
-
+        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
@@ -287,5 +288,20 @@ namespace NestAlbania.Controllers
             return View("Index", properties);
         }
 
+        public async Task<IActionResult> GetFilteredPropertiesFromLower()
+        {
+            var properties = await _propertyService.GetAllPaginatedPropertiesAsync();
+            var properties1 =  properties.OrderByDescending(x => x.Price).ToList();
+            return View("Index", properties1);
+            
+        }
+
+        public async Task<IActionResult> GetFilteredPropertiesFromUpper()
+        {
+            var properties = await _propertyService.GetAllPaginatedPropertiesAsync();
+            var properties1 = properties.OrderBy(x => x.Price).ToList();
+            return View("Index", properties1);
+
+        }
     }
 }
