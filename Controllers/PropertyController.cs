@@ -254,20 +254,24 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
+            // Optionally, you can validate the query parameters here before passing to the service/repository
+
+            // Get paginated properties based on filters
             var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
 
+            // Pass filters to view
             ViewData["CurrentNameFilter"] = query.Name;
-            ViewData["CurrentPriceFilter"] = query.Price;
+        
             ViewData["CurrentFullAreaFilter"] = query.FullArea;
             ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
             ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
             ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+            ViewData["CurrentMinPriceFilter"] = query.MinPrice;
+            ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
             ViewData["CurrentAgentFilter"] = query.AgentName;
 
             return View("Index", properties);
         }
-
-
 
 
     }
