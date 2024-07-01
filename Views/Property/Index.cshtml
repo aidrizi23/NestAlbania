@@ -38,6 +38,7 @@
                 height: 200px;
                 object-fit: fill;
             }
+
             .custom-card .card-body {
                 padding: 1.25rem;
             }
@@ -83,114 +84,120 @@
 <body>
     <div class="container">
 
-            @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
-            {
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Name:</label>
-                        <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Price:</label>
-                        <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
-                    </div>
+        @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+        {
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Name:</label>
+                    <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Full Area:</label>
-                        <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Inside Area:</label>
-                        <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
-                    </div>
+                <div class="col-md-3">
+                    <label>Min Price:</label>
+                    <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control" />
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Bedroom Count:</label>
-                        <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Bathroom Count:</label>
-                        <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
-                    </div>
+                <div class="col-md-3">
+                    <label>Max Price:</label>
+                    <input type="number" name="MaxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control" />
                 </div>
-                <button type="submit" class="btn btn-info">Filter</button>
-            }
+
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Full Area:</label>
+                    <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label>Inside Area:</label>
+                    <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Bedroom Count:</label>
+                    <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label>Bathroom Count:</label>
+                    <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-info">Filter</button>
+        }
 
 
-        </div>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card custom-card">
-                        <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card custom-card">
+                    <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
 
-                        
-                        <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
 
-                            <p class="card-text">
-                                @if (item.Description.Length > 100)
-                                {
-                                    var shortDescription = item.Description.Substring(0, 100);
-                                    <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
-                                    <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
-                                    <a href="#" class="read-more-link">Read More</a>
-                                }
-                                else
-                                {
-                                    @Html.Raw(item.Description)
-                                }
-                            </p>
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
 
-                            <div class="property-details">
-                                <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
-                                <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
-                                <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
-                                <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
-                                <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
-                                <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
-                                <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
-                                <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
-                            </div>
+                        <p class="card-text">
+                            @if (item.Description.Length > 100)
+                            {
+                                var shortDescription = item.Description.Substring(0, 100);
+                                <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
+                                <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
+                                <a href="#" class="read-more-link">Read More</a>
+                            }
+                            else
+                            {
+                                @Html.Raw(item.Description)
+                            }
+                        </p>
+
+                        <div class="property-details">
+                            <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
+                            <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
+                            <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
+                            <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
+                            <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
+                            <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
+                            <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
+                            <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
                         </div>
-                        <div class="card-footer">
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
-                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
                     </div>
                 </div>
-            }
-        </div>
-          <div class="text-center">
-            <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
-        </div>
+            </div>
+        }
+    </div>
+    <div class="text-center">
+        <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
+
     <script>
+
         @*script per butonin read more *@
 
-        $(document).ready(function () {
-            // Hide the additional description initially
-            $('.more').hide();
+            $(document).ready(function () {
+                // Hide the additional description initially
+                $('.more').hide();
 
-            // Toggle description visibility on clicking Read More link
-            $('.read-more-link').click(function (e) {
-                e.preventDefault();
-                var $this = $(this);
-                var $moreText = $this.prev('.more');
-                $moreText.slideToggle();
-                $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+                // Toggle description visibility on clicking Read More link
+                $('.read-more-link').click(function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $moreText = $this.prev('.more');
+                    $moreText.slideToggle();
+                    $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+                });
             });
-        });
     </script>
 </body>
 </html>
