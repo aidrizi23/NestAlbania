@@ -175,6 +175,12 @@ namespace NestAlbania.Controllers
 
             return View("Index", agents);
         }
-
+        public async Task<IActionResult> GetAgentDetailsUser()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _agent.GetAgentByUserIdAsync(userId);
+            return View("Details", agent);
+        }
     }
 }
