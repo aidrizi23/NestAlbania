@@ -8,6 +8,13 @@
 <!-- Link the agent-details.css file -->
 <link rel="stylesheet" href="~/css/agent-details.css" />
 
+
+@if (Model == null)
+{
+    <div class="alert alert-danger">Agent details could not be loaded.</div>
+}
+else
+{}
 <div class="container mt-4">
     <div class="row">
         <!-- Profile Card -->
@@ -16,7 +23,7 @@
                 <img src="@Url.Content("~/agentImg/" + Model.Image)" class="card-img-top" alt="@Model.Name @Model.Surname">
                 <div class="card-body">
                     <h5 class="card-title">@Model.Name @Model.Surname</h5>
-                    
+
                 </div>
             </div>
         </div>

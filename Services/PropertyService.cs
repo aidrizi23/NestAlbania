@@ -21,7 +21,7 @@ namespace NestAlbania.Services
 
         public async Task<Property> GetPropertyByIdAsync(int id)
         {
-            return await _repository.GetById(id);
+            return await _repository.GetPropertyWithAgentByIdAsync(id);
         } 
 
         public async Task CreatePropertyAsync(Property property)

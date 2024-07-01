@@ -16,7 +16,7 @@ namespace NestAlbania.Services
         Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10);
 
         Task<Agent> GetAgentByPropertyIdAsync(int id);
-
+        Task<Agent> GetPropertiesByAgentId(int id);
         Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10);
     }
 }

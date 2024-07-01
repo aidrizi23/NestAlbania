@@ -1,196 +1,195 @@
-﻿@model IEnumerable<NestAlbania.Data.Property>
-@using NestAlbania.FilterHelpers
+﻿    @model IEnumerable<NestAlbania.Data.Property>
+    @using NestAlbania.FilterHelpers
 
-@{
-    ViewData["Title"] = "Index";
-    var page = Convert.ToInt32(ViewBag.Page);
-    int no = ((page - 1) * 10);
-}
+    @{
+        ViewData["Title"] = "Index";
+        var page = Convert.ToInt32(ViewBag.Page);
+        int no = ((page - 1) * 10);
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jk3DRfzx2Y8AChM/p5Q..." crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-    <style>
-        /* Custom styles for cards */
-        .custom-card {
-            background-color: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.2s ease-in-out;
-            height: 100%;
-        }
-
-            .custom-card:hover {
-                transform: translateY(-5px);
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewData["Title"]</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh/jk3DRfzx2Y8AChM/p5Q..." crossorigin="anonymous">
+        <!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+        <style>
+            /* Custom styles for cards */
+            .custom-card {
+                background-color: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                transition: transform 0.2s ease-in-out;
+                height: 100%;
             }
 
-            .custom-card .card-img-top {
-                width: 100%;
-                height: 200px;
-                object-fit: fill;
-            }
-            .custom-card .card-body {
-                padding: 1.25rem;
+                .custom-card:hover {
+                    transform: translateY(-5px);
+                }
+
+                .custom-card .card-img-top {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: fill;
+                }
+                .custom-card .card-body {
+                    padding: 1.25rem;
+                }
+
+                .custom-card .card-title {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                    margin-bottom: 0.75rem;
+                }
+
+                .custom-card .card-text {
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 1rem;
+                }
+
+                .custom-card .property-details {
+                    font-size: 0.95rem;
+                    color: #495057;
+                    line-height: 1.6;
+                }
+
+                .custom-card .card-footer {
+                    background-color: #f8f9fa;
+                    border-top: none;
+                    padding: 0.75rem;
+                    text-align: center;
+                }
+
+            .btn-create {
+                background-color: #17a2b8;
+                color: #fff;
+                border-color: #17a2b8;
+                transition: background-color 0.3s;
             }
 
-            .custom-card .card-title {
-                font-size: 1.25rem;
-                font-weight: bold;
-                margin-bottom: 0.75rem;
-            }
+                .btn-create:hover {
+                    background-color: #138496;
+                    border-color: #138496;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="container">
 
-            .custom-card .card-text {
-                font-size: 1rem;
-                color: #6c757d;
-                margin-bottom: 1rem;
-            }
-
-            .custom-card .property-details {
-                font-size: 0.95rem;
-                color: #495057;
-                line-height: 1.6;
-            }
-
-            .custom-card .card-footer {
-                background-color: #f8f9fa;
-                border-top: none;
-                padding: 0.75rem;
-                text-align: center;
-            }
-
-        .btn-create {
-            background-color: #17a2b8;
-            color: #fff;
-            border-color: #17a2b8;
-            transition: background-color 0.3s;
-        }
-
-            .btn-create:hover {
-                background-color: #138496;
-                border-color: #138496;
-            }
-    </style>
-</head>
-<body>
-    <div class="container">
-
-            @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
-            {
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Name:</label>
-                        <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
+                @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Name:</label>
+                            <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Price:</label>
+                            <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label>Price:</label>
-                        <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Full Area:</label>
+                            <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Inside Area:</label>
+                            <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
+                        </div>
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Full Area:</label>
-                        <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Bedroom Count:</label>
+                            <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Bathroom Count:</label>
+                            <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label>Inside Area:</label>
-                        <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Bedroom Count:</label>
-                        <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Bathroom Count:</label>
-                        <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-info">Filter</button>
-            }
+                    <button type="submit" class="btn btn-info">Filter</button>
+                }
 
 
-        </div>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card custom-card">
-                        <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card custom-card">
+                            <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
 
                         
-                        <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <div class="card-body">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
 
-                            <p class="card-text">
-                                @if (item.Description.Length > 100)
-                                {
-                                    var shortDescription = item.Description.Substring(0, 100);
-                                    <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
-                                    <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
-                                    <a href="#" class="read-more-link">Read More</a>
-                                }
-                                else
-                                {
-                                    @Html.Raw(item.Description)
-                                }
-                            </p>
+                                <p class="card-text">
+                                    @if (item.Description.Length > 100)
+                                    {
+                                        var shortDescription = item.Description.Substring(0, 100);
+                                        <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
+                                        <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
+                                        <a href="#" class="read-more-link">Read More</a>
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(item.Description)
+                                    }
+                                </p>
 
-                            <div class="property-details">
-                                <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
-                                <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
-                                <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
-                                <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
-                                <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
-                                <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
-                                <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
-                                <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
+                                <div class="property-details">
+                                    <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
+                                    <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
+                                    <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
+                                    <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
+                                    <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
+                                    <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
+                                    <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
+                                    <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
                             </div>
                         </div>
-                        <div class="card-footer">
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
-                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
+              <div class="text-center">
+                <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
+            </div>
         </div>
-          <div class="text-center">
-            <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    
-    <script>
-        @*script per butonin read more *@
+        <script>
+            @*script per butonin read more *@
 
-        $(document).ready(function () {
-            // Hide the additional description initially
-            $('.more').hide();
+            $(document).ready(function () {
+                // Hide the additional description initially
+                $('.more').hide();
 
-            // Toggle description visibility on clicking Read More link
-            $('.read-more-link').click(function (e) {
-                e.preventDefault();
-                var $this = $(this);
-                var $moreText = $this.prev('.more');
-                $moreText.slideToggle();
-                $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+                // Toggle description visibility on clicking Read More link
+                $('.read-more-link').click(function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var $moreText = $this.prev('.more');
+                    $moreText.slideToggle();
+                    $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+                });
             });
-        });
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+    </html>

@@ -54,6 +54,10 @@ namespace NestAlbania.Services
         {
             return await _agentRepository.GetAgentByPropertyIdAsync(id);
         }
+        public async Task<Agent> GetPropertiesByAgentId(int id)
+        {
+            return await _agentRepository.GetPropertiesByAgentId(id);
+        }
 
 
         public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)

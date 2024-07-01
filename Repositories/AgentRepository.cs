@@ -22,6 +22,11 @@ namespace NestAlbania.Repositories
         {
             return await _context.Agents.Include(p => p.Properties).FirstOrDefaultAsync(x => x.Properties == x.Properties.FirstOrDefault(x => x.AgentId == id));
         }
+        public async Task<Agent> GetPropertiesByAgentId(int propertyId)
+        {
+           return await _context.Agents.Include(a => a.Properties).FirstOrDefaultAsync(a => a.Properties.Any(p => p.Id == propertyId));
+
+        }
 
 
         public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query,int pageIndex = 1, int pageSize = 10)
