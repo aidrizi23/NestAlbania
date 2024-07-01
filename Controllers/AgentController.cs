@@ -17,12 +17,8 @@ namespace NestAlbania.Controllers
         public readonly IAgentService _agent;
         private readonly IConfiguration _configuration;
         private readonly IFileHandlerService _fileHandlerService;
-
-        // importet qe duhet te behen per krijimin e nje useri 
-
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
         public readonly IRoleService _roleService;
         public readonly IUserRoleService _userRoleService;
         public readonly IUserService _userService;
@@ -147,10 +143,6 @@ namespace NestAlbania.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-
-
         public async Task<IActionResult> Details(int id)
         {
             var agentToShowDetails = await _agent.GetAgentById(id);

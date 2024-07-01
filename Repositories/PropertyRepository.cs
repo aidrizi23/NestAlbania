@@ -71,7 +71,6 @@ namespace NestAlbania.Repositories
             }
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
-
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)
         {
             var properties = _context.Properties.Include(x => x.Agent).Where(x => x.AgentId == id);
