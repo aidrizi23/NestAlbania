@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
     var page = Convert.ToInt32(ViewBag.Page);
     int no = ((page - 1) * 10);
+    var currentSortOrder = ViewData["CurrentSortOrder"] as string;
 }
 
 <!DOCTYPE html>
