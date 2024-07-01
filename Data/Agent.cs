@@ -17,7 +17,7 @@ namespace NestAlbania.Data
 
         public string? UserId { get; set; } // do te perdoret qe kur te krijhet te lidhet, te krijohet automatikisht nje user me te njejtin email dhe password
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         public string? RoleId { get; set; }
 

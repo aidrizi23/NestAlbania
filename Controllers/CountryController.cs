@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Data;
 using NestAlbania.Models;
 using NestAlbania.Services;
-using System.Runtime.ConstrainedExecution;
 
 namespace NestAlbania.Controllers
 {

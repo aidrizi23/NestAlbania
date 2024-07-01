@@ -5,6 +5,7 @@
     ViewData["Title"] = "Index";
     var page = Convert.ToInt32(ViewBag.Page);
     int no = ((page - 1) * 10);
+    var currentSortOrder = ViewData["CurrentSortOrder"] as string;
 }
 
 <!DOCTYPE html>
@@ -38,6 +39,7 @@
                 height: 200px;
                 object-fit: fill;
             }
+
             .custom-card .card-body {
                 padding: 1.25rem;
             }
@@ -82,55 +84,72 @@
 </head>
 <body>
     <div class="container">
-
-            @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
-            {
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Name:</label>
-                        <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Price:</label>
-                        <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
-                    </div>
+        @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+        {
+            <!-- Existing filters -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Name:</label>
+                    <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Full Area:</label>
-                        <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Inside Area:</label>
-                        <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
-                    </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Full Area:</label>
+                    <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Bedroom Count:</label>
-                        <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Bathroom Count:</label>
-                        <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
-                    </div>
+                <div class="col-md-6">
+                    <label>Inside Area:</label>
+                    <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
                 </div>
-                <button type="submit" class="btn btn-info">Filter</button>
-            }
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Bedroom Count:</label>
+                    <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label>Bathroom Count:</label>
+                    <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label>Min Price:</label>
+                    <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label>Max Price:</label>
+                    <input type="number" name="MaxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Agent Name:</label>
+                    <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control" />
+                </div>
+            </div>
 
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <button type="submit" name="sortOrder" value="desc" class="btn btn-primary">Price: High to Low</button>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" name="sortOrder" value="asc" class="btn btn-primary ml-2">Price: Low to High</button>
+                </div>
+            </div>
 
-        </div>
+            <button type="submit" class="btn btn-info">Filter</button>
+        }
+
         <div class="row">
             @foreach (var item in Model)
             {
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card custom-card">
                         <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
-
-                        
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-
                             <p class="card-text">
                                 @if (item.Description.Length > 100)
                                 {
@@ -165,19 +184,17 @@
                 </div>
             }
         </div>
-          <div class="text-center">
+
+        <div class="text-center">
             <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
         </div>
     </div>
 
+    <!-- JavaScript and jQuery libraries -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-DuCrDz..."></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
     <script>
-        @*script per butonin read more *@
-
         $(document).ready(function () {
             // Hide the additional description initially
             $('.more').hide();

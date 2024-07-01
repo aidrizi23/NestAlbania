@@ -45,10 +45,10 @@ namespace NestAlbania.Areas
         {
             await _context.SaveChangesAsync();
         }
-        public async Task<Agent> GetAgentByUserIdAsync(string id)
-        {
-            return await _context.Agents.Where(x => x.UserId == id).FirstOrDefaultAsync();
-        }
+        //public async Task<Agent> GetAgentByUserIdAsync(string id)
+        //{
+        //    return await _context.Agents.FirstOrDefaultAsync(x => x.UserId == id);
+        //}
 
     }
 }

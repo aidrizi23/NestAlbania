@@ -63,7 +63,7 @@ namespace NestAlbania.Data
 
 
             modelBuilder.Entity<Property>()
-                .HasOne(p => p.Agents) 
+                .HasOne(p => p.Agent) 
                 .WithMany(a => a.Properties)
                 .HasForeignKey(p => p.AgentId)
                 .OnDelete(DeleteBehavior.SetNull);
