@@ -83,43 +83,53 @@
 <body>
     <div class="container">
 
-            @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
-            {
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Name:</label>
-                        <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Price:</label>
-                        <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Full Area:</label>
-                        <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Inside Area:</label>
-                        <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>Bedroom Count:</label>
-                        <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label>Bathroom Count:</label>
-                        <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-info">Filter</button>
-            }
 
-
+        @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+        {
+        <!-- Existing filters -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Name:</label>
+                <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>Price:</label>
+                <input type="number" name="Price" value="@ViewData["CurrentPriceFilter"]" class="form-control" />
+            </div>
         </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Full Area:</label>
+                <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>Inside Area:</label>
+                <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Bedroom Count:</label>
+                <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label>Bathroom Count:</label>
+                <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Agent Name:</label>
+                <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-info">Filter</button>
+        }
+
+
+
+
+    </div>
         <div class="row">
             @foreach (var item in Model)
             {

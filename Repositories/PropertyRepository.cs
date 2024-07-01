@@ -69,6 +69,11 @@ namespace NestAlbania.Repositories
             {
                 properties = properties.Where(x => x.InsideArea == query.InsideArea);
             }
+
+            if (!String.IsNullOrWhiteSpace(query.AgentName))
+            {
+                properties = properties.Where(x => x.Agent.Name.Contains(query.AgentName));
+            }
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)

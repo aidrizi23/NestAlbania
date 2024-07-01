@@ -1,4 +1,5 @@
-﻿using NestAlbania.Data.Enums;
+﻿using NestAlbania.Data;
+using NestAlbania.Data.Enums;
 
 namespace NestAlbania.FilterHelpers
 {
@@ -10,5 +11,6 @@ namespace NestAlbania.FilterHelpers
         public int? InsideArea { get; set; } = null;
         public int? BedroomCount { get; set; } = null;
         public int? BathroomCount { get; set; } = null;
+        public string? AgentName { get; set; } = null;
     }
 }

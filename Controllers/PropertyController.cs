@@ -108,7 +108,8 @@ namespace NestAlbania.Controllers
                 City = dto.SelectedCity,
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), // Initialize empty list for other images
-                AgentId = agent?.Id // Assign agent ID to property
+                AgentId = agent?.Id, // Assign agent ID to property
+                Agent = await _agentService.GetAgentById(agent.Id)
             };
 
             // Save the property
@@ -233,7 +234,7 @@ namespace NestAlbania.Controllers
 
                     // Save the updated property
                     await _propertyService.EditPropertyAsync(existingProperty);
-
+ 
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -253,7 +254,6 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
-            // first lets get all the properties
             var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
 
             ViewData["CurrentNameFilter"] = query.Name;
@@ -262,9 +262,13 @@ namespace NestAlbania.Controllers
             ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
             ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
             ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+            ViewData["CurrentAgentFilter"] = query.AgentName;
 
             return View("Index", properties);
         }
+
+
+
 
     }
 }
