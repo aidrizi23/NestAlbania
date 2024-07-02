@@ -145,7 +145,7 @@ namespace NestAlbania.Controllers
         }
         public async Task<IActionResult> Details(int id)
         {
-            var agentToShowDetails = await _agent.GetAgentById(id);
+            var agentToShowDetails = await _agent.GetAgentWPropertiesAsync(id);
             return View(agentToShowDetails);
         }
 

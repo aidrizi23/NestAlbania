@@ -64,5 +64,11 @@ namespace NestAlbania.Services
         {
             return await _agentRepository.GetAgentByUserIdAsync(userId);
         }
+
+        public async Task<Agent> GetAgentWPropertiesAsync(int id)
+        {
+            return await _agentRepository.GetAgentByIdAsyncWProperties(id);
+        }
+
     }
 }
