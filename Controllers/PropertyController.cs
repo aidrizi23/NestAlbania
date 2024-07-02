@@ -72,7 +72,7 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
             // Handle main image upload
-            string mainImagePath = null;
+            string? mainImagePath = null;
             if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString();
@@ -80,7 +80,7 @@ namespace NestAlbania.Controllers
             }
 
             // Handle documentation file upload if provided
-            string documentationFileName = null;
+            string? documentationFileName = null;
             var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
             if (documentationFile != null && documentationFile.Length > 0)
             {
@@ -89,9 +89,9 @@ namespace NestAlbania.Controllers
             }
 
             // Retrieve agent based on current user
-            var user = await _userManager.GetUserAsync(User);
-            var userId = await _userManager.GetUserIdAsync(user);
-            var agent = await _agentService.GetAgentByUserIdAsync(userId);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            string? userId = await _userManager.GetUserIdAsync(user);
+            Agent? agent = await _agentService.GetAgentByUserIdAsync(userId);
 
             // Create property object
             var property = new Property()

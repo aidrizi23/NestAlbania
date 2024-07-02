@@ -18,7 +18,7 @@ namespace NestAlbania.Controllers
         private readonly IConfiguration _configuration;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        // private readonly SignInManager<ApplicationUser> _signInManager;
         public readonly IRoleService _roleService;
         public readonly IUserRoleService _userRoleService;
         public readonly IUserService _userService;
