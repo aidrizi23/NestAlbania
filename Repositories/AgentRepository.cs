@@ -52,5 +52,13 @@ namespace NestAlbania.Repositories
         {
             return await _context.Agents.Include(p => p.Properties).FirstOrDefaultAsync(x => x.UserId == userId);
         }
+
+        //Per tber include properties qe ky agjent ka krijuar .
+        public async Task<Agent> GetAgentByIdAsyncWProperties(int id)
+        {
+            return await _context.Agents
+                .Include(a => a.Properties)
+                .FirstOrDefaultAsync(a => a.Id == id);
+        }
     }
 }

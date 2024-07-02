@@ -174,8 +174,18 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
 
+            if (property.AgentId.HasValue)
+            {
+                property.Agent = await _agentService.GetAgentById(property.AgentId.Value);
+            }
+            else
+            {
+                property.Agent = null; // Handle the case where AgentId is null as needed
+            }
+
             return View(property);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
