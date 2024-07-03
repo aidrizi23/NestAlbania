@@ -205,7 +205,7 @@ namespace NestAlbania.Controllers
             {
                 return NotFound();
             }
-
+            PopulateViewBags();
             return View(property);
         }
 
@@ -217,14 +217,12 @@ namespace NestAlbania.Controllers
             {
                 try
                 {
-                    // Retrieve the existing property from the database
                     var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
                     if (existingProperty == null)
                     {
                         return NotFound();
                     }
 
-                    // Update editable fields
                     existingProperty.Name = property.Name;
                     existingProperty.Description = property.Description;
                     existingProperty.Price = property.Price;
@@ -236,16 +234,7 @@ namespace NestAlbania.Controllers
                     existingProperty.Status = property.Status;
                     existingProperty.City = property.City;
                     existingProperty.AgentId = property.AgentId;
-                    
 
-                    //// Check if new main image is provided
-                    //if (property.MainImage != null && property.MainImage.Length > 0)
-                    //{
-                    //    var fileName = Guid.NewGuid().ToString();
-                    //    existingProperty.MainImage = await _fileHandlerService.UploadAndRenameFileAsync(property.MainImage, "images/properties", fileName);
-                    //}
-
-                    // Check if new additional images are provided
                     var files = HttpContext.Request.Form.Files;
                     if (files.Count > 0)
                     {
@@ -253,19 +242,15 @@ namespace NestAlbania.Controllers
                         existingProperty.OtherImages.AddRange(fileNames);
                     }
 
-                    // Save the updated property
                     await _propertyService.EditPropertyAsync(existingProperty);
- 
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    // Handle exception as needed
                     ModelState.AddModelError("", "Error editing property: " + ex.Message);
                 }
             }
 
-            // If ModelState is not valid or an error occurred, populate necessary view bags and return to view
             PopulateViewBags();
             return View(property);
         }
