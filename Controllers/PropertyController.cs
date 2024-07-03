@@ -42,7 +42,17 @@ namespace NestAlbania.Controllers
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
-            var properties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _agentService.GetAgentByUserIdAsync(userId);
+            if(agent == null)
+            {
+                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
+
+                return View(allProperties);
+            }
+            var properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
+            
             return View(properties);
         }
 

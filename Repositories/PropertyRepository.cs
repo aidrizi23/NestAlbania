@@ -91,6 +91,7 @@ namespace NestAlbania.Repositories
             var properties = _context.Properties.Include(x => x.Agent).Where(x => x.AgentId == id);
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
+       
     }
 }
 
