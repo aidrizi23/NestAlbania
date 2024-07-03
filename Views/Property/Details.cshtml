@@ -68,8 +68,21 @@
                         <dt class="col-sm-4"><i class="fa fa-globe" aria-hidden="true" style="margin-right: 5px;"></i>City:</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.City)</dd>
                         <hr style="border: 1px solid #ccc;" class="col-sm-12">
-                        <dt class="col-sm-4"><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>Agent:</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Agent.Name) @Html.DisplayFor(model => model.Agent.Surname)</dd>
+                        <div class="agent-card mt-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <img src="@Url.Content("~/images/agents/" + Model.Agent.Image)" alt="Agent Image" class="agent-img mb-3 rounded-circle">
+
+                                    <h5 class="card-title">@Html.DisplayFor(model => model.Agent.Name) @Html.DisplayFor(model => model.Agent.Surname)</h5>
+                                    <p class="card-text">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.Email)<br>
+                                        <i class="fa fa-phone" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.PhoneNumber)<br>
+                                       
+                                    </p>
+                                    <a href="@Url.Action("Details", "Agent", new { id = Model.Agent.Id })" class="btn btn-primary">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
                     </dl>
                 </div>
             </div>
