@@ -155,12 +155,65 @@ namespace NestAlbania.Controllers
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
+        // [HttpPost]
+        // public async Task<IActionResult> Edit(Agent agent)
+        // {
+        //     var existingAgent = await _agent.GetAgentById(agent.Id);
+        //     if (existingAgent == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     existingAgent.Name = agent.Name;
+        //     existingAgent.Surname = agent.Surname;
+        //     existingAgent.LicenseNumber = agent.LicenseNumber;
+        //     existingAgent.Motto = agent.Motto;
+        //     existingAgent.PhoneNumber = agent.PhoneNumber;
+        //     existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
+        //     existingAgent.Email = agent.Email;
+        //     existingAgent.RoleId = agent.RoleId;
+        //     existingAgent.Password = agent.Password;
+        //
+        //     // Handle file upload if a file is provided
+        //     var file = HttpContext.Request.Form.Files.FirstOrDefault();
+        //     if (file != null)
+        //     {
+        //         var uploadDir = _configuration["Uploads:AgentImg"];
+        //         var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
+        //         fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+        //         existingAgent.Image = fileName;
+        //     }
+        //
+        //     await _agent.EditAgent(existingAgent);
+        //     return RedirectToAction("Index");
+        // }
+        
         [HttpPost]
         public async Task<IActionResult> Edit(Agent agent)
         {
-            await _agent.EditAgent(agent);
+            var existingAgent = await _agent.GetAgentById(agent.Id);
+            if (existingAgent == null)
+            {
+                return NotFound();
+            }
+
+            // Map properties from the input agent to the existingAgent
+            existingAgent.Name = agent.Name;
+            existingAgent.Surname = agent.Surname;
+            existingAgent.LicenseNumber = agent.LicenseNumber;
+            existingAgent.Motto = agent.Motto;
+            existingAgent.PhoneNumber = agent.PhoneNumber;
+            existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
+            existingAgent.Email = agent.Email;
+            existingAgent.RoleId = agent.RoleId;
+            existingAgent.Password = agent.Password;
+            existingAgent.Image = existingAgent.Image; // Ensure the image remains unchanged
+
+            await _agent.EditAgent(existingAgent);
             return RedirectToAction("Index");
         }
+
+
 
 
         [HttpGet]
