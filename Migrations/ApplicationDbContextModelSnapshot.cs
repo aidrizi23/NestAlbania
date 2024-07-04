@@ -277,13 +277,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a450a35-3afa-4e10-9626-c9cbce90ffdc",
+                            ConcurrencyStamp = "56d27fa2-7f79-419e-b0c0-47ef79707f81",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAED2aKi9kKAGhOjovIhdExCQNNo1s17gXJFpdf5R+J3gRUuNzTXASvZQEoz/ZyEJrIA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMY7yerALlibZfDqI6+1CUUvIPZQKuoFXNfQ9j7hUbwzTPvhbP8DgVGQlkbeVqm9UA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -407,6 +407,9 @@ namespace NestAlbania.Migrations
 
                     b.Property<string>("OtherImages")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");

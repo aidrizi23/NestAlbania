@@ -121,7 +121,8 @@ namespace NestAlbania.Controllers
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), // Initialize empty list for other images
                 AgentId = agent?.Id, // Assign agent ID to property
-                Agent = await _agentService.GetAgentById(agent.Id)
+                Agent = await _agentService.GetAgentById(agent.Id),
+                PostedOn = DateTime.Now.Date,
             };
 
             // Save the property
