@@ -34,6 +34,7 @@ namespace NestAlbania.Controllers
         }
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
+           
             var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
             return View(agent);
         }

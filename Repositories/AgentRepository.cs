@@ -14,7 +14,7 @@ namespace NestAlbania.Repositories
     }
         public async Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10)
         {
-            var agent = _context.Agents.AsQueryable();
+            var agent = _context.Agents.OrderByDescending(x => x.Id).AsQueryable();
             return await PaginatedList<Agent>.CreateAsync(agent, pageIndex, pageSize);
         }
 

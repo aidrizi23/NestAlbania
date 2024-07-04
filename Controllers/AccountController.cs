@@ -7,9 +7,7 @@ using NestAlbania.Data;
 using NestAlbania.Models;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

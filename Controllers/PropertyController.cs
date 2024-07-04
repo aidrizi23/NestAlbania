@@ -47,7 +47,7 @@ namespace NestAlbania.Controllers
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
             if(agent == null)
             {
-                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
+                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex = 1, pageSize = 10);
 
                 return View(allProperties);
             }
