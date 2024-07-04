@@ -118,24 +118,26 @@
              
                     <div>
                     </div>
+                    
                 </div>
-                 <div class="row mb-3">
+           
+                <button type="submit" class="btn btn-info">Filter</button>
+            }
+               <div class="row mb-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <form asp-action="GetFilteredPropertiesFromLower" asp-controller="Property" method="post">
-                            <button type="submit" name="sortOrder" value="asc" class="btn btn-primary">Price: High to Low</button>
+                               <form asp-action="GetFilteredPropertiesFromLower" asp-controller="Property" method="post">
+                            <button type="submit" name="sortOrder" value="asc" class="btn btn-primary ml-2">Price: Low to High</button>
                         </form>
+                       
                     </div>
                     <div class="col-md-6">
                         <form asp-action="GetFilteredPropertiesFromUpper" asp-controller="Property" method="post">
-                            <button type="submit" name="sortOrder" value="desc" class="btn btn-primary ml-2">Price: Low to High </button>
+                            <button type="submit" name="sortOrder" value="asc" class="btn btn-primary ml-2">Price: Low to High</button>
                         </form>
                     </div>
                 </div>
             </div>
-                <button type="submit" class="btn btn-info">Filter</button>
-            }
-
 
         </div>
         <div class="row">

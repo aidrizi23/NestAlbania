@@ -20,7 +20,8 @@ namespace NestAlbania.Controllers
 {
     [Authorize]
     public class PropertyController : Controller
-    {   
+    {
+
         private readonly IPropertyService _propertyService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly IConfiguration _configuration;
@@ -273,7 +274,7 @@ namespace NestAlbania.Controllers
 
         [HttpGet]
         [HttpGet]
-        public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "")
         {
             // first lets get all the properties
             var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
@@ -284,24 +285,46 @@ namespace NestAlbania.Controllers
             ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
             ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
             ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+            ViewData["CurrentSortOrder"] = sortOrder;
+
+
+            
+
 
             return View("Index", properties);
+
+      
+
         }
 
+        //[HttpPost("GetFilteredPropertiesFromLower")]
+        //public async Task<IActionResult> GetFilteredPropertiesFromLower()
+        //{
+        //    // Merr pronat e paginuara nga shërbimi
+        //    var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
+        //    // Rendit pronat sipas çmimit nga më e larta tek më e ulëta
+        //    var propertiesSorted = propertiesPaginated.OrderByDescending(x => x.Price).ToList();
+        //    return View("Index", propertiesSorted);
+        //}
+
+
+        [HttpPost("GetFilteredPropertiesFromLower")]
         public async Task<IActionResult> GetFilteredPropertiesFromLower()
         {
-            var properties = await _propertyService.GetAllPaginatedPropertiesAsync();
-            var properties1 =  properties.OrderByDescending(x => x.Price).ToList();
-            return View("Index", properties1);
-            
+            var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
+            var propertiesSorted = propertiesPaginated.OrderByDescending(x => x.Price).ToList();
+            return View("Index", propertiesSorted);
         }
 
+
+
+        [HttpPost("GetFilteredPropertiesFromUpper")]
         public async Task<IActionResult> GetFilteredPropertiesFromUpper()
         {
-            var properties = await _propertyService.GetAllPaginatedPropertiesAsync();
-            var properties1 = properties.OrderBy(x => x.Price).ToList();
-            return View("Index", properties1);
-
+            var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
+            var propertiesSorted = propertiesPaginated.OrderBy(x => x.Price).ToList();
+            return View("Index", propertiesSorted);
         }
+
     }
 }

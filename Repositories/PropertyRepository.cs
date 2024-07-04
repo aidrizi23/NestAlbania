@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Components.QuickGrid;
 using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
@@ -69,6 +70,7 @@ namespace NestAlbania.Repositories
             {
                 properties = properties.Where(x => x.InsideArea == query.InsideArea);
             }
+          
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
 
