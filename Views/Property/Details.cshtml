@@ -18,7 +18,7 @@
                             <div class="carousel-item active">
                                 <img src="@Url.Content("~/images/properties/" + Model.MainImage)" alt="Property Image" class="d-block w-100">
                             </div> 
-                            @foreach (var image in Model?.OtherImages)
+                            @foreach (var image in Model.OtherImages)
                             {
                                 <div class="carousel-item">
                                     <img src="@Url.Content("/PropertyOtherImages/" + image)" alt="Property Image" class="d-block w-100">
@@ -100,6 +100,52 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <style>
+    .agent-card {
+        margin-top: 20px;
+    }
+
+    .agent-card .card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .agent-card .card:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .agent-card .card-body {
+        padding: 20px;
+    }
+
+    .agent-card .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .agent-card .card-text {
+        font-size: 0.9rem;
+    }
+
+        .agent-card .card-text i {
+            margin-right: 5px;
+        }
+
+    .agent-card .agent-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .agent-card .agent-img:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
     .centered-div {
         display: flex;
         justify-content: space-between;
