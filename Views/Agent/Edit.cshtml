@@ -13,25 +13,15 @@
                 <h4 class="mb-0 text-center">Agent Details</h4>
             </div>
             <div class="card-body">
-                <form asp-action="Edit">
+                <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="form-group mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
+                    
 
                     <div class="form-group mb-3">
-                        <label asp-for="Surname" class="form-label"></label>
-                        <input asp-for="Surname" class="form-control" />
-                        <span asp-validation-for="Surname" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label asp-for="Image" class="form-label"></label>
-                        <input asp-for="Image" class="form-control" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
@@ -40,11 +30,6 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label asp-for="PhoneNumber" class="form-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
 
                     <div class="form-group mb-3">
                         <label asp-for="LicenseNumber" class="form-label"></label>
@@ -62,6 +47,12 @@
                         <label asp-for="YearsOfExeperience" class="form-label"></label>
                         <input asp-for="YearsOfExeperience" class="form-control" />
                         <span asp-validation-for="YearsOfExeperience" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label">Image</label>
+                        <input class="form-control" type="file" asp-for="Image" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
 
                     <input type="hidden" asp-for="Id" />
