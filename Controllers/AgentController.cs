@@ -155,7 +155,39 @@ namespace NestAlbania.Controllers
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
-        
+        // [HttpPost]
+        // public async Task<IActionResult> Edit(Agent agent)
+        // {
+        //     var existingAgent = await _agent.GetAgentById(agent.Id);
+        //     if (existingAgent == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     existingAgent.Name = agent.Name;
+        //     existingAgent.Surname = agent.Surname;
+        //     existingAgent.LicenseNumber = agent.LicenseNumber;
+        //     existingAgent.Motto = agent.Motto;
+        //     existingAgent.PhoneNumber = agent.PhoneNumber;
+        //     existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
+        //     existingAgent.Email = agent.Email;
+        //     existingAgent.RoleId = agent.RoleId;
+        //     existingAgent.Password = agent.Password;
+        //
+        //     // Handle file upload if a file is provided
+        //     var file = HttpContext.Request.Form.Files.FirstOrDefault();
+        //     if (file != null)
+        //     {
+        //         var uploadDir = _configuration["Uploads:AgentImg"];
+        //         var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
+        //         fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+        //         existingAgent.Image = fileName;
+        //     }
+        //
+        //     await _agent.EditAgent(existingAgent);
+        //     return RedirectToAction("Index");
+        // }
+
         [HttpPost]
         public async Task<IActionResult> Edit(Agent agent)
         {
@@ -167,41 +199,31 @@ namespace NestAlbania.Controllers
 
             var uploadDir = _configuration["Uploads:AgentImg"];
 
-            _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
-            await _agent.EditAgent(existingAgent);
-
             // Map properties from the input agent to the existingAgent
-            //existingAgent.Name = agent.Name;
-            //existingAgent.Surname = agent.Surname;
             existingAgent.LicenseNumber = agent.LicenseNumber;
             existingAgent.Motto = agent.Motto;
             existingAgent.PhoneNumber = agent.PhoneNumber;
             existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-            ////existingAgent.Email = agent.Email;
             existingAgent.RoleId = agent.RoleId;
-            //existingAgent.Password = agent.Password;
-            //existingAgent.Image = existingAgent.Image; // Ensure the image remains unchanged
 
-            //Besoj qe funksjonon
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
-            
-                // Remove the existing image if it exists
+
+            if (file != null)
+            {
+                // Remove the existing image if a new one is being uploaded
                 if (!string.IsNullOrEmpty(existingAgent.Image))
                 {
                     _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
                 }
 
-                // Upload and set the new image directly to existingAgent.Image
+                // Upload and set the new image
                 var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}";
                 existingAgent.Image = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
-            
+            }
 
             await _agent.EditAgent(existingAgent);
             return RedirectToAction("Index");
         }
-
-
-
 
         [HttpGet]
         public async Task<IActionResult> GetFilteredAgents([FromQuery] AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)

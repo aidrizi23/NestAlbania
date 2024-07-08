@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class INT : Migration
+    public partial class gg : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace NestAlbania.Migrations
                     YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -125,7 +125,8 @@ namespace NestAlbania.Migrations
                     Category = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<int>(type: "int", nullable: false),
-                    AgentId = table.Column<int>(type: "int", nullable: true)
+                    AgentId = table.Column<int>(type: "int", nullable: true),
+                    PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,7 +257,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "91877b8f-ae0c-42e6-8cb7-9604dd9c5a9f", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEG2uM16YUQvi58VcsfvfZz+3bear5DxAqmoSyi/P4K9Zes+9076INGfu6J5UZlEH+A==", null, false, "", false, "admin@admin.com" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "79132ff8-6937-4a4c-b24b-d006a45d4a46", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEHLKjHjRQ3Le+AHQKxRYtohf4EN+Hg5/1ZnCkan0Jeygpn9+tfdgEu9nOBJs5w/3oA==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
