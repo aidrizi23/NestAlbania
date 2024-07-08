@@ -5,7 +5,7 @@
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class new321ou : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace NestAlbania.Migrations
                 keyColumn: "Id",
                 keyValue: "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "ba8b68e0-4a57-461a-8380-a49433f86292", "AQAAAAIAAYagAAAAEOv12JjHbYLu6UclKPar9HGipcQBSO9Fm0rDvxnkPdnPvwbU9MMH/oWxsLvxzxebzQ==" });
+                values: new object[] { "6ad8e0c2-6d08-4269-93c0-d0be794257e7", "AQAAAAIAAYagAAAAEN8i4/5RivJi+U99jpafxtlchrvkVOBo8wDMoai8mXTBAv9nSN/H9u6EFbXVyvmU6g==" });
         }
 
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace NestAlbania.Migrations
                 keyColumn: "Id",
                 keyValue: "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "81d6ee31-fd48-4945-8b99-bf653ae2ab78", "AQAAAAIAAYagAAAAEBdoqFItrXDoFLa6tESQw/JS/Go/VFD+jVZQ1M739ty5rHkAv+UBBXwW44VHq+/K2w==" });
+                values: new object[] { "79132ff8-6937-4a4c-b24b-d006a45d4a46", "AQAAAAIAAYagAAAAEHLKjHjRQ3Le+AHQKxRYtohf4EN+Hg5/1ZnCkan0Jeygpn9+tfdgEu9nOBJs5w/3oA==" });
         }
     }
 }

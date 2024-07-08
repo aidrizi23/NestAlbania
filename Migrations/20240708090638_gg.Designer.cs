@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240630221244_init1")]
-    partial class init1
+    [Migration("20240708090638_gg")]
+    partial class gg
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,13 +280,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e9caf983-dba1-4a63-a3a1-efd90f9df2c7",
+                            ConcurrencyStamp = "79132ff8-6937-4a4c-b24b-d006a45d4a46",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFPrsupepFSkZs3NvJNmewxnthjfIWwZM2dPku6myizkNpEHIYBhbOO+XYzWjRyB0w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHLKjHjRQ3Le+AHQKxRYtohf4EN+Hg5/1ZnCkan0Jeygpn9+tfdgEu9nOBJs5w/3oA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -411,6 +411,9 @@ namespace NestAlbania.Migrations
                     b.Property<string>("OtherImages")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -477,12 +480,12 @@ namespace NestAlbania.Migrations
 
             modelBuilder.Entity("NestAlbania.Data.Property", b =>
                 {
-                    b.HasOne("NestAlbania.Data.Agent", "Agents")
+                    b.HasOne("NestAlbania.Data.Agent", "Agent")
                         .WithMany("Properties")
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Agents");
+                    b.Navigation("Agent");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>
