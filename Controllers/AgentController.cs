@@ -18,7 +18,6 @@ namespace NestAlbania.Controllers
         private readonly IConfiguration _configuration;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly UserManager<ApplicationUser> _userManager;
-        // private readonly SignInManager<ApplicationUser> _signInManager;
         public readonly IRoleService _roleService;
         public readonly IUserRoleService _userRoleService;
         public readonly IUserService _userService;
@@ -156,38 +155,6 @@ namespace NestAlbania.Controllers
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
-        // [HttpPost]
-        // public async Task<IActionResult> Edit(Agent agent)
-        // {
-        //     var existingAgent = await _agent.GetAgentById(agent.Id);
-        //     if (existingAgent == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     existingAgent.Name = agent.Name;
-        //     existingAgent.Surname = agent.Surname;
-        //     existingAgent.LicenseNumber = agent.LicenseNumber;
-        //     existingAgent.Motto = agent.Motto;
-        //     existingAgent.PhoneNumber = agent.PhoneNumber;
-        //     existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-        //     existingAgent.Email = agent.Email;
-        //     existingAgent.RoleId = agent.RoleId;
-        //     existingAgent.Password = agent.Password;
-        //
-        //     // Handle file upload if a file is provided
-        //     var file = HttpContext.Request.Form.Files.FirstOrDefault();
-        //     if (file != null)
-        //     {
-        //         var uploadDir = _configuration["Uploads:AgentImg"];
-        //         var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
-        //         fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
-        //         existingAgent.Image = fileName;
-        //     }
-        //
-        //     await _agent.EditAgent(existingAgent);
-        //     return RedirectToAction("Index");
-        // }
         
         [HttpPost]
         public async Task<IActionResult> Edit(Agent agent)

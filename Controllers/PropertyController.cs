@@ -46,16 +46,18 @@ namespace NestAlbania.Controllers
             var user = await _userManager.GetUserAsync(User);
             var userId = await _userManager.GetUserIdAsync(user);
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
-            if(agent == null)
-            {
-                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex = 1, pageSize = 10);
 
+            if (agent == null)
+            {
+                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
                 return View(allProperties);
             }
+
             var properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
-            
             return View(properties);
         }
+
+
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -290,16 +292,7 @@ namespace NestAlbania.Controllers
 
         }
 
-        //[HttpPost("GetFilteredPropertiesFromLower")]
-        //public async Task<IActionResult> GetFilteredPropertiesFromLower()
-        //{
-        //    // Merr pronat e paginuara nga shërbimi
-        //    var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
-        //    // Rendit pronat sipas çmimit nga më e larta tek më e ulëta
-        //    var propertiesSorted = propertiesPaginated.OrderByDescending(x => x.Price).ToList();
-        //    return View("Index", propertiesSorted);
-        //}
-
+   
 
         [HttpPost("GetFilteredPropertiesFromLower")]
         public async Task<IActionResult> GetFilteredPropertiesFromLower()
