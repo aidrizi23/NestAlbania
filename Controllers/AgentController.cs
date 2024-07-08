@@ -198,17 +198,36 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
 
+            var uploadDir = _configuration["Uploads:AgentImg"];
+
+            _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
+            await _agent.EditAgent(existingAgent);
+
             // Map properties from the input agent to the existingAgent
-            existingAgent.Name = agent.Name;
-            existingAgent.Surname = agent.Surname;
+            //existingAgent.Name = agent.Name;
+            //existingAgent.Surname = agent.Surname;
             existingAgent.LicenseNumber = agent.LicenseNumber;
             existingAgent.Motto = agent.Motto;
             existingAgent.PhoneNumber = agent.PhoneNumber;
             existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-            existingAgent.Email = agent.Email;
+            ////existingAgent.Email = agent.Email;
             existingAgent.RoleId = agent.RoleId;
-            existingAgent.Password = agent.Password;
-            existingAgent.Image = existingAgent.Image; // Ensure the image remains unchanged
+            //existingAgent.Password = agent.Password;
+            //existingAgent.Image = existingAgent.Image; // Ensure the image remains unchanged
+
+            //Besoj qe funksjonon
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+            
+                // Remove the existing image if it exists
+                if (!string.IsNullOrEmpty(existingAgent.Image))
+                {
+                    _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
+                }
+
+                // Upload and set the new image directly to existingAgent.Image
+                var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}";
+                existingAgent.Image = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+            
 
             await _agent.EditAgent(existingAgent);
             return RedirectToAction("Index");
