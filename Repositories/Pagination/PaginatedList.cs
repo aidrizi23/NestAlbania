@@ -57,6 +57,6 @@ namespace NestAlbania.Repositories.Pagination
         }
     }
 
-    }
+    
 
 }
