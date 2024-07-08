@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240627093426_INT")]
-    partial class INT
+    [Migration("20240708082819_innit")]
+    partial class innit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,7 +143,6 @@ namespace NestAlbania.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
@@ -281,13 +280,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91877b8f-ae0c-42e6-8cb7-9604dd9c5a9f",
+                            ConcurrencyStamp = "350ed2e7-a974-4482-b710-feb4f3ce56d4",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG2uM16YUQvi58VcsfvfZz+3bear5DxAqmoSyi/P4K9Zes+9076INGfu6J5UZlEH+A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL/UvziRCElmqIpignZ2S8A1DESL9vqDNTIJlX5QRkXSjhd00+JbeOw2o4KJPrAbrA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -412,6 +411,9 @@ namespace NestAlbania.Migrations
                     b.Property<string>("OtherImages")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -478,12 +480,12 @@ namespace NestAlbania.Migrations
 
             modelBuilder.Entity("NestAlbania.Data.Property", b =>
                 {
-                    b.HasOne("NestAlbania.Data.Agent", "Agents")
+                    b.HasOne("NestAlbania.Data.Agent", "Agent")
                         .WithMany("Properties")
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Agents");
+                    b.Navigation("Agent");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>
