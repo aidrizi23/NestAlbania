@@ -12,8 +12,13 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Migrations/20240708090638_gg.Designer.cs
     [Migration("20240708090638_gg")]
     partial class gg
+========
+    [Migration("20240708082819_innit")]
+    partial class innit
+>>>>>>>> JeraBranch:Migrations/20240708082819_innit.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,13 +285,21 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
+<<<<<<<< HEAD:Migrations/20240708090638_gg.Designer.cs
                             ConcurrencyStamp = "79132ff8-6937-4a4c-b24b-d006a45d4a46",
+========
+                            ConcurrencyStamp = "350ed2e7-a974-4482-b710-feb4f3ce56d4",
+>>>>>>>> JeraBranch:Migrations/20240708082819_innit.Designer.cs
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
+<<<<<<<< HEAD:Migrations/20240708090638_gg.Designer.cs
                             PasswordHash = "AQAAAAIAAYagAAAAEHLKjHjRQ3Le+AHQKxRYtohf4EN+Hg5/1ZnCkan0Jeygpn9+tfdgEu9nOBJs5w/3oA==",
+========
+                            PasswordHash = "AQAAAAIAAYagAAAAEL/UvziRCElmqIpignZ2S8A1DESL9vqDNTIJlX5QRkXSjhd00+JbeOw2o4KJPrAbrA==",
+>>>>>>>> JeraBranch:Migrations/20240708082819_innit.Designer.cs
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

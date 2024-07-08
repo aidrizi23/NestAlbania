@@ -31,12 +31,25 @@ namespace NestAlbania.Controllers
             _userRoleService = userRoleService;
             _userService = userService;
         }
+        //public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
+        //{
+        //    ViewBag.PageIndex = pageIndex;
+        //    ViewBag.PageSize = pageSize;
+        //    var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
+        //    return View(agent);
+        //}
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
-           
-            var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
-            return View(agent);
+            var paginatedAgents = await _agent.GetPaginatedAgent(pageIndex, pageSize);
+
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.PageSize = pageSize;
+
+            return View(paginatedAgents);
         }
+
+
+
         public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
