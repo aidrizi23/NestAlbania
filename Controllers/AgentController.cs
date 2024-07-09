@@ -199,12 +199,17 @@ namespace NestAlbania.Controllers
 
             var uploadDir = _configuration["Uploads:AgentImg"];
 
-            // Map properties from the input agent to the existingAgent
+            // Update properties of the existing agent
+            existingAgent.Name = agent.Name;
+            existingAgent.Surname = agent.Surname;
             existingAgent.LicenseNumber = agent.LicenseNumber;
             existingAgent.Motto = agent.Motto;
             existingAgent.PhoneNumber = agent.PhoneNumber;
             existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
             existingAgent.RoleId = agent.RoleId;
+            existingAgent.Email = agent.Email;
+            existingAgent.Password = agent.Password;
+
 
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
 
@@ -219,6 +224,43 @@ namespace NestAlbania.Controllers
                 // Upload and set the new image
                 var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}";
                 existingAgent.Image = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+            }
+
+            // Update user details if they exist
+            var user = await _userManager.FindByIdAsync(existingAgent.UserId);
+            if (user != null)
+            {
+                // Update CustomUserName if needed
+                if (user.CustomUserName != $"{existingAgent.Name}_{existingAgent.Surname}")
+                {
+                    user.CustomUserName = $"{existingAgent.Name}_{existingAgent.Surname}";
+                }
+
+                // Update email if different
+                if (user.Email != agent.Email)
+                {
+                    user.Email = agent.Email;
+                    user.UserName = agent.Email;
+                }
+
+                // Update password if provided
+                if (!string.IsNullOrEmpty(agent.Password))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var result = await _userManager.ResetPasswordAsync(user, token, agent.Password);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "Error resetting password.");
+                        return View(existingAgent);
+                    }
+                }
+
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Error updating user details.");
+                    return View(existingAgent);
+                }
             }
 
             await _agent.EditAgent(existingAgent);
