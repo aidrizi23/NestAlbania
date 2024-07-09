@@ -47,13 +47,16 @@ namespace NestAlbania.Controllers
             var userId = await _userManager.GetUserIdAsync(user);
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
+            PaginatedList<Property> properties;
             if (agent == null)
             {
-                var allProperties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
-                return View(allProperties);
+                properties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
+            }
+            else
+            {
+                properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
             }
 
-            var properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
             return View(properties);
         }
 
@@ -260,56 +263,22 @@ namespace NestAlbania.Controllers
         }
 
 
-
-        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "")
         {
-            // Optionally, you can validate the query parameters here before passing to the service/repository
-
-            // Get paginated properties based on filters
-            var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
-
-            // Pass filters to view
-            ViewData["CurrentNameFilter"] = query.Name;
-        
+            var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
+            
+            ViewData["CurrentNameFilter"] = query.Name ?? "";
             ViewData["CurrentFullAreaFilter"] = query.FullArea;
             ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
             ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
             ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
             ViewData["CurrentMinPriceFilter"] = query.MinPrice;
             ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
-            ViewData["CurrentAgentFilter"] = query.AgentName;
+            ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
             ViewData["CurrentSortOrder"] = sortOrder;
 
-
-            
-
-
             return View("Index", properties);
-
-      
-
-        }
-
-   
-
-        [HttpPost("GetFilteredPropertiesFromLower")]
-        public async Task<IActionResult> GetFilteredPropertiesFromLower()
-        {
-            var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
-            var propertiesSorted = propertiesPaginated.OrderByDescending(x => x.Price).ToList();
-            return View("Index", propertiesSorted);
-        }
-
-
-
-        [HttpPost("GetFilteredPropertiesFromUpper")]
-        public async Task<IActionResult> GetFilteredPropertiesFromUpper()
-        {
-            var propertiesPaginated = await _propertyService.GetAllPaginatedPropertiesAsync();
-            var propertiesSorted = propertiesPaginated.OrderBy(x => x.Price).ToList();
-            return View("Index", propertiesSorted);
         }
 
     }

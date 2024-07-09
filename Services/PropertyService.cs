@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NestAlbania.Data;
+﻿using NestAlbania.Data;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
@@ -51,9 +50,9 @@ namespace NestAlbania.Services
             return await _repository.GetAllPaginatedPropertiesByPrice(price, pageIndex, pageSize);
         }
 
-        public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10)
+        public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex, int pageSize, string sortOrder)
         {
-            return await _repository.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize);
+            return await _repository.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
         }
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)

@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20240708090638_gg.cs
-    public partial class gg : Migration
-========
-    public partial class innit : Migration
->>>>>>>> JeraBranch:Migrations/20240708082819_innit.cs
+    public partial class fereee : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -261,11 +257,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-<<<<<<<< HEAD:Migrations/20240708090638_gg.cs
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "79132ff8-6937-4a4c-b24b-d006a45d4a46", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEHLKjHjRQ3Le+AHQKxRYtohf4EN+Hg5/1ZnCkan0Jeygpn9+tfdgEu9nOBJs5w/3oA==", null, false, "", false, "admin@admin.com" });
-========
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "350ed2e7-a974-4482-b710-feb4f3ce56d4", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEL/UvziRCElmqIpignZ2S8A1DESL9vqDNTIJlX5QRkXSjhd00+JbeOw2o4KJPrAbrA==", null, false, "", false, "admin@admin.com" });
->>>>>>>> JeraBranch:Migrations/20240708082819_innit.cs
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "11d9d502-3eb3-4815-90ef-637143312a62", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEOmPQGgqOr2+7r7tzBQKTfC4GfJEBe7+yQjHCy5rBaMZ+AdgVWSfSuvyRyXxGHdC0A==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
