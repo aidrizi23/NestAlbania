@@ -89,6 +89,13 @@
                         <span class="nav-link-text ms-1">Agent Profile</span>
                     </a>
                 </li>
+                <li class="nav-item d-flex align-items-center">
+                    <form asp-controller="Account" asp-action="LogOut" method="post" class="nav-link p-0">
+                        <button type="submit" class="btn btn-link text-white font-weight-bold px-0" style="border: none; background: none;">
+                            <i class="fa fa-sign-out-alt me-sm-1"></i> LogOut
+                        </button>
+                    </form>
+                </li>
 
             
 
@@ -110,12 +117,25 @@
                         </div>
                     </div>
                     <ul class="navbar-nav  justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
+@*                         <li class="nav-item d-flex align-items-center">
                             <a asp-action="GetAgentDetailsUser" asp-controller="Agent" class="nav-link text-white font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
                                
                             </a>
+                        </li> *@
+
+                        <li class="nav-item d-flex align-items-center user-icon-container">
+                            <a asp-action="GetAgentDetailsUser" asp-controller="Agent" class="nav-link text-white font-weight-bold px-0">
+                                <i class="fa fa-user me-sm-1 user-icon"></i>
+                            </a>
+                            <form asp-controller="Account" asp-action="LogIn" method="post" class="logout-form">
+                                <button type="submit" class="btn btn-link text-dark font-weight-bold p-0" style="border: none; background: none;">
+                                    Logout
+                                </button>
+                            </form>
                         </li>
+
+
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                                 <div class="sidenav-toggler-inner">
@@ -482,6 +502,34 @@
             },
         });
     </script>
+    <style>
+        .user-icon-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logout-form {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .user-icon-container:hover .logout-form {
+            display: block;
+        }
+
+    </style>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
