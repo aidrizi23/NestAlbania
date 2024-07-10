@@ -30,7 +30,7 @@ namespace NestAlbania.Data
         public virtual Agent? Agent { get; set; }
 
         public DateTime PostedOn { get; set; }
-    
+        public DateTime? LastEdited { get; set; }
     }
    
 }
