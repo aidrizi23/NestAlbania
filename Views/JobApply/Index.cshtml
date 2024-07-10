@@ -3,89 +3,60 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center mb-3">
+    <a asp-action="Create" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Create New</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-               FirstName
-            </th>
-            <th>
-               LastName
-            </th>
-            <th>
-               Email
-            </th>
-            <th>
-                CV
-                </th>
-            <th>
-               Message
-            </th>
-            <th>
-               Id
-            </th>
-            <th></th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>CV</th>
+            <th>Message</th>
+            <th>Id</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-             
-            <td>
-                        @if (!String.IsNullOrEmpty(item.CV))
-                        {
-                        <a target="_blank">
-                            <img src="~/files/jobApplyImg/@item.CV" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.CV" style="object-fit:cover; width:40px; height: 40px; border-radius:20px;" class="card-img"/>
-                        </a>
-                        }
-            </td>
- 
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @if (!String.IsNullOrEmpty(item.CV))
+                    {
+                        <a href="~/files/jobApplyImg/@item.CV" target="_blank" data-toggle="tooltip" title="@item.CV">
+                            <img src="~/files/jobApplyImg/@item.CV" style="object-fit:cover; width:40px; height:40px; border-radius:20px;" class="img-thumbnail" />
+                        </a>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Message)</td>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="12">
-                <div class="text-right">
+            <td colspan="7">
+                <div class="d-flex justify-content-between">
                     @{
                         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
                     }
-
-                    <a asp-action="Index"
-                       asp-route-page="@(Model.PageIndex - 1)"
-                       class="btn btn-outline-success @prevDisabled">
+                    <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" class="btn btn-outline-secondary @prevDisabled">
                         Previous
                     </a>
-                    <a asp-action="Index"
-                       asp-route-page="@(Model.PageIndex + 1)"
-                       class="btn btn-outline-success @nextDisabled">
+                    <span>Page @Model.PageIndex of @Model.TotalPages</span>
+                    <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" class="btn btn-outline-secondary @nextDisabled">
                         Next
                     </a>
                 </div>
@@ -93,3 +64,11 @@
         </tr>
     </tfoot>
 </table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

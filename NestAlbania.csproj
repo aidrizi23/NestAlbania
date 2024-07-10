@@ -20,7 +20,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\assets\icons\" />
-    <Folder Include="wwwroot\JobApplyDocuments\" />
+    <Folder Include="wwwroot\JobApplyDocuments\NewFolder\" />
   </ItemGroup>
 
 </Project>
