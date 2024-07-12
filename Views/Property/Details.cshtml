@@ -351,6 +351,9 @@
                         <dt class="col-sm-4"><i class="fa fa-calendar" aria-hidden="true" style="margin-right: 5px;"></i>Posted On:</dt>
                         <dd class="col-sm-8">@Model.PostedOn.ToString("yyyy-MM-dd")</dd>
                         <hr style="border: 1px solid #ccc;" class="col-sm-12">
+                        <dt class="col-sm-4"><i class="fa fa-calendar" aria-hidden="true" style="margin-right: 5px;"></i>Last Edited:</dt>
+                        <dd class="col-sm-8">@Model.LastEdited?.ToString("yyyy-MM-dd")</dd>
+                        <hr style="border: 1px solid #ccc;" class="col-sm-12">
                         <div class="agent-card mt-4">
                             <div class="card">
                                 <div class="card-body text-center">

@@ -220,10 +220,11 @@ namespace NestAlbania.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Property property)
         {
-            if (ModelState.IsValid)
+            if (property != null)
             {
                 try
                 {
+                    
                     var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
                     if (existingProperty == null)
                     {
@@ -240,7 +241,7 @@ namespace NestAlbania.Controllers
                     existingProperty.Category = property.Category;
                     existingProperty.Status = property.Status;
                     existingProperty.City = property.City;
-                    existingProperty.AgentId = property.AgentId;
+                    //existingProperty.AgentId = property.AgentId;
 
                     var files = HttpContext.Request.Form.Files;
                     if (files.Count > 0)
