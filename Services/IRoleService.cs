@@ -4,7 +4,7 @@ namespace NestAlbania.Services
 {
     public interface IRoleService
     {
-        Task<ApplicationRole> GetRoleByUserIdAsync(string UserId);
+        Task<ApplicationRole> GetByIdAsync(string UserId);
         Task<IEnumerable<ApplicationRole>> GetAllAsync();
         Task CreateAsync(ApplicationRole entity);
         Task UpdateAsync(ApplicationRole entity);

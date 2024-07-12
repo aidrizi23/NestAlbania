@@ -12,9 +12,9 @@ namespace NestAlbania.Repositories
             _context = context;
         }
 
-        public async Task<ApplicationRole> GetRoleByUserIdAsync(string UserId)
+        public async Task<ApplicationRole> GetByRoleId(string id)
         {
-            return await _context.ApplicationRoles.FirstOrDefaultAsync(x => x.Id == UserId);
+            return await _context.ApplicationRoles.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

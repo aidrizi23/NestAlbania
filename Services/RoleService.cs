@@ -1,4 +1,5 @@
-﻿using NestAlbania.Data;
+﻿using Microsoft.Identity.Client;
+using NestAlbania.Data;
 using NestAlbania.Repositories;
 
 namespace NestAlbania.Services
@@ -11,9 +12,9 @@ namespace NestAlbania.Services
             _roleRepository = roleRepository;
         }
 
-        public async Task<ApplicationRole> GetRoleByUserIdAsync(string UserId)
+        public async Task<ApplicationRole> GetByIdAsync(string UserId)
         {
-            return await _roleRepository.GetRoleByUserIdAsync(UserId);
+            return await _roleRepository.GetByRoleId(UserId);
         }
         public async Task<IEnumerable<ApplicationRole>> GetAllAsync()
         {
@@ -33,8 +34,10 @@ namespace NestAlbania.Services
 
         public async Task DeleteAsync(string id)
         {
-            var role = await _roleRepository.GetRoleByUserIdAsync(id);
+            var role = await _roleRepository.GetByRoleId(id);
             await _roleRepository.Delete(role);
         }
+
+       
     }
 }

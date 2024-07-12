@@ -102,7 +102,7 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> RoleEdit(string id)
         {
-            var role = await _roleService.GetRoleByUserIdAsync(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
@@ -119,7 +119,7 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public async Task<IActionResult> RoleDetails(string id)
         {
-            var role = await _roleService.GetRoleByUserIdAsync(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
@@ -134,6 +134,12 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> UserRoleIndex(string userId)
         {
             var userRoles = (await _userRoleService.GetAllAsync()).Where(x => x.UserId == userId);
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            // get userrole
+            var userRole = await _userRoleService.GetUserRoleByUserIdAsync(user.Id);
+            var role = await _roleService.GetByIdAsync(userRole.RoleId);
+            ViewBag.RoleName  = role.Name;
+            ViewBag.UserName = user.CustomUserName;
             ViewBag.UserId = userId;
             return View(userRoles);
         }

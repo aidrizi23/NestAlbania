@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240709100604_new")]
-    partial class @new
+    [Migration("20240712090351_innit")]
+    partial class innit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,13 +280,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6cbfd865-f892-423a-bb18-6c843e1fa9c9",
+                            ConcurrencyStamp = "d26f4404-f691-43d3-9633-7e5c13fd555b",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHqDFNxCXTJxE2h36vMqwIxAIhgJkpRvth+IGlG6IbiGTmfil5r42+6wrcvbDJbEHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE8p+TNI+/rhZ8FWdlF56nZkB0jz0gzBClBw8B64QCMmtiG+D+hPA/kCSKShnNtL9g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -400,6 +400,9 @@ namespace NestAlbania.Migrations
 
                     b.Property<int>("InsideArea")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastEdited")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MainImage")
                         .HasColumnType("nvarchar(max)");

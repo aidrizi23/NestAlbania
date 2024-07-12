@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<NestAlbania.Data.ApplicationUserRole>
 
 @{
-
     ViewData["Title"] = "UserRoleIndex";
     var userId = ViewBag.UserId as string;
+    var userName = ViewBag.UserName as string;
+    var roleName = ViewBag.RoleName as string;
 }
 
 <h1>UserRoleIndex</h1>
@@ -11,33 +12,35 @@
 <p>
     <a asp-action="UserRoleCreate" asp-route-userId="@userId">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                User Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoleId)
+                Role Id
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @userName
+                </td>
+                <td>
+                    @roleName
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
