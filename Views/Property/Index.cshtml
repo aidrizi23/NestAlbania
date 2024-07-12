@@ -104,8 +104,10 @@
                     <label><i class="fas fa-bath"></i> Bathroom Count:</label>
                     <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" />
                 </div>
-            </div>
-            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label><i class="fas fa-user"></i> Agent Name:</label>
+                    <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" />
+                </div>
                 <div class="col-md-2">
                     <label><i class="fas fa-dollar-sign"></i> Min Price:</label>
                     <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control form-control-sm" />
@@ -114,10 +116,7 @@
                     <label><i class="fas fa-dollar-sign"></i> Max Price:</label>
                     <input type="number" name="MaxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control form-control-sm" />
                 </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-user"></i> Agent Name:</label>
-                    <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" />
-                </div>
+            
                 <div class="col-md-2">
                     <label><i class="fas fa-sort"></i> Sort By:</label>
                     <select name="sortOrder" class="form-control form-control-sm">
@@ -126,8 +125,12 @@
                         <option value="price-desc" selected="@(ViewData["CurrentSortFilter"]?.ToString() == "price-desc" ? "selected" : "")">Price (High to Low)</option>
                     </select>
                 </div>
+                <div class="d-flex justify-content-end mb-3">
+                    <button type="submit" class="btn btn-info btn-sm"><i class="fas fa-filter"></i> Filter</button>
+                    <button type="button" class="btn btn-secondary btn-sm ml-2" id="clearFilters"><i class="fas fa-times"></i> Clear Filters</button>
+                </div>
+
             </div>
-            <button type="submit" class="btn btn-info btn-sm"><i class="fas fa-filter"></i> Filter</button>
         }
         <div class="row">
             @foreach (var item in Model)
@@ -209,6 +212,10 @@
                 var $moreText = $this.prev('.more');
                 $moreText.slideToggle();
                 $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
+            });
+
+            $('#clearFilters').click(function () {
+                window.location.href = '@Url.Action("Index", "Property")';
             });
         });
     </script>
