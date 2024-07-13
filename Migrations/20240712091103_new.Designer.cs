@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240709101229_test")]
-    partial class test
+    [Migration("20240712091103_new")]
+    partial class @new
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,13 +280,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "58052354-9e1b-4f4b-a828-31796543f878",
+                            ConcurrencyStamp = "2f02e985-3606-4c04-b0b3-512f2c73d1ca",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENd5A+3umw4JX83IntSKVnZBxOMrtUA7OGBpVrMvM3i9i/jpSXTpfyceKFrC6UWNIg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELK1HbsnFtCOH2ZB+4rGGUuFQl6NmGd8UxMnky5STTJSCVYy7nqOdfMuoiHd8rxpRQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -400,6 +400,9 @@ namespace NestAlbania.Migrations
 
                     b.Property<int>("InsideArea")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("IsFavorite")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MainImage")
                         .HasColumnType("nvarchar(max)");

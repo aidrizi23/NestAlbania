@@ -20,6 +20,8 @@ namespace NestAlbania.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Agent> Agents { get; set; }
 
+     
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Call base method to configure identity
@@ -67,6 +69,8 @@ namespace NestAlbania.Data
                 .WithMany(a => a.Properties)
                 .HasForeignKey(p => p.AgentId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+
         }
     }
 }

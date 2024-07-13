@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class fereee : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -122,6 +122,7 @@ namespace NestAlbania.Migrations
                     BathroomCount = table.Column<int>(type: "int", nullable: false),
                     Documentation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsFavorite = table.Column<bool>(type: "bit", nullable: true),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<int>(type: "int", nullable: false),
@@ -257,7 +258,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "11d9d502-3eb3-4815-90ef-637143312a62", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEOmPQGgqOr2+7r7tzBQKTfC4GfJEBe7+yQjHCy5rBaMZ+AdgVWSfSuvyRyXxGHdC0A==", null, false, "", false, "admin@admin.com" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "2f02e985-3606-4c04-b0b3-512f2c73d1ca", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAELK1HbsnFtCOH2ZB+4rGGUuFQl6NmGd8UxMnky5STTJSCVYy7nqOdfMuoiHd8rxpRQ==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

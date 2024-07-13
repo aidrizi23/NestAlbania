@@ -277,13 +277,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "58052354-9e1b-4f4b-a828-31796543f878",
+                            ConcurrencyStamp = "52b2eb57-e781-4b46-a5cd-c4e485ed35f2",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENd5A+3umw4JX83IntSKVnZBxOMrtUA7OGBpVrMvM3i9i/jpSXTpfyceKFrC6UWNIg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDqrTkt/hcaOIwUm1+sNh5vkZR240BbtPcEn9hcElm1Y96y1Fu+oOXFmJMKD8h1RDg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -397,6 +397,9 @@ namespace NestAlbania.Migrations
 
                     b.Property<int>("InsideArea")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MainImage")
                         .HasColumnType("nvarchar(max)");
