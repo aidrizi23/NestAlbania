@@ -89,7 +89,19 @@
                         </div>
                         <div class="card-body">
                             <form asp-controller="Account" asp-action="Register" method="post">
-                            
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <div>
+                                        <p>Sign up using:</p>
+                                        <button type="button" onclick="window.location.href = '@Url.Action("SignInWithGoogle", "Account")'">
+                                            Sign up with Google
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p>You are already signed up.</p>
+                                }
                                 <div class="mb-3">
                                     <input type="email" name="Email" asp-for="Email" class="form-control" placeholder="Email" required>
                                     <span asp-validation-for="Email" class="text-danger"></span>
