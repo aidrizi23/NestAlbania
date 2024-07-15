@@ -14,6 +14,7 @@ namespace NestAlbania.Data
         public string Motto { get; set; }
         public string YearsOfExeperience { get; set; }
 
+        
 
         public string? UserId { get; set; } // do te perdoret qe kur te krijhet te lidhet, te krijohet automatikisht nje user me te njejtin email dhe password
         public string Email { get; set; }
@@ -22,6 +23,7 @@ namespace NestAlbania.Data
         public string? RoleId { get; set; }
 
         public ICollection<Property>? Properties { get; set;}
+
 
     }
 }

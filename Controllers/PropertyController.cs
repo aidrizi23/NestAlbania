@@ -87,6 +87,7 @@ namespace NestAlbania.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PropertyForCreationDto dto)
         {
+
             // Handle main image upload
             string? mainImagePath = null;
             if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
@@ -128,6 +129,7 @@ namespace NestAlbania.Controllers
                 AgentId = agent?.Id, // Assign agent ID to property
                 Agent = await _agentService.GetAgentById(agent.Id),
                 PostedOn = DateTime.Now.Date,
+
             };
 
             // Save the property
@@ -183,6 +185,23 @@ namespace NestAlbania.Controllers
 
         }
 
+ 
+        [HttpPost]
+        public async Task<IActionResult> ToggleFavorite(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            Console.WriteLine(property.Name);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            property.IsFavorite = !property.IsFavorite; 
+            await _propertyService.EditPropertyAsync(property);
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -228,6 +247,7 @@ namespace NestAlbania.Controllers
                     var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
                     if (existingProperty == null)
                     {
+                        
                         return NotFound();
                     }
 
