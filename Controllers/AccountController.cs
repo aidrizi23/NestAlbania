@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace NestAlbania.Controllers
 {
@@ -129,10 +131,66 @@ namespace NestAlbania.Controllers
             return View(model);
 
         }
+        public async Task SignInWithGoogle()
+        {
+            //var redirectUrl = Url.Action("GoogleResponse", "Account");
+            //var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            //return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties 
+            {
+                RedirectUri = Url.Action("GoogleResponse")
+            });
+        }
+        [HttpGet("~/signin-google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            // Authenticate using the Google authentication scheme
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+            // Ensure result and Principal are not null
+            if (result?.Principal == null)
+            {
+                return BadRequest("Google authentication failed. No principal identities found.");
+            }
+
+            var emailClaim = result.Principal.FindFirst(ClaimTypes.Email);
+            var email = emailClaim?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Google authentication failed. Email claim not found.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    CustomUserName = email, // Custom username for the user
+                    UserName = email,
+                    Email = email,
+                    Id = Guid.NewGuid().ToString()
+                };
+
+                var createUserResult = await _userManager.CreateAsync(user);
+                if (!createUserResult.Succeeded)
+                {
+                    return BadRequest("Failed to create new user.");
+                }
+            }
+
+            // Sign in the user
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("Index", "Home");
+        }
 
 
+        [HttpGet("~/signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
     }
-
-
-
 }
+
