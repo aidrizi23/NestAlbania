@@ -8,6 +8,7 @@ using NestAlbania.FilterHelpers;
 using NestAlbania.Models;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
+using System.Security.Claims;
 
 namespace NestAlbania.Controllers
 {
@@ -50,8 +51,20 @@ namespace NestAlbania.Controllers
 
 
 
+
         public async Task<IActionResult> Delete(int id)
         {
+
+            var currentUserRoles = User.Claims
+      .Where(c => c.Type == ClaimTypes.Role)
+      .Select(c => c.Value)
+      .ToList();
+
+            // Kontrolloni nëse përdoruesi aktual është agjent
+            if (currentUserRoles.Contains("Agent"))
+            {
+                return Forbid();
+            }
             var agent = await _agent.GetAgentById(id);
             if (agent.UserId != null)
             {
@@ -71,9 +84,11 @@ namespace NestAlbania.Controllers
             {
                 return NotFound();
             }
-            
+
             return RedirectToAction("Index");
         }
+
+
 
         [HttpGet]
         public IActionResult Create()
