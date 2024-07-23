@@ -12,13 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
-    [Migration("20240723095835_fd")]
-    partial class fd
-========
-    [Migration("20240723095256_Errordelete")]
-    partial class Errordelete
->>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
+    [Migration("20240723101546_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,21 +286,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
-                            ConcurrencyStamp = "fa13cd9d-ffcf-4a4f-b678-803b04040090",
-========
-                            ConcurrencyStamp = "f978b39c-ab2b-4e8a-acd0-0d345476ab82",
->>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
+                            ConcurrencyStamp = "5e5f61f3-3691-49c0-bca8-f2a29bc1d410",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
-                            PasswordHash = "AQAAAAIAAYagAAAAEAClFHu0atkoytKe82UzV+h4Lx5egWHEHJhrTuvntAwJ9Ij91tZYczY33imiLuwoHA==",
-========
-                            PasswordHash = "AQAAAAIAAYagAAAAEI07ZHANNw7Ou1hvN2AoO0k9w1zHZwVkeO8Lz4Cf5WFrD4owwR0/tla2q5FH+BtaKw==",
->>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEPqRPaQlaV8OqmftYFk4vtDdRe+HlDP/iubMaWKKLHPMKBa28fW33iQcaVD7XfzHDg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
