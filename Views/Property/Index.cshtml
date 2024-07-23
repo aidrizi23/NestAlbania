@@ -190,7 +190,12 @@
 
 
         <div class="text-center">
-            <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
+            @if (User.IsInRole("Agent"))
+            {
+                <a asp-action="Create" class="btn btn-create btn-lg">Create New Property</a>
+            }
+            
+
         </div>
 
         <div class="text-right mt-4">
