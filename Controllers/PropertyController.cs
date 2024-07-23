@@ -301,6 +301,24 @@ namespace NestAlbania.Controllers
 
             return View("Index", properties);
         }
+        public async Task<IActionResult> Favorites()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
+            List<Property> favoriteProperties;
+            if (agent == null)
+            {
+                favoriteProperties = await _propertyService.GetFavoritePropertiesByUserIdAsync(userId);
+            }
+            else
+            {
+                favoriteProperties = await _propertyService.GetFavoritePropertiesByAgentIdAsync(agent.Id);
+            }
+
+            return View(favoriteProperties);
+        }
     }
+
 }

@@ -12,13 +12,13 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Migrations/20240719091415_newnew.Designer.cs
-    [Migration("20240719091415_newnew")]
-    partial class newnew
+<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
+    [Migration("20240723095835_fd")]
+    partial class fd
 ========
-    [Migration("20240722091702_init")]
-    partial class init
->>>>>>>> Normal-UserRole:Migrations/20240722091702_init.Designer.cs
+    [Migration("20240723095256_Errordelete")]
+    partial class Errordelete
+>>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,8 +150,9 @@ namespace NestAlbania.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(max)");
@@ -163,9 +164,8 @@ namespace NestAlbania.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("YearsOfExeperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("YearsOfExeperience")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -291,21 +291,21 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-<<<<<<<< HEAD:Migrations/20240719091415_newnew.Designer.cs
-                            ConcurrencyStamp = "0d18907c-1748-42f3-a91d-63489378809b",
+<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
+                            ConcurrencyStamp = "fa13cd9d-ffcf-4a4f-b678-803b04040090",
 ========
-                            ConcurrencyStamp = "0728a2ce-a6a9-4f06-9563-d07b4de2d69c",
->>>>>>>> Normal-UserRole:Migrations/20240722091702_init.Designer.cs
+                            ConcurrencyStamp = "f978b39c-ab2b-4e8a-acd0-0d345476ab82",
+>>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-<<<<<<<< HEAD:Migrations/20240719091415_newnew.Designer.cs
-                            PasswordHash = "AQAAAAIAAYagAAAAEANVQ/LuJAUY9eHmhP05wXb04Fe49y/dpzI8DnaDzleCLEEaIg8g2FWPHExWhlXIXA==",
+<<<<<<<< HEAD:Migrations/20240723095835_fd.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEAClFHu0atkoytKe82UzV+h4Lx5egWHEHJhrTuvntAwJ9Ij91tZYczY33imiLuwoHA==",
 ========
-                            PasswordHash = "AQAAAAIAAYagAAAAEBX8Z9cyfda6zxpH91X/19091MhiTZ+LkuyVXCyIDvC69EwARKgOytlW/Kvx4FFAlg==",
->>>>>>>> Normal-UserRole:Migrations/20240722091702_init.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEI07ZHANNw7Ou1hvN2AoO0k9w1zHZwVkeO8Lz4Cf5WFrD4owwR0/tla2q5FH+BtaKw==",
+>>>>>>>> Sign-up-fixes:Migrations/20240723095256_Errordelete.Designer.cs
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

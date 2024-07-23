@@ -132,6 +132,20 @@ namespace NestAlbania.Controllers
             {
                 return RedirectToAction("Index", "User");
             }
+            var userRole = new ApplicationUserRole()
+            {
+                UserId = user.Id,
+                RoleId = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
+            };
+            try
+            {
+                await _userRoleService.CreateAsync(userRole);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error creating user role.");
+
+            }
             return View(model);
 
         }
