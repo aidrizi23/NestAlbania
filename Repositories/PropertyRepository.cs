@@ -93,5 +93,18 @@ namespace NestAlbania.Repositories
             var properties = _context.Properties.Include(x => x.Agent).Where(x => x.AgentId == id);
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
+        public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
+        {
+            return await _context.Properties
+                .Where(p => p.IsFavorite && p.Agent.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
+        {
+            return await _context.Properties
+                .Where(p => p.IsFavorite && p.AgentId == agentId)
+                .ToListAsync();
+        }
     }
 }
