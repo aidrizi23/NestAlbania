@@ -29,6 +29,7 @@ namespace NestAlbania.Data
             const string ADMIN_ID = "a18be9c0-aa65-4af8-bd17-00bd9344e575";
             const string ADMIN_ROLE_ID = "b18be9c0-aa65-4af8-bd17-00bd9344e576";
             const string AGENT_ROLE_ID = "a14bs9c0-aa65-4af8-bd17-00bd9344e575";
+            const string NormalUser_ROLE_ID = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678";
 
             var hasher = new PasswordHasher<ApplicationUser>();
             modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
@@ -55,6 +56,12 @@ namespace NestAlbania.Data
                 Id = AGENT_ROLE_ID,
                 Name = "Agent",
                 NormalizedName = "AGENT"
+            });
+            modelBuilder.Entity<ApplicationRole>().HasData(new ApplicationRole
+            {
+                Id = NormalUser_ROLE_ID,
+                Name = "NormalUser",
+                NormalizedName = "NORMALUSER",
             });
 
             modelBuilder.Entity<ApplicationUserRole>().HasData(new ApplicationUserRole

@@ -7,10 +7,10 @@
         public string Surname { get; set; }
         public string? Image { get; set; }
 
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public int LicenseNumber { get; set; }
         public string Motto { get; set; }
-        public string YearsOfExeperience { get; set; }
+        public int YearsOfExeperience { get; set; }
 
         public string? Email { get; set; }
 

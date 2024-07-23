@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Humanizer;
+using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
@@ -21,14 +23,16 @@ namespace NestAlbania.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
-
+        private readonly IUserRoleService _userRoleService;
         public AccountController(UserManager<ApplicationUser> userManager, 
                                 SignInManager<ApplicationUser> signInManager, 
-                                ILogger<AccountController> logger)
+                                ILogger<AccountController> logger,
+                                IUserRoleService userRoleService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _userRoleService = userRoleService;
         }
 
         [HttpGet]
@@ -171,7 +175,20 @@ namespace NestAlbania.Controllers
                     Email = email,
                     Id = Guid.NewGuid().ToString()
                 };
+                var userRole = new ApplicationUserRole()
+                {
+                    UserId = user.Id,
+                    RoleId = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
+                };
+                try
+                {
+                    await _userRoleService.CreateAsync(userRole);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Error creating user role.");
 
+                }
                 var createUserResult = await _userManager.CreateAsync(user);
                 if (!createUserResult.Succeeded)
                 {
