@@ -142,8 +142,9 @@ namespace NestAlbania.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(max)");
@@ -155,9 +156,8 @@ namespace NestAlbania.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("YearsOfExeperience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("YearsOfExeperience")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -202,6 +202,12 @@ namespace NestAlbania.Migrations
                             Id = "a14bs9c0-aa65-4af8-bd17-00bd9344e575",
                             Name = "Agent",
                             NormalizedName = "AGENT"
+                        },
+                        new
+                        {
+                            Id = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
+                            Name = "NormalUser",
+                            NormalizedName = "NORMALUSER"
                         });
                 });
 
@@ -277,13 +283,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "52b2eb57-e781-4b46-a5cd-c4e485ed35f2",
+                            ConcurrencyStamp = "ee196e5d-a863-4b4b-9b62-7b87f067b640",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDqrTkt/hcaOIwUm1+sNh5vkZR240BbtPcEn9hcElm1Y96y1Fu+oOXFmJMKD8h1RDg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKjjnnsA+lmjVp9b/F22TiHn1J0S3YtTlNF16lDj6hcOgJ4UfX5zXTVDzzouqjnvUA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -400,6 +406,9 @@ namespace NestAlbania.Migrations
 
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastEdited")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MainImage")
                         .HasColumnType("nvarchar(max)");

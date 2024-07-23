@@ -48,8 +48,6 @@ namespace NestAlbania.Controllers
             return View(paginatedAgents);
         }
 
-
-
         public async Task<IActionResult> Delete(int id)
         {
             var agent = await _agent.GetAgentById(id);
@@ -100,6 +98,7 @@ namespace NestAlbania.Controllers
                 CustomUserName = $"{dto.Name}_{dto.Surname}", // proprty e shtuar tek useri pasi ne .net Identity kur bethet log in e bejme me ane te UserName dhe jo emailit by default, dhe i rash shkurt qe te na dale nje username nqs do te na duhet ndonjehere
                 UserName = dto.Email,
                 Email = dto.Email,
+                EmailConfirmed = true,
                 Id = Guid.NewGuid().ToString(),
             };
 

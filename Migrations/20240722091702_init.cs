@@ -8,15 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20240712081000_init.cs
-<<<<<<<< HEAD:Migrations/20240712081000_init.cs
     public partial class init : Migration
-========
-    public partial class innit : Migration
->>>>>>>> JeraBranch:Migrations/20240712090351_innit.cs
-========
-    public partial class @new : Migration
->>>>>>>> Favorite:Migrations/20240712091103_new.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -130,7 +122,7 @@ namespace NestAlbania.Migrations
                     BathroomCount = table.Column<int>(type: "int", nullable: false),
                     Documentation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherImages = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsFavorite = table.Column<bool>(type: "bit", nullable: true),
+                    IsFavorite = table.Column<bool>(type: "bit", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<int>(type: "int", nullable: false),
@@ -261,21 +253,14 @@ namespace NestAlbania.Migrations
                 values: new object[,]
                 {
                     { "a14bs9c0-aa65-4af8-bd17-00bd9344e575", null, "Agent", "AGENT" },
-                    { "b18be9c0-aa65-4af8-bd17-00bd9344e576", null, "admin", "ADMIN" }
+                    { "b18be9c0-aa65-4af8-bd17-00bd9344e576", null, "admin", "ADMIN" },
+                    { "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678", null, "NormalUser", "NORMALUSER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-<<<<<<<< HEAD:Migrations/20240712081000_init.cs
-<<<<<<<< HEAD:Migrations/20240712081000_init.cs
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "f382b189-ce63-4320-a12f-59da4035cff4", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEBQ8HzQaK46dPIwWaweKosfvtt3uyFyseKu3YjP7hVps2fmqf1XV0d9b2Pii39yF/A==", null, false, "", false, "admin@admin.com" });
-========
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "d26f4404-f691-43d3-9633-7e5c13fd555b", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEE8p+TNI+/rhZ8FWdlF56nZkB0jz0gzBClBw8B64QCMmtiG+D+hPA/kCSKShnNtL9g==", null, false, "", false, "admin@admin.com" });
->>>>>>>> JeraBranch:Migrations/20240712090351_innit.cs
-========
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "2f02e985-3606-4c04-b0b3-512f2c73d1ca", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAELK1HbsnFtCOH2ZB+4rGGUuFQl6NmGd8UxMnky5STTJSCVYy7nqOdfMuoiHd8rxpRQ==", null, false, "", false, "admin@admin.com" });
->>>>>>>> Favorite:Migrations/20240712091103_new.cs
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "0728a2ce-a6a9-4f06-9563-d07b4de2d69c", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEBX8Z9cyfda6zxpH91X/19091MhiTZ+LkuyVXCyIDvC69EwARKgOytlW/Kvx4FFAlg==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
