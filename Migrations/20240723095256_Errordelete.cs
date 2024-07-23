@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20240719091415_newnew.cs
-    public partial class newnew : Migration
-========
-    public partial class init : Migration
->>>>>>>> Normal-UserRole:Migrations/20240722091702_init.cs
+    public partial class Errordelete : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,10 +22,10 @@ namespace NestAlbania.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LicenseNumber = table.Column<int>(type: "int", nullable: false),
                     Motto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearsOfExeperience = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearsOfExeperience = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -264,11 +260,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-<<<<<<<< HEAD:Migrations/20240719091415_newnew.cs
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "0d18907c-1748-42f3-a91d-63489378809b", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEANVQ/LuJAUY9eHmhP05wXb04Fe49y/dpzI8DnaDzleCLEEaIg8g2FWPHExWhlXIXA==", null, false, "", false, "admin@admin.com" });
-========
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "0728a2ce-a6a9-4f06-9563-d07b4de2d69c", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEBX8Z9cyfda6zxpH91X/19091MhiTZ+LkuyVXCyIDvC69EwARKgOytlW/Kvx4FFAlg==", null, false, "", false, "admin@admin.com" });
->>>>>>>> Normal-UserRole:Migrations/20240722091702_init.cs
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "f978b39c-ab2b-4e8a-acd0-0d345476ab82", null, "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEI07ZHANNw7Ou1hvN2AoO0k9w1zHZwVkeO8Lz4Cf5WFrD4owwR0/tla2q5FH+BtaKw==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
