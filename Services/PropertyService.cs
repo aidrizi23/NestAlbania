@@ -59,5 +59,15 @@ namespace NestAlbania.Services
         {
             return await _repository.GetAllPaginatedPropertiesByAgentIdAsync(id, pageIndex, pageSize);
         }
+
+        public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
+        {
+            return await _repository.GetFavoritePropertiesByUserIdAsync(userId);
+        }
+
+        public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
+        {
+            return await _repository.GetFavoritePropertiesByAgentIdAsync(agentId);
+        }
     }
 }

@@ -283,21 +283,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-<<<<<<< HEAD
-                            ConcurrencyStamp = "0d18907c-1748-42f3-a91d-63489378809b",
-=======
-                            ConcurrencyStamp = "ee196e5d-a863-4b4b-9b62-7b87f067b640",
->>>>>>> Normal-UserRole
+                            ConcurrencyStamp = "fa13cd9d-ffcf-4a4f-b678-803b04040090",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-<<<<<<< HEAD
-                            PasswordHash = "AQAAAAIAAYagAAAAEANVQ/LuJAUY9eHmhP05wXb04Fe49y/dpzI8DnaDzleCLEEaIg8g2FWPHExWhlXIXA==",
-=======
-                            PasswordHash = "AQAAAAIAAYagAAAAEKjjnnsA+lmjVp9b/F22TiHn1J0S3YtTlNF16lDj6hcOgJ4UfX5zXTVDzzouqjnvUA==",
->>>>>>> Normal-UserRole
+                            PasswordHash = "AQAAAAIAAYagAAAAEAClFHu0atkoytKe82UzV+h4Lx5egWHEHJhrTuvntAwJ9Ij91tZYczY33imiLuwoHA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

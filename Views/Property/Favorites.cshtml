@@ -1,0 +1,52 @@
+﻿@model List<NestAlbania.Data.Property>
+
+@{
+    ViewData["Title"] = "Favorite Properties";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card custom-card">
+                <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <p class="card-text">
+                        @if (item.Description.Length > 100)
+                        {
+                            var shortDescription = item.Description.Substring(0, 100);
+                            <span class="short">@Html.Raw(shortDescription)@Html.Raw("...")</span>
+                            <span class="more" style="display: none;">@Html.Raw(item.Description)</span>
+                            <a href="#" class="read-more-link">Read More</a>
+                        }
+                        else
+                        {
+                            @Html.Raw(item.Description)
+                        }
+                    </p>
+
+                    <div class="property-details">
+                        <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
+                        <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
+                        <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
+                        <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
+                        <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
+                        <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
+                        <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
+                        <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+
+                   
+                </div>
+            </div>
+        </div>
+    }
+</div>
