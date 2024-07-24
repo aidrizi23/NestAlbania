@@ -22,6 +22,24 @@ namespace NestAlbania.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FavoriteProperty", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "PropertyId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("FavoriteProperties");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -283,13 +301,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fa13cd9d-ffcf-4a4f-b678-803b04040090",
+                            ConcurrencyStamp = "d4edbf3a-1066-4507-984e-47ee2f8af30a",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAClFHu0atkoytKe82UzV+h4Lx5egWHEHJhrTuvntAwJ9Ij91tZYczY33imiLuwoHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAM/xibEqA6DsgT3Wl3SUzknhrbiaRJYvoDCg2Qy5RaIqf6wh2u7oECVCeX1ve8s5g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -436,6 +454,25 @@ namespace NestAlbania.Migrations
                     b.ToTable("Properties");
                 });
 
+            modelBuilder.Entity("FavoriteProperty", b =>
+                {
+                    b.HasOne("NestAlbania.Data.Property", "Property")
+                        .WithMany("FavoriteProperties")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NestAlbania.Data.ApplicationUser", "User")
+                        .WithMany("FavoriteProperties")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("NestAlbania.Data.ApplicationRole", null)
@@ -500,6 +537,16 @@ namespace NestAlbania.Migrations
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>
                 {
                     b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("FavoriteProperties");
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Property", b =>
+                {
+                    b.Navigation("FavoriteProperties");
                 });
 #pragma warning restore 612, 618
         }

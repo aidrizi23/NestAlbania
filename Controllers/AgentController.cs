@@ -300,7 +300,7 @@ namespace NestAlbania.Controllers
 
             ViewData["CurrentNameFilter"] = query.Name;
             ViewData["CurrentSurnameFilter"] = query.Surname;
-            ViewData["CurrentYearsOfExperienceFilter"] = query.YearsOfExeperience;
+            ViewData["CurrentYearsOfExperienceFilter"] = query.YearsOfExperience;
             ViewData["CurrentEmailFilter"] = query.Email;
 
             return View("Index", agents);

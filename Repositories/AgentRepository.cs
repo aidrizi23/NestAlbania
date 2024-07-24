@@ -47,13 +47,10 @@ namespace NestAlbania.Repositories
             {
                 agentsQuery = agentsQuery.Where(x => x.Surname == query.Surname);
             }
-            //if (!string.IsNullOrWhiteSpace(query.YearsOfExeperience))
-            //{
-            //    agentsQuery = agentsQuery.Where(x => x.YearsOfExeperience == query.YearsOfExeperience);
-            //}
-            if (query.YearsOfExeperience.HasValue)
+        
+            if (query.YearsOfExperience.HasValue)
             {
-                agentsQuery = agentsQuery.Where(x => x.YearsOfExeperience == query.YearsOfExeperience.Value);
+                agentsQuery = agentsQuery.Where(x => x.YearsOfExeperience == query.YearsOfExperience.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(query.Email))
