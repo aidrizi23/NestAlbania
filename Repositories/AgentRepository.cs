@@ -20,7 +20,7 @@ namespace NestAlbania.Repositories
 
         public async Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10)
         {
-            var agentsQuery = _context.Agents
+            var agentsQuery = _context.Agents.Where(x => x.isDeleted == false)
                 .Include(a => a.Properties) // Include related properties if needed
                 .OrderByDescending(x => x.Id)
                 .AsQueryable();
@@ -30,14 +30,14 @@ namespace NestAlbania.Repositories
 
         public async Task<Agent> GetAgentByPropertyIdAsync(int id)
         {
-            return await _context.Agents
+            return await _context.Agents.Where(x => x.isDeleted == false)
                 .Include(a => a.Properties)
                 .FirstOrDefaultAsync(x => x.Properties.Any(p => p.Id == id));
         }
 
         public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
-            var agentsQuery = _context.Agents.AsQueryable();
+            var agentsQuery = _context.Agents.Where(x => x.isDeleted == false).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.Name))
             {
@@ -76,6 +76,18 @@ namespace NestAlbania.Repositories
             return await _context.Agents
                 .Include(a => a.Properties)
                 .FirstOrDefaultAsync(a => a.Id == id);
+        }
+        
+        public async Task SoftDeleteAgentAsync(Agent agent)
+        {
+            agent.isDeleted = true;
+            await Edit(agent);
+        }
+        
+        public async Task UnDeleteAgentAsync(Agent agent)
+        {
+            agent.isDeleted = false;
+            await Edit(agent);
         }
     }
 }

@@ -75,13 +75,40 @@ namespace NestAlbania.Controllers
                 {
                     await _userRoleService.DeleteAsync(userRole);
                 }
-                await _agent.DeleteAgent(agent);
+                await _agent.HardDeleteAgent(agent);
             }
             else
             {
                 return NotFound();
             }
 
+            return RedirectToAction("Index");
+        }
+        
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            var agent = await _agent.GetAgentById(id);
+            var agent_user = await _userService.GetUserByIdAsync(agent.UserId);
+            agent_user.IsDeleted = true;
+            await _userService.UpdateUserAsync(agent_user);
+            if (agent == null)
+            {
+                return NotFound();
+            }
+
+            await _agent.SoftDeleteAgentAsync(agent);
+            return RedirectToAction("Index");
+        }
+        
+        public async Task<IActionResult> UnDelete(int id)
+        {
+            var agent = await _agent.GetAgentById(id);
+            if (agent == null)
+            {
+                return NotFound();
+            }
+
+            await _agent.UnDeleteAgentAsync(agent);
             return RedirectToAction("Index");
         }
 
@@ -114,6 +141,7 @@ namespace NestAlbania.Controllers
                 Email = dto.Email,
                 EmailConfirmed = true,
                 Id = Guid.NewGuid().ToString(),
+                IsDeleted = false,
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -152,6 +180,7 @@ namespace NestAlbania.Controllers
                 UserId = user.Id,
                 RoleId = dto.RoleId,
                 Password = dto.Password,
+                isDeleted = false,
             };
 
             await _agent.CreateAgent(agent);

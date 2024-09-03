@@ -236,6 +236,9 @@ namespace NestAlbania.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -286,13 +289,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3c2819be-e1db-4add-ad4d-c588867eeb97",
+                            ConcurrencyStamp = "3821c8c8-1905-4a3d-802b-8fe50e15a580",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDXPqS9sgXK9dQCkUhce87Ri9c0ln3JToTZolb0Pj1g68cLm6HY+PxPqm05CZ1820w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAQ1boHRzijxoE8V/UvFLUJ71fgkhfVko9dVRy2tCydtbBhZ2ClBkS2X6c9nlM4GeA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
