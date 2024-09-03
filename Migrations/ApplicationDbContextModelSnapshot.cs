@@ -159,6 +159,9 @@ namespace NestAlbania.Migrations
                     b.Property<int>("YearsOfExeperience")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Agents");
@@ -283,13 +286,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f95175a-6840-44fb-9e85-e994868a2871",
+                            ConcurrencyStamp = "3c2819be-e1db-4add-ad4d-c588867eeb97",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENv06FnuQPbMG48eHGpy6DXEGg78SehI7Su7myAGaTlSGu9yhWewhBEc1CX0bXpaVA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDXPqS9sgXK9dQCkUhce87Ri9c0ln3JToTZolb0Pj1g68cLm6HY+PxPqm05CZ1820w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -331,6 +334,9 @@ namespace NestAlbania.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
@@ -362,6 +368,9 @@ namespace NestAlbania.Migrations
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -428,6 +437,12 @@ namespace NestAlbania.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("isDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("isSold")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

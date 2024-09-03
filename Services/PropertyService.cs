@@ -30,7 +30,7 @@ namespace NestAlbania.Services
             await _repository.Create(property);
         }
 
-        public async Task DeletePropertyAsync(Property property)
+        public async Task HardDeletePropertyAsync(Property property)
         {
             await _repository.Delete(property);
         }
@@ -69,5 +69,22 @@ namespace NestAlbania.Services
         {
             return await _repository.GetFavoritePropertiesByAgentIdAsync(agentId);
         }
+        
+        public async Task SoftDeletePropertyAsync(Property property)
+        {
+            await _repository.SoftDeletePropertyAsync(property);
+        }
+        
+        public async Task SellPropertyAsync(Property property)
+        {
+            await _repository.SellPropertyAsync(property);
+        }
+        
+        public async Task UnDeletePropertyAsync(Property property)
+        {
+            await _repository.UnDeletePropertyAsync(property);
+        }
+        
+        
     }
 }

@@ -174,8 +174,18 @@
                             @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                            <!-- Sell button using POST -->
+                            <form asp-action="Sell" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Sell</button>
+                            </form>
 
-                           
+                            <!-- SoftDelete button using POST -->
+                            <form asp-action="SoftDelete" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">SoftDelete</button>
+                            </form>
+                            
                             <button type="button" class="btn @((item.IsFavorite ? "btn-success" : "btn-warning")) btn-sm"
                                     onclick="toggleFavorite('@item.Id', this)">
                                 <i class="fas fa-star"></i> Toggle Favorite
