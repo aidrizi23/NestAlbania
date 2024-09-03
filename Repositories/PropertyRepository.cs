@@ -47,7 +47,8 @@ namespace NestAlbania.Repositories
             }
             if (query.FullArea.HasValue)
             {
-                properties = properties.Where(p => p.FullArea >= query.FullArea);
+                properties = properties.Where(p => p.FullArea >= query.FullArea * 0.9 && p.FullArea <= query.FullArea * 1.1); 
+                // Allow 10% of flexibility in the area
             }
             if (query.InsideArea.HasValue)
             {
@@ -104,7 +105,7 @@ namespace NestAlbania.Repositories
         public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
         {
             return await _context.Properties
-                .Where(p => p.IsFavorite && p.AgentId == agentId)
+                .Where(p => p.IsFavorite)
                 .ToListAsync();
         }
     }
