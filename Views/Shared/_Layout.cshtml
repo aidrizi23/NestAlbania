@@ -23,6 +23,29 @@
     <link href="~/assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="~/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <style>
+        /* Remove arrows from number input for Webkit browsers (Chrome, Safari, newer versions of Opera) */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Remove arrows from number input for Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type === 'text') {
+                    inputs[i].setAttribute('autocomplete', 'off');
+                }
+            }
+        });
+    </script>
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -277,8 +300,6 @@
                 </div>
             </div>
         </footer>
-        </div>
-
     </main>
     <script src="~/assets/js/core/popper.min.js"></script>
     <script src="~/assets/js/core/bootstrap.min.js"></script>

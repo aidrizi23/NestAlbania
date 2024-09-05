@@ -85,57 +85,45 @@
 </head>
 <body>
     <div class="container">
+        
         @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
         {
-            <div class="row mb-3">
-                @* <div class="col-md-2"> *@
-                @*     <label><i class="fas fa-home"></i> Name:</label> *@
-                @*     <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control form-control-sm" /> *@
-                @* </div> *@
-                <div class="col-md-2">
-                    <label><i class="fas fa-ruler-combined"></i> Full Area:</label>
-                    <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control form-control-sm" />
-                </div>
-                @* <div class="col-md-2"> *@
-                @*     <label><i class="fas fa-ruler-vertical"></i> Inside Area:</label> *@
-                @*     <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control form-control-sm" /> *@
-                @* </div> *@
-                @* <div class="col-md-2"> *@
-                @*     <label><i class="fas fa-bed"></i> Bedroom Count:</label> *@
-                @*     <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control form-control-sm" /> *@
-                @* </div> *@
-                @* <div class="col-md-2"> *@
-                @*     <label><i class="fas fa-bath"></i> Bathroom Count:</label> *@
-                @*     <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" /> *@
-                @* </div> *@
-                @* <div class="col-md-2"> *@
-                @*     <label><i class="fas fa-user"></i> Agent Name:</label> *@
-                @*     <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" /> *@
-                @* </div> *@
-                <div class="col-md-2">
-                    <label><i class="fas fa-dollar-sign"></i> Min Price:</label>
-                    <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-dollar-sign"></i> Max Price:</label>
-                    <input type="number" name="MaxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control form-control-sm" />
-                </div>
-            
-                <div class="col-md-2">
-                    <label><i class="fas fa-sort"></i> Sort By:</label>
-                    <select name="sortOrder" class="form-control form-control-sm">
-                        <option value="">-- Select --</option>
-                        <option value="price-asc" selected="@(ViewData["CurrentSortFilter"]?.ToString() == "price-asc" ? "selected" : "")">Price (Low to High)</option>
-                        <option value="price-desc" selected="@(ViewData["CurrentSortFilter"]?.ToString() == "price-desc" ? "selected" : "")">Price (High to Low)</option>
-                    </select>
-                </div>
-                <div class="d-flex justify-content-end mb-3">
-                    <button type="submit" class="btn btn-info btn-sm"><i class="fas fa-filter"></i> Filter</button>
-                    <button type="button" class="btn btn-secondary btn-sm ml-2" id="clearFilters"><i class="fas fa-times"></i> Clear Filters</button>
-                </div>
-
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label><i class="fas fa-ruler-combined"></i> Full Area:</label>
+                <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control form-control-sm" />
             </div>
+            <div class="col-md-2">
+                <label><i class="fas fa-dollar-sign"></i> Min Price:</label>
+                <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label><i class="fas fa-dollar-sign"></i> Max Price:</label>
+                <input type="number" name="MaxPrice" value="@ViewData["CurrentMaxPriceFilter"]" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label><i class="fas fa-sort"></i> Sort By:</label>
+                <select name="sortOrder" class="form-control form-control-sm">
+                    <option value="">-- Select --</option>
+                    <option value="price-asc" selected="@(ViewData["CurrentSortFilter"]?.ToString() == "price-asc" ? "selected" : "")">Price (Low to High)</option>
+                    <option value="price-desc" selected="@(ViewData["CurrentSortFilter"]?.ToString() == "price-desc" ? "selected" : "")">Price (High to Low)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mb-3">
+            <button type="button" class="btn btn-primary btn-sm" id="toggleAdditionalFilters">
+                <i class="fas fa-plus"></i> More Filters
+            </button>
+            <div>
+                <button type="submit" class="btn btn-info btn-sm"><i class="fas fa-filter"></i> Filter</button>
+                <button type="button" class="btn btn-secondary btn-sm ml-2" id="clearFilters"><i class="fas fa-times"></i> Clear Filters</button>
+            </div>
+        </div>
+
+        @Html.Partial("_AdditionalFilters")
         }
+        
         <div class="row">
             @foreach (var item in Model)
             {
@@ -229,46 +217,139 @@
         </div>
     </div>
 
+</body>
+    @* <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> *@
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"></script> *@
+    @* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> *@
+    @* *@
+    @* <script> *@
+    @*     $(document).ready(function () { *@
+    @*         $('.more').hide(); *@
+    @* *@
+    @*         $('.read-more-link').click(function (e) { *@
+    @*             e.preventDefault(); *@
+    @*             var $this = $(this); *@
+    @*             var $moreText = $this.prev('.more'); *@
+    @*             $moreText.slideToggle(); *@
+    @*             $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More'); *@
+    @*         }); *@
+    @* *@
+    @*         $('#clearFilters').click(function () { *@
+    @*             window.location.href = '@Url.Action("Index", "Property")'; *@
+    @*         }); *@
+    @*     }); *@
+    @* *@
+    @*     @section Scripts { *@
+    @*             <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script> *@
+    @*     <script> *@
+    @*         function toggleFavorite(id, button) { *@
+    @*             $.post('/Property/ToggleFavorite', { id: id }) *@
+    @*                 .done(function (data) { *@
+    @*                     console.log('Toggle successful'); *@
+    @*                     $(button).toggleClass('btn-warning btn-success'); // Ndryshoni klasën e butonit nga btn-warning në btn-success *@
+    @*                 }) *@
+    @*                 .fail(function (error) { *@
+    @*                     console.error('Error toggling favorite:', error); *@
+    @*                 }); *@
+    @*         } *@
+    @*     </script> *@
+    @*      *@
+    @*     } *@
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+@* <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> *@
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"></script> *@
+@* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> *@
+@* *@
+@* <script> *@
+@*     $(document).ready(function () { *@
+@*         $('.more').hide(); *@
+@* *@
+@*         $('.read-more-link').click(function (e) { *@
+@*             e.preventDefault(); *@
+@*             var $this = $(this); *@
+@*             var $moreText = $this.prev('.more'); *@
+@*             $moreText.slideToggle(); *@
+@*             $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More'); *@
+@*         }); *@
+@* *@
+@*         $('#clearFilters').click(function () { *@
+@*             window.location.href = '@Url.Action("Index", "Property")'; *@
+@*         }); *@
+@* *@
+@*         $("#toggleAdditionalFilters").click(function() { *@
+@*             $("#additionalFilters").toggle(); *@
+@*             $(this).find('i').toggleClass('fa-plus fa-minus'); *@
+@*         }); *@
+@* *@
+@*         $("#clearFilters").click(function() { *@
+@*             $('input[type="text"], input[type="number"]').val(''); *@
+@*             $('select').prop('selectedIndex', 0); *@
+@*         }); *@
+@*     }); *@
+@* *@
+@*     function toggleFavorite(id, button) { *@
+@*         $.post('/Property/ToggleFavorite', { id: id }) *@
+@*             .done(function (data) { *@
+@*                 console.log('Toggle successful'); *@
+@*                 $(button).toggleClass('btn-warning btn-success'); *@
+@*             }) *@
+@*             .fail(function (error) { *@
+@*                 console.error('Error toggling favorite:', error); *@
+@*             }); *@
+@*     } *@
+@* </script> *@
 
-    <script>
-        $(document).ready(function () {
-            $('.more').hide();
 
-            $('.read-more-link').click(function (e) {
-                e.preventDefault();
-                var $this = $(this);
-                var $moreText = $this.prev('.more');
-                $moreText.slideToggle();
-                $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
-            });
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            $('#clearFilters').click(function () {
-                window.location.href = '@Url.Action("Index", "Property")';
-            });
+<script>
+    $(document).ready(function () {
+        $('.more').hide();
+
+        $('.read-more-link').click(function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            var $moreText = $this.prev('.more');
+            $moreText.slideToggle();
+            $this.text($moreText.is(':visible') ? 'Read Less' : 'Read More');
         });
 
-        @section Scripts {
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
-        <script>
-            function toggleFavorite(id, button) {
-                $.post('/Property/ToggleFavorite', { id: id })
-                    .done(function (data) {
-                        console.log('Toggle successful');
-                        $(button).toggleClass('btn-warning btn-success'); // Ndryshoni klasën e butonit nga btn-warning në btn-success
-                    })
-                    .fail(function (error) {
-                        console.error('Error toggling favorite:', error);
-                    });
-            }
-        </script>
-        
+        $('#clearFilters').click(function () {
+            window.location.href = '@Url.Action("Index", "Property")';
+        });
+
+        $("#toggleAdditionalFilters").click(function() {
+            $("#additionalFilters").toggle();
+            $(this).find('i').toggleClass('fa-plus fa-minus');
+            $('input[name="ShowAdditionalFilters"]').val($("#additionalFilters").is(":visible"));
+        });
+
+        $("#clearFilters").click(function() {
+            $('input[type="text"], input[type="number"]').val('');
+            $('select').prop('selectedIndex', 0);
+            $("#additionalFilters").hide();
+            $('input[name="ShowAdditionalFilters"]').val("false");
+            $("#toggleAdditionalFilters").find('i').removeClass('fa-minus').addClass('fa-plus');
+        });
+
+        // Update button icon based on additional filters visibility
+        if ($("#additionalFilters").is(":visible")) {
+            $("#toggleAdditionalFilters").find('i').removeClass('fa-plus').addClass('fa-minus');
         }
-    </script>
+    });
 
+    function toggleFavorite(id, button) {
+        $.post('/Property/ToggleFavorite', { id: id })
+            .done(function (data) {
+                console.log('Toggle successful');
+                $(button).toggleClass('btn-warning btn-success');
+            })
+            .fail(function (error) {
+                console.error('Error toggling favorite:', error);
+            });
+    }
+</script>
 
-</body>
 </html>

@@ -350,11 +350,29 @@
             }
 
 
+            // [HttpGet]
+            // public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "")
+            // {
+            //     var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
+            //     
+            //     ViewData["CurrentNameFilter"] = query.Name ?? "";
+            //     ViewData["CurrentFullAreaFilter"] = query.FullArea;
+            //     ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
+            //     ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
+            //     ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+            //     ViewData["CurrentMinPriceFilter"] = query.MinPrice;
+            //     ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
+            //     ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
+            //     ViewData["CurrentSortOrder"] = sortOrder;
+            //
+            //     return View("Index", properties);
+            // }
+            
             [HttpGet]
-            public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "")
+            public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
             {
                 var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
-                
+    
                 ViewData["CurrentNameFilter"] = query.Name ?? "";
                 ViewData["CurrentFullAreaFilter"] = query.FullArea;
                 ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
@@ -364,6 +382,9 @@
                 ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
                 ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
                 ViewData["CurrentSortOrder"] = sortOrder;
+
+                // Add this line to handle the ShowAdditionalFilters state
+                ViewData["ShowAdditionalFilters"] = ShowAdditionalFilters ?? false;
 
                 return View("Index", properties);
             }
