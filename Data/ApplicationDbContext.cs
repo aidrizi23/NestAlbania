@@ -19,7 +19,7 @@ namespace NestAlbania.Data
         public DbSet<Property> Properties { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Agent> Agents { get; set; }
-
+        public DbSet<UserFavorite> Favorites { get; set; }
      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,6 +69,7 @@ namespace NestAlbania.Data
                 RoleId = ADMIN_ROLE_ID,
                 UserId = ADMIN_ID
             });
+
 
 
             modelBuilder.Entity<Property>()
