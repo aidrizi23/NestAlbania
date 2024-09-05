@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NestAlbania.Data;
 
@@ -11,9 +12,11 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240903065817_price_pre_meter")]
+    partial class price_pre_meter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +162,6 @@ namespace NestAlbania.Migrations
                     b.Property<int>("YearsOfExeperience")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Agents");
@@ -236,9 +236,6 @@ namespace NestAlbania.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -289,17 +286,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "3821c8c8-1905-4a3d-802b-8fe50e15a580",
-                            
+                            ConcurrencyStamp = "3f95175a-6840-44fb-9e85-e994868a2871",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-
-                            PasswordHash = "AQAAAAIAAYagAAAAEAQ1boHRzijxoE8V/UvFLUJ71fgkhfVko9dVRy2tCydtbBhZ2ClBkS2X6c9nlM4GeA==",
-                            
+                            PasswordHash = "AQAAAAIAAYagAAAAENv06FnuQPbMG48eHGpy6DXEGg78SehI7Su7myAGaTlSGu9yhWewhBEc1CX0bXpaVA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -341,9 +334,6 @@ namespace NestAlbania.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
@@ -375,9 +365,6 @@ namespace NestAlbania.Migrations
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -445,41 +432,11 @@ namespace NestAlbania.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("isSold")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AgentId");
 
                     b.ToTable("Properties");
-                });
-
-            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PropertyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -541,25 +498,6 @@ namespace NestAlbania.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Agent");
-                });
-
-            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
-                {
-                    b.HasOne("NestAlbania.Data.Property", "Property")
-                        .WithMany()
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NestAlbania.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Property");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>

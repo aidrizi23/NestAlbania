@@ -17,9 +17,6 @@ namespace NestAlbania.Data
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
         public bool IsFavorite { get; set; }
-      
-        // mbetet per tu bere lidhja me Agjentin, kategorine, city.
-        //lidhja me Agjentin, kategorine, city dhe status.
 
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
@@ -32,6 +29,15 @@ namespace NestAlbania.Data
 
         public DateTime PostedOn { get; set; }
         public DateTime? LastEdited { get; set; }
+
+        public double PricePerMeterSquared  =>  (double)Price / FullArea;
+        
+        // public bool? isDeleted { get; set; }
+        public bool? isSold { get; set; }
+        
+        
+        // public bool HasParking { get; set; }
+        
     }
    
 }

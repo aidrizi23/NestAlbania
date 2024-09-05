@@ -37,7 +37,7 @@ namespace NestAlbania.Controllers
             if(userRole != null)await _userRoleService.DeleteAsync(userRole);
 
             var agent = await _agentService.GetAgentByUserIdAsync(user.Id);
-            if (agent != null) await _agentService.DeleteAgent(agent);
+            if (agent != null) await _agentService.HardDeleteAgent(agent);
             
             return RedirectToAction("Index");
         }

@@ -12,7 +12,7 @@ namespace NestAlbania.Services
         Task<Agent> GetAgentById(int id);
         Task CreateAgent(Agent agent);
         Task EditAgent(Agent agent);
-        Task DeleteAgent(Agent agent);
+        Task HardDeleteAgent(Agent agent);
         Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10);
 
         Task<Agent> GetAgentByPropertyIdAsync(int id);
@@ -20,6 +20,9 @@ namespace NestAlbania.Services
         Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10);
         Task<Agent> GetAgentByUserIdAsync(string userId);
         Task<Agent> GetAgentWPropertiesAsync(int id);
+        
+        Task SoftDeleteAgentAsync(Agent agent);
+        Task UnDeleteAgentAsync(Agent agent);
 
     }
 }

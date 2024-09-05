@@ -88,30 +88,30 @@
         @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
         {
             <div class="row mb-3">
-                <div class="col-md-2">
-                    <label><i class="fas fa-home"></i> Name:</label>
-                    <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control form-control-sm" />
-                </div>
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-home"></i> Name:</label> *@
+                @*     <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
                 <div class="col-md-2">
                     <label><i class="fas fa-ruler-combined"></i> Full Area:</label>
                     <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control form-control-sm" />
                 </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-ruler-vertical"></i> Inside Area:</label>
-                    <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-bed"></i> Bedroom Count:</label>
-                    <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-bath"></i> Bathroom Count:</label>
-                    <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-user"></i> Agent Name:</label>
-                    <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" />
-                </div>
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-ruler-vertical"></i> Inside Area:</label> *@
+                @*     <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-bed"></i> Bedroom Count:</label> *@
+                @*     <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-bath"></i> Bathroom Count:</label> *@
+                @*     <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-user"></i> Agent Name:</label> *@
+                @*     <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
                 <div class="col-md-2">
                     <label><i class="fas fa-dollar-sign"></i> Min Price:</label>
                     <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control form-control-sm" />
@@ -162,6 +162,7 @@
                                 <p><i class="fas fa-info-circle"></i> <strong>City:</strong> @Html.DisplayFor(modelItem => item.City)</p>
                                 <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> @Html.DisplayFor(modelItem => item.Price) $</p>
                                 <p><i class="fas fa-ruler-combined"></i> <strong>Full Area:</strong> @Html.DisplayFor(modelItem => item.FullArea)</p>
+                                <p><i class="fas fa-ruler-combined"></i> <strong>Price Per Meter:</strong> @Html.DisplayFor(modelItem => item.PricePerMeterSquared)</p>
                                 <p><i class="fas fa-home"></i> <strong>Inside Area:</strong> @Html.DisplayFor(modelItem => item.InsideArea) </p>
                                 <p><i class="fas fa-bed"></i> <strong>Bedrooms:</strong> @Html.DisplayFor(modelItem => item.BedroomCount)</p>
                                 <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
@@ -173,8 +174,18 @@
                             @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm mr-1" })
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm mr-1" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                            <!-- Sell button using POST -->
+                            <form asp-action="Sell" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Sell</button>
+                            </form>
 
-                           
+                            <!-- SoftDelete button using POST -->
+                            <form asp-action="SoftDelete" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">SoftDelete</button>
+                            </form>
+                            
                             <button type="button" class="btn @((item.IsFavorite ? "btn-success" : "btn-warning")) btn-sm"
                                     onclick="toggleFavorite('@item.Id', this)">
                                 <i class="fas fa-star"></i> Toggle Favorite
