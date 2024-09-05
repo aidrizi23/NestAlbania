@@ -7,6 +7,7 @@ using NestAlbania.Services;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+    [Route("country")]
     public class CountryController : Controller
     {
         private readonly ICountryService _countryService;
@@ -14,18 +15,24 @@ namespace NestAlbania.Controllers
         {
             _countryService = countryService;
         }
+        
+        [Route("list")]
         public async Task<IActionResult> Index(int page =1)
         {
             int pageSize = 10;
             var countries = await _countryService.GetPaginatedCountries(page = 1, pageSize = 10);
             return View(countries);
         }
+        
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var country = await _countryService.GetCountryById(id);
             if (country == null) return NotFound();
             return View(country);
         }
+        
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             
@@ -38,12 +45,14 @@ namespace NestAlbania.Controllers
             }
         }
         [HttpGet]
+        [Route("create")]
         public async Task<IActionResult> Create()
         {
             CountryForCreationDto dto = new CountryForCreationDto();
             return View(dto);
         }
         [HttpPost]
+        [Route("create")]
         public async Task<IActionResult> Create(CountryForCreationDto dto)
         {
             if (dto == null) return BadRequest();
@@ -53,6 +62,7 @@ namespace NestAlbania.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var country = await _countryService.GetCountryById(id);
@@ -60,6 +70,7 @@ namespace NestAlbania.Controllers
             return View(country);
         }
         [HttpPost]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(Country country)
         {
             if (country == null) return BadRequest();

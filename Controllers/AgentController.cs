@@ -13,6 +13,7 @@ using System.Security.Claims;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+    [Route("agent")]
     public class AgentController : Controller
     {
         public readonly IAgentService _agent;
@@ -39,6 +40,8 @@ namespace NestAlbania.Controllers
         //    var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
         //    return View(agent);
         //}
+        [HttpGet]
+        [Route("list")]
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
             var paginatedAgents = await _agent.GetPaginatedAgent(pageIndex, pageSize);
@@ -48,7 +51,9 @@ namespace NestAlbania.Controllers
 
             return View(paginatedAgents);
         }
-
+        
+        
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
 
@@ -85,6 +90,7 @@ namespace NestAlbania.Controllers
             return RedirectToAction("Index");
         }
         
+        [Route("softdelete/{id}")]
         public async Task<IActionResult> SoftDelete(int id)
         {
             var agent = await _agent.GetAgentById(id);
@@ -100,6 +106,7 @@ namespace NestAlbania.Controllers
             return RedirectToAction("Index");
         }
         
+        [Route("undelete/{id}")]
         public async Task<IActionResult> UnDelete(int id)
         {
             var agent = await _agent.GetAgentById(id);
@@ -115,6 +122,7 @@ namespace NestAlbania.Controllers
 
 
         [HttpGet]
+        [Route("create")]
         public IActionResult Create()
         {
             var dto = new AgentForCreationDto();
@@ -123,6 +131,7 @@ namespace NestAlbania.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("create")]
         public async Task<IActionResult> Create(AgentForCreationDto dto)
         {
             // kontrollojme nqs emili ekziston
@@ -198,6 +207,9 @@ namespace NestAlbania.Controllers
 
             return RedirectToAction("Index");
         }
+        
+        [HttpGet]
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var agentToShowDetails = await _agent.GetAgentWPropertiesAsync(id);
@@ -205,45 +217,16 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var agentToEdit = await _agent.GetAgentById(id);
             return View(agentToEdit);
         }
-        // [HttpPost]
-        // public async Task<IActionResult> Edit(Agent agent)
-        // {
-        //     var existingAgent = await _agent.GetAgentById(agent.Id);
-        //     if (existingAgent == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     existingAgent.Name = agent.Name;
-        //     existingAgent.Surname = agent.Surname;
-        //     existingAgent.LicenseNumber = agent.LicenseNumber;
-        //     existingAgent.Motto = agent.Motto;
-        //     existingAgent.PhoneNumber = agent.PhoneNumber;
-        //     existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-        //     existingAgent.Email = agent.Email;
-        //     existingAgent.RoleId = agent.RoleId;
-        //     existingAgent.Password = agent.Password;
-        //
-        //     // Handle file upload if a file is provided
-        //     var file = HttpContext.Request.Form.Files.FirstOrDefault();
-        //     if (file != null)
-        //     {
-        //         var uploadDir = _configuration["Uploads:AgentImg"];
-        //         var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
-        //         fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
-        //         existingAgent.Image = fileName;
-        //     }
-        //
-        //     await _agent.EditAgent(existingAgent);
-        //     return RedirectToAction("Index");
-        // }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(Agent agent)
         {
             var existingAgent = await _agent.GetAgentById(agent.Id);
@@ -323,6 +306,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("filter")]
         public async Task<IActionResult> GetFilteredAgents([FromQuery] AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
             var agents = await _agent.GetFilteredAgents(query, pageIndex, pageSize);
@@ -334,6 +318,9 @@ namespace NestAlbania.Controllers
 
             return View("Index", agents);
         }
+        
+        [HttpGet]
+        [Route("user")]
         public async Task<IActionResult> GetAgentDetailsUser()
         {
             var user = await _userManager.GetUserAsync(User);

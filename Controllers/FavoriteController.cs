@@ -6,6 +6,7 @@ using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
+    [Route("favorite")]
     public class FavoriteController : Controller
     {
         private readonly IFavoriteService _favoriteService;
@@ -17,6 +18,7 @@ namespace NestAlbania.Controllers
             _userManager = userManager;
         }
         [HttpGet]
+        [Route("list")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -25,6 +27,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
+        // [Route("add")]
         public async Task<IActionResult> AddFavorite(int propertyId)
         {
             var user = await _userManager.GetUserAsync(User);

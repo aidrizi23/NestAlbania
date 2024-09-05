@@ -9,6 +9,7 @@ using System.Runtime.ConstrainedExecution;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+    [Route("[controller]")]
     public class JobApplyController : Controller
     {
         private readonly IJobApplyService _jobapplyService;
@@ -20,18 +21,24 @@ namespace NestAlbania.Controllers
             _fileHandleService = fileHandlerService;
             _configuration = configuration;
         }
+        
+        [Route("list")]
         public async Task<IActionResult> Index(int page =1)
         {
             int pageSize = 10;
             var applications = await _jobapplyService.GetAllPaginatedJobApplicationsAsync(page = 1, pageSize = 10);
             return View(applications);
         }
+        
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var application = await _jobapplyService.GetJobApplicatonByIdAsync(id);
             if (application == null) return NotFound();
             return View(application);
         }
+        
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             
@@ -44,12 +51,14 @@ namespace NestAlbania.Controllers
             }
         }
         [HttpGet]
+        [Route("create")]
         public async Task<IActionResult> Create()
         {
             JobApplicationDto dto = new JobApplicationDto();
             return View(dto);
         }
         [HttpPost]
+        [Route("create")]
         public async Task<IActionResult> Create(JobApplicationDto dto)
         {
             if (dto == null) return BadRequest();
@@ -77,6 +86,7 @@ namespace NestAlbania.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var application = await _jobapplyService.GetJobApplicatonByIdAsync(id);
@@ -85,6 +95,7 @@ namespace NestAlbania.Controllers
 
         }
         [HttpPost]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(JobApply jobApply)
         {
             if (jobApply == null) return BadRequest();

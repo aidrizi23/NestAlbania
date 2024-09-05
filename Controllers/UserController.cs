@@ -7,6 +7,7 @@ using NestAlbania.Services;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+    [Route("user")]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -20,13 +21,17 @@ namespace NestAlbania.Controllers
             _userRoleService = userRoleService;
             _agentService = agentService;
         }
-
+        
+        [HttpGet]
+        [Route("list")]
         public async Task<IActionResult> Index()
         {
             var users = await _userRepository.FindAllAsync();
             return View(users);
         }
-
+        
+        
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
@@ -43,6 +48,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -54,12 +60,15 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(ApplicationUser user)
         {
             await _userRepository.UpdateUserAsync(user);
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(string id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -73,12 +82,15 @@ namespace NestAlbania.Controllers
 
 
         [HttpGet]
+        [Route("role-list")]
         public async Task<IActionResult> RoleIndex()
         {
             var roles = await _roleService.GetAllAsync();
             return View(roles);
         }
 
+  
+        [Route("role-delete/{id}")]
         public async Task<IActionResult> RoleDelete(string id)
         {
             await _roleService.DeleteAsync(id);
@@ -86,6 +98,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("role-create")]
         public IActionResult RoleCreate()
         {
             ApplicationRole role = new ApplicationRole();
@@ -93,6 +106,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
+        [Route("role-create")]
         public async Task<IActionResult> RoleCreate(ApplicationRole role)
         {
             await _roleService.CreateAsync(role);
@@ -100,6 +114,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("role-edit/{id}")]
         public async Task<IActionResult> RoleEdit(string id)
         {
             var role = await _roleService.GetByIdAsync(id);
@@ -110,6 +125,7 @@ namespace NestAlbania.Controllers
             return View(role);
         }
         [HttpPost]
+        [Route("role-edit/{id}")]
         public async Task<IActionResult> RoleEdit(ApplicationRole role)
         {
             await _roleService.UpdateAsync(role);
@@ -117,6 +133,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("role-details/{id}")]
         public async Task<IActionResult> RoleDetails(string id)
         {
             var role = await _roleService.GetByIdAsync(id);
@@ -131,6 +148,7 @@ namespace NestAlbania.Controllers
         // ketu do te krijojme metodat per applicationuserrole.
 
         [HttpGet]
+        [Route("userrole-list")]
         public async Task<IActionResult> UserRoleIndex(string userId)
         {
             var userRoles = (await _userRoleService.GetAllAsync()).Where(x => x.UserId == userId);
@@ -144,7 +162,8 @@ namespace NestAlbania.Controllers
             return View(userRoles);
         }
 
-        [HttpGet]
+
+        [Route("userrole-delete/{id}")]
         public async Task<IActionResult> UserRoleDelete(string id)
         {
             var user = await _userRoleService.GetUserRoleByRoleIdAsync(id);
@@ -153,6 +172,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("userrole-create")]
         public async Task<IActionResult> UserRoleCreate(string userId)
         {
             ViewBag.UserId = userId;
@@ -166,6 +186,7 @@ namespace NestAlbania.Controllers
 
         }
         [HttpPost]
+        [Route("userrole-create")]
         public async Task<IActionResult> UserRoleCreate(ApplicationUserRole userRole)
         {
             await _userRoleService.CreateAsync(userRole);
@@ -173,6 +194,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("userrole-edit/{id}")]
         public async Task<IActionResult> UserRoleEdit(string id)
         {
             var userRole = await _userRoleService.GetUserRoleByRoleIdAsync(id);
@@ -180,6 +202,7 @@ namespace NestAlbania.Controllers
             return View(userRole);
         }
         [HttpPost]
+        [Route("userrole-edit/{id}")]
         public async Task<IActionResult> UserRoleEdit(ApplicationUserRole userRole)
         {
             await _userRoleService.UpdateAsync(userRole);
@@ -187,6 +210,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("userrole-details/{id}")]
         public async Task<IActionResult> UserRoleDetails(string id)
         {
             var userRole = await _userRoleService.GetUserRoleByRoleIdAsync(id);

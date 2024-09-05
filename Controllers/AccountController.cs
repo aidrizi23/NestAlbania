@@ -17,7 +17,8 @@ using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
-    [Authorize]
+
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -37,39 +38,22 @@ namespace NestAlbania.Controllers
 
         [HttpGet]
         [AllowAnonymous] //  lejon userin te navigoje ne webpage edhe pse nuk eshte i loguar sepse useri sdo jete i loguar deri ketu
+        [Route("login")]
         public async Task<IActionResult> Login(string? returnUrl = null)
         {
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // ben clear te gjitha cookies (funksionon edhe pa kete rresht kodi) per te bere nje clear login process
+            // await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // ben clear te gjitha cookies (funksionon edhe pa kete rresht kodi) per te bere nje clear login process
             ViewBag.Error = false;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
+        
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        //{
-        //    ViewData["ReturnUrl"] = returnUrl;
-        //    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-
-        //    if (result.Succeeded)
-        //    {
-        //        _logger.LogInformation($"User with email {model.Email} logged in.");
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    else
-        //    {
-        //        ViewBag.Error = true;
-        //        ModelState.AddModelError(string.Empty, "Invalid login attempt");
-        //        return View(model);
-        //    }
-        //}
-
+        [Route("login")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        // [Route("login-user")]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -81,7 +65,7 @@ namespace NestAlbania.Controllers
                 if (result.Succeeded)
                 {
                     // Successful login
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction( "Index", "Property");
                 }
                 else
                 {
@@ -97,6 +81,7 @@ namespace NestAlbania.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [Route("logout")]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
@@ -108,6 +93,7 @@ namespace NestAlbania.Controllers
 
         [HttpGet]
         [AllowAnonymous]    
+        [Route("register")]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -118,6 +104,7 @@ namespace NestAlbania.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("register")]
         public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -149,79 +136,81 @@ namespace NestAlbania.Controllers
             return View(model);
 
         }
-        public async Task SignInWithGoogle()
-        {
-            //var redirectUrl = Url.Action("GoogleResponse", "Account");
-            //var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            //return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties 
-            {
-                RedirectUri = Url.Action("GoogleResponse")
-            });
-        }
-        [HttpGet("~/signin-google-response")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            // Authenticate using the Google authentication scheme
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-            // Ensure result and Principal are not null
-            if (result?.Principal == null)
-            {
-                return BadRequest("Google authentication failed. No principal identities found.");
-            }
-
-            var emailClaim = result.Principal.FindFirst(ClaimTypes.Email);
-            var email = emailClaim?.Value;
-
-            if (string.IsNullOrEmpty(email))
-            {
-                return BadRequest("Google authentication failed. Email claim not found.");
-            }
-
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                user = new ApplicationUser
-                {
-                    CustomUserName = email, // Custom username for the user
-                    UserName = email,
-                    Email = email,
-                    Id = Guid.NewGuid().ToString()
-                };
-                var userRole = new ApplicationUserRole()
-                {
-                    UserId = user.Id,
-                    RoleId = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
-                };
-                try
-                {
-                    await _userRoleService.CreateAsync(userRole);
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, "Error creating user role.");
-
-                }
-                var createUserResult = await _userManager.CreateAsync(user);
-                if (!createUserResult.Succeeded)
-                {
-                    return BadRequest("Failed to create new user.");
-                }
-            }
-
-            // Sign in the user
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            return RedirectToAction("Index", "Home");
-        }
-
-
-        [HttpGet("~/signout")]
-        public async Task<IActionResult> SignOut()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
+        
+        // [HttpGet("~/signin-google")]
+        // public async Task SignInWithGoogle()
+        // {
+        //     //var redirectUrl = Url.Action("GoogleResponse", "Account");
+        //     //var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+        //     //return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        //     await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties 
+        //     {
+        //         RedirectUri = Url.Action("GoogleResponse")
+        //     });
+        // }
+        // [HttpGet("~/signin-google-response")]
+        // public async Task<IActionResult> GoogleResponse()
+        // {
+        //     // Authenticate using the Google authentication scheme
+        //     var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        //
+        //     // Ensure result and Principal are not null
+        //     if (result?.Principal == null)
+        //     {
+        //         return BadRequest("Google authentication failed. No principal identities found.");
+        //     }
+        //
+        //     var emailClaim = result.Principal.FindFirst(ClaimTypes.Email);
+        //     var email = emailClaim?.Value;
+        //
+        //     if (string.IsNullOrEmpty(email))
+        //     {
+        //         return BadRequest("Google authentication failed. Email claim not found.");
+        //     }
+        //
+        //     var user = await _userManager.FindByEmailAsync(email);
+        //     if (user == null)
+        //     {
+        //         user = new ApplicationUser
+        //         {
+        //             CustomUserName = email, // Custom username for the user
+        //             UserName = email,
+        //             Email = email,
+        //             Id = Guid.NewGuid().ToString()
+        //         };
+        //         var userRole = new ApplicationUserRole()
+        //         {
+        //             UserId = user.Id,
+        //             RoleId = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
+        //         };
+        //         try
+        //         {
+        //             await _userRoleService.CreateAsync(userRole);
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             ModelState.AddModelError(string.Empty, "Error creating user role.");
+        //
+        //         }
+        //         var createUserResult = await _userManager.CreateAsync(user);
+        //         if (!createUserResult.Succeeded)
+        //         {
+        //             return BadRequest("Failed to create new user.");
+        //         }
+        //     }
+        //
+        //     // Sign in the user
+        //     await _signInManager.SignInAsync(user, isPersistent: false);
+        //     return RedirectToAction("Index", "Home");
+        // }
+        //
+        //
+        // [HttpGet("~/signout")]
+        // public async Task<IActionResult> SignOut()
+        // {
+        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //     return RedirectToAction("Index", "Home");
+        // }
     }
 }
 

@@ -10,15 +10,12 @@
     using NestAlbania.Repositories.Pagination;
     using NestAlbania.Services;
     using NestAlbania.Services.Extensions;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
+
 
     namespace NestAlbania.Controllers
     {
         [Authorize]
+        [Route("property")]
         public class PropertyController : Controller
         {
 
@@ -41,6 +38,8 @@
 
             }
 
+            [HttpGet]
+            [Route("list")]
             public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -62,6 +61,7 @@
 
 
 
+            [Route("delete/{id}")]
             public async Task<IActionResult> Delete(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -74,7 +74,9 @@
                 return RedirectToAction("Index");
             }
             
+
             [HttpPost]
+            [Route("softdelete")]
             public async Task<IActionResult> SoftDelete(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -99,8 +101,9 @@
             }
 
             
-            
+ 
             [HttpPost]
+            [Route("undelete")]
             public async Task<IActionResult> UnDelete(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -114,8 +117,9 @@
                 return RedirectToAction("Index");
             }
             
+            
             [HttpPost]
-            [HttpPost]
+            [Route("sell")]
             public async Task<IActionResult> Sell(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -140,6 +144,7 @@
 
 
             [HttpGet]
+            [Route("create")]
             public IActionResult Create()
             {
                 PopulateViewBags();
@@ -149,6 +154,7 @@
 
             [HttpPost]
             [ValidateAntiForgeryToken]
+            [Route("create")]
             public async Task<IActionResult> Create(PropertyForCreationDto dto)
             {
 
@@ -250,13 +256,13 @@
 
 
             }
-
-     
+            
             [HttpPost]
+            [Route("togglefavorite")]
             public async Task<IActionResult> ToggleFavorite(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
-                Console.WriteLine(property.Name);
+                
                 if (property == null)
                 {
                     return NotFound();
@@ -268,6 +274,8 @@
                 return RedirectToAction("Index");
             }
 
+            [HttpGet]
+            [Route("details/{id}")]
             public async Task<IActionResult> Details(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -290,6 +298,7 @@
 
 
             [HttpGet]
+            [Route("edit/{id}")]
             public async Task<IActionResult> Edit(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -303,6 +312,7 @@
 
             [HttpPost]
             [ValidateAntiForgeryToken]
+            [Route("edit/{id}")]
             public async Task<IActionResult> Edit(Property property)
             {
                 if (property != null)
@@ -369,6 +379,7 @@
             // }
             
             [HttpGet]
+            [Route("filter")]
             public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
             {
                 var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
@@ -388,6 +399,9 @@
 
                 return View("Index", properties);
             }
+            
+            [HttpGet]
+            [Route("favorites")]
             public async Task<IActionResult> Favorites()
             {
                 var user = await _userManager.GetUserAsync(User);
