@@ -283,13 +283,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5e5f61f3-3691-49c0-bca8-f2a29bc1d410",
+                            ConcurrencyStamp = "71430618-3a22-4de7-8d4a-2cf86965daaf",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPqRPaQlaV8OqmftYFk4vtDdRe+HlDP/iubMaWKKLHPMKBa28fW33iQcaVD7XfzHDg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECvQE+DExcSuQpDw2R6ODK5rXLWT9RA+NQTGrsGGK6PhxJCQQv5hYzwHHIQJ7BdUTg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -436,6 +436,30 @@ namespace NestAlbania.Migrations
                     b.ToTable("Properties");
                 });
 
+            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorites");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("NestAlbania.Data.ApplicationRole", null)
@@ -495,6 +519,25 @@ namespace NestAlbania.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Agent");
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
+                {
+                    b.HasOne("NestAlbania.Data.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NestAlbania.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>
