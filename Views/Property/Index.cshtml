@@ -88,30 +88,30 @@
         @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
         {
             <div class="row mb-3">
-                <div class="col-md-2">
-                    <label><i class="fas fa-home"></i> Name:</label>
-                    <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control form-control-sm" />
-                </div>
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-home"></i> Name:</label> *@
+                @*     <input type="text" name="Name" value="@ViewData["CurrentNameFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
                 <div class="col-md-2">
                     <label><i class="fas fa-ruler-combined"></i> Full Area:</label>
                     <input type="number" name="FullArea" value="@ViewData["CurrentFullAreaFilter"]" class="form-control form-control-sm" />
                 </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-ruler-vertical"></i> Inside Area:</label>
-                    <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-bed"></i> Bedroom Count:</label>
-                    <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-bath"></i> Bathroom Count:</label>
-                    <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label><i class="fas fa-user"></i> Agent Name:</label>
-                    <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" />
-                </div>
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-ruler-vertical"></i> Inside Area:</label> *@
+                @*     <input type="number" name="InsideArea" value="@ViewData["CurrentInsideAreaFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-bed"></i> Bedroom Count:</label> *@
+                @*     <input type="number" name="BedroomCount" value="@ViewData["CurrentBedroomCountFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-bath"></i> Bathroom Count:</label> *@
+                @*     <input type="number" name="BathroomCount" value="@ViewData["CurrentBathroomCountFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
+                @* <div class="col-md-2"> *@
+                @*     <label><i class="fas fa-user"></i> Agent Name:</label> *@
+                @*     <input type="text" name="AgentName" value="@ViewData["CurrentAgentFilter"]" class="form-control form-control-sm" /> *@
+                @* </div> *@
                 <div class="col-md-2">
                     <label><i class="fas fa-dollar-sign"></i> Min Price:</label>
                     <input type="number" name="MinPrice" value="@ViewData["CurrentMinPriceFilter"]" class="form-control form-control-sm" />
