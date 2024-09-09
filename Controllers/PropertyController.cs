@@ -39,6 +39,7 @@
             }
 
             [HttpGet]
+            [Authorize]
             [Route("list")]
             public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
             {
@@ -358,25 +359,7 @@
                 PopulateViewBags();
                 return View(property);
             }
-
-
-            // [HttpGet]
-            // public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "")
-            // {
-            //     var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
-            //     
-            //     ViewData["CurrentNameFilter"] = query.Name ?? "";
-            //     ViewData["CurrentFullAreaFilter"] = query.FullArea;
-            //     ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
-            //     ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
-            //     ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
-            //     ViewData["CurrentMinPriceFilter"] = query.MinPrice;
-            //     ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
-            //     ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
-            //     ViewData["CurrentSortOrder"] = sortOrder;
-            //
-            //     return View("Index", properties);
-            // }
+            
             
             [HttpGet]
             [Route("filter")]

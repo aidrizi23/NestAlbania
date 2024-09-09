@@ -91,28 +91,55 @@ namespace NestAlbania.Controllers
         }
         
         [Route("softdelete/{id}")]
+        [Authorize(Roles="admin")]
         public async Task<IActionResult> SoftDelete(int id)
         {
             var agent = await _agent.GetAgentById(id);
-            var agent_user = await _userService.GetUserByIdAsync(agent.UserId);
-            agent_user.IsDeleted = true;
-            await _userService.UpdateUserAsync(agent_user);
             if (agent == null)
             {
                 return NotFound();
             }
+            var agent_user = await _userService.GetUserByIdAsync(agent.UserId);
+            
+            agent_user.IsDeleted = true;
+            agent_user.LockoutEnabled = true;
 
+            foreach (var item in agent.Properties)
+            {
+                item.AgentId = null;
+                item.Agent = null;
+            }
+                
+            
+            agent_user.LockoutEnd = DateTimeOffset.MaxValue;
+    
+            await _userService.UpdateUserAsync(agent_user);
+    
+            // Proceed to soft-delete the agent
             await _agent.SoftDeleteAgentAsync(agent);
+
             return RedirectToAction("Index");
         }
+
         
         [Route("undelete/{id}")]
         public async Task<IActionResult> UnDelete(int id)
         {
             var agent = await _agent.GetAgentById(id);
+            var user = await _userService.GetUserByIdAsync(agent.UserId);
+            
             if (agent == null)
             {
                 return NotFound();
+            }
+            
+            user.IsDeleted = false;
+            user.LockoutEnd = null;
+            
+            foreach(var item in agent.Properties)
+            {
+                item.AgentId = agent.Id;
+                item.Agent = agent;
             }
 
             await _agent.UnDeleteAgentAsync(agent);
