@@ -15,9 +15,9 @@ namespace NestAlbania.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
-        public DbSet<JobApply> JobApplications { get; set; }
+
         public DbSet<Property> Properties { get; set; }
-        public DbSet<Country> Countries { get; set; }
+
         public DbSet<Agent> Agents { get; set; }
         public DbSet<UserFavorite> Favorites { get; set; }
      
@@ -84,29 +84,3 @@ namespace NestAlbania.Data
     }
 }
 
-
-/*
- * Lidh Userin me Agjentin
- * Lidh Userin me Property
- * Bej manipulimin e database me LinQ
- * 
- * 
- * Ose Lidh Agjentin me Property ne lidhje 1 me n ==> 1 agjent ka sh propety dhe nje propety mund te shitet vetem nga nje agjent.
- */
-
-
-
-
-// if we ever need to access the users CustomuserName in any view, we can do it by thisds methodd 
-/*
- * @using Microsoft.AspNetCore.Identity
-@using NestAlbania.Data
-
-@inject UserManager<ApplicationUser> UserManager
-
- * @if (User.Identity.IsAuthenticated)
-{
-    var user = await UserManager.GetUserAsync(User);
-    <span>@User.Identity.Name - @user.CustomUserName</span>
-}
- */

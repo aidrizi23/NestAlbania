@@ -10,7 +10,6 @@ namespace NestAlbania.Services.Extensions
         private readonly List<string> _permittedExtensions = new List<string> { ".pdf", ".jpg", ".jpeg", ".png", ".gif" };
         private readonly Dictionary<string, string> _mimeTypes = new Dictionary<string, string>
         {
-            { ".pdf", "application/pdf" },
             { ".jpg", "image/jpeg" },
             { ".jpeg", "image/jpeg" },
             { ".png", "image/png" },

@@ -13,13 +13,13 @@ namespace NestAlbania.Services
         Task CreateAgent(Agent agent);
         Task EditAgent(Agent agent);
         Task HardDeleteAgent(Agent agent);
-        Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10);
+        Task<PaginatedList<Agent>> GetPaginatedAgentsAsync(int pageIndex = 1, int pageSize = 10);
 
-        Task<Agent> GetAgentByPropertyIdAsync(int id);
+        // Task<Agent> GetAgentByPropertyIdAsync(int id);
 
         Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10);
-        Task<Agent> GetAgentByUserIdAsync(string userId);
-        Task<Agent> GetAgentWPropertiesAsync(int id);
+        Task<Agent?> GetAgentByUserIdAsync(string userId);
+        Task<Agent?> GetAgentWithPropertiesAsync(int id);
         
         Task SoftDeleteAgentAsync(Agent agent);
         Task UnDeleteAgentAsync(Agent agent);

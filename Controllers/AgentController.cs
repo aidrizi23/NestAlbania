@@ -38,7 +38,7 @@ namespace NestAlbania.Controllers
         [Route("list")]
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
-            var paginatedAgents = await _agent.GetPaginatedAgent(pageIndex, pageSize);
+            var paginatedAgents = await _agent.GetPaginatedAgentsAsync(pageIndex, pageSize);
 
             ViewBag.PageIndex = pageIndex;
             ViewBag.PageSize = pageSize;
@@ -111,11 +111,7 @@ namespace NestAlbania.Controllers
         {
             var agent = await _agent.GetAgentById(id);
             var user = await _userService.GetUserByIdAsync(agent.UserId);
-            
-            if (agent == null)
-            {
-                return NotFound();
-            }
+
             
             user.IsDeleted = false;
             user.LockoutEnd = null;
@@ -223,7 +219,7 @@ namespace NestAlbania.Controllers
         [Route("details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            var agentToShowDetails = await _agent.GetAgentWPropertiesAsync(id);
+            var agentToShowDetails = await _agent.GetAgentWithPropertiesAsync(id);
             return View(agentToShowDetails);
         }
 
