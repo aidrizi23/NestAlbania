@@ -20,4 +20,5 @@ public interface IPropertyService
     Task SellPropertyAsync(Property property);
     Task UnDeletePropertyAsync(Property property);
     Task<PaginatedList<Property>> GetAllPaginatedPropertiesWithoutAgentAsync(int pageIndex = 1, int pageSize = 10);
+    Task<Property?> GetPropertyByIdWithAgentAsync(int id);
 }

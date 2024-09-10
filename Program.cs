@@ -1,6 +1,3 @@
-
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NestAlbania.Areas;
@@ -48,8 +45,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<RoleRepository, RoleRepository>();
-builder.Services.AddScoped<JobApplyRepository, JobApplyRepository>();
-builder.Services.AddScoped<CountryRepository, CountryRepository>();
 builder.Services.AddScoped<PropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<AgentRepository, AgentRepository>();
 #endregion

@@ -2,8 +2,6 @@
 using NestAlbania.Data;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories.Pagination;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NestAlbania.Repositories
 {
@@ -85,8 +83,8 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)
         {
             var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
-                .Include(x => x.Agent)
-                .Where(x => x.AgentId == id && x.isDeleted == false && x.isSold == false);
+                // .Include(x => x.Agent)
+                .Where(x => x.AgentId == id && x.isDeleted == false && x.isSold == false).AsQueryable();
             
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
@@ -138,6 +136,14 @@ namespace NestAlbania.Repositories
                .AsQueryable(); // we use AsNoTrackingWithIdentityResolution to avoid tracking the entities and also, it avoids creating duplicate entities.
            
            return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
+        }
+        
+        
+        public async Task<Property?> GetPropertyByIdWithAgentAsync(int id)
+        {
+            return await _context.Properties
+                .Include(x => x.Agent)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

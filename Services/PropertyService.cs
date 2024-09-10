@@ -83,5 +83,10 @@ namespace NestAlbania.Services
         }
         
         
+        public async Task<Property?> GetPropertyByIdWithAgentAsync(int id)
+        {
+            return await _repository.GetPropertyByIdWithAgentAsync(id);
+        }
+        
     }
 }

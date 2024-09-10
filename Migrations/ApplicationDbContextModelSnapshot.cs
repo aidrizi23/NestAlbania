@@ -140,6 +140,7 @@ namespace NestAlbania.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -147,6 +148,7 @@ namespace NestAlbania.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
@@ -159,7 +161,7 @@ namespace NestAlbania.Migrations
                     b.Property<int>("YearsOfExeperience")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDeleted")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -236,7 +238,7 @@ namespace NestAlbania.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -289,13 +291,14 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb0c8e97-80e2-4bc2-a29c-7bad6e7138e9",
+                            ConcurrencyStamp = "495dc9cb-c886-4e28-87c6-a041a33cca61",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
+                            IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENRi5WQVCraSGfrzV/SZZ3C/5AyuN949xYWF7/h1WexLerxWUZUWO9Cos49Z2prWaQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK0NG5fWfhuaEAFJqAKiybTnuZ8nnbiZ8hb0JqTKtJ9PcfrhGEkidSDdilPi3oVDdw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -337,7 +340,7 @@ namespace NestAlbania.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("isDeleted")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -372,7 +375,7 @@ namespace NestAlbania.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("isDeleted")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -410,11 +413,11 @@ namespace NestAlbania.Migrations
                     b.Property<string>("Documentation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FullArea")
-                        .HasColumnType("int");
+                    b.Property<double>("FullArea")
+                        .HasColumnType("float");
 
-                    b.Property<int>("InsideArea")
-                        .HasColumnType("int");
+                    b.Property<double>("InsideArea")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
@@ -435,16 +438,17 @@ namespace NestAlbania.Migrations
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("isDeleted")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("isSold")
+                        .IsRequired()
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -469,7 +473,7 @@ namespace NestAlbania.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool?>("isDeleted")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

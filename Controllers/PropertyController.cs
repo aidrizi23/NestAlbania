@@ -278,19 +278,10 @@
             [Route("details/{id}")]
             public async Task<IActionResult> Details(int id)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
+                var property = await _propertyService.GetPropertyByIdWithAgentAsync(id);
                 if (property == null)
                 {
                     return NotFound();
-                }
-
-                if (property.AgentId.HasValue)
-                {
-                    property.Agent = await _agentService.GetAgentById(property.AgentId.Value);
-                }
-                else
-                {
-                    property.Agent = null; // Handle the case where AgentId is null as needed
                 }
 
                 return View(property);
