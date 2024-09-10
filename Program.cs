@@ -58,9 +58,9 @@ builder.Services.AddScoped<AgentRepository, AgentRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
-builder.Services.AddTransient<IJobApplyService, JobApplyService>();
+
 builder.Services.AddTransient<IPropertyService, PropertyService>();
-builder.Services.AddTransient<ICountryService, CountryService>();
+
 builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
 #endregion

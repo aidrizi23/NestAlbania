@@ -39,16 +39,7 @@ namespace NestAlbania.Services
         {
             await _repository.Edit(property);
         }
-
-        public async Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10)
-        {
-            return await _repository.GetPropertiesByNumberOfBedroomsAsync(nrOfBedrooms, pageIndex, pageSize);
-        }
-
-        public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByPrice(int price, int pageIndex = 1, int pageSize = 10)
-        {
-            return await _repository.GetAllPaginatedPropertiesByPrice(price, pageIndex, pageSize);
-        }
+        
 
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex, int pageSize, string sortOrder)
         {
@@ -83,6 +74,12 @@ namespace NestAlbania.Services
         public async Task UnDeletePropertyAsync(Property property)
         {
             await _repository.UnDeletePropertyAsync(property);
+        }
+        
+        
+        public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesWithoutAgentAsync(int pageIndex = 1, int pageSize = 10)
+        {
+            return await _repository.GetAllPropertiesWithoutAgentAsync(pageIndex, pageSize);
         }
         
         

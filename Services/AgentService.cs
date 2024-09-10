@@ -42,29 +42,25 @@ namespace NestAlbania.Services
             await _agentRepository.Delete(agent);
         }
 
-        public async Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10)
+        public async Task<PaginatedList<Agent>> GetPaginatedAgentsAsync(int pageIndex = 1, int pageSize = 10)
         {
             return await _agentRepository.GetPaginatedAgent(pageIndex, pageSize);
         }
-
-        public async Task<Agent> GetAgentByPropertyIdAsync(int id)
-        {
-            return await _agentRepository.GetAgentByPropertyIdAsync(id);
-        }
+        
 
         public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
             return await _agentRepository.GetFilteredAgents(query, pageIndex, pageSize);
         }
 
-        public async Task<Agent> GetAgentByUserIdAsync(string userId)
+        public async Task<Agent?> GetAgentByUserIdAsync(string userId)
         {
             return await _agentRepository.GetAgentByUserIdAsync(userId);
         }
 
-        public async Task<Agent> GetAgentWPropertiesAsync(int id)
+        public async Task<Agent?> GetAgentWithPropertiesAsync(int id)
         {
-            return await _agentRepository.GetAgentByIdAsyncWProperties(id);
+            return await _agentRepository.GetAgentByIdAsyncWithProperties(id);
         }
         
         public async Task SoftDeleteAgentAsync(Agent agent)

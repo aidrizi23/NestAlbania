@@ -402,6 +402,15 @@
 
                 return View(favoriteProperties);
             }
+            
+            
+            [HttpGet]
+            [Route("properties-without-agent")]
+            public async Task<IActionResult> GetAllPropertiesWithoutAgent(int pageIndex = 1, int pageSize = 10)
+            {
+                var properties = await _propertyService.GetAllPaginatedPropertiesWithoutAgentAsync(pageIndex, pageSize);
+                return View("Index", properties);
+            }
         }
 
     }

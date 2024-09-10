@@ -29,13 +29,19 @@ namespace NestAlbania.Data
         
 
         public string? UserId { get; set; }
-        public string Email { get; set; }
-        public string? Password { get; set; }
-
-        public string? RoleId { get; set; }
-
-        public ICollection<Property>? Properties { get; set;}
         
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+        
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public string RoleId { get; set; }
+
+        public ICollection<Property>? Properties { get; set; } = new List<Property>();
+
 
     }
 }
