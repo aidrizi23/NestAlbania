@@ -26,4 +26,15 @@
     <Folder Include="wwwroot\JobApplyDocuments\NewFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Country\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Country\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Country\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Country\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\JobApply\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\JobApply\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\JobApply\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\JobApply\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

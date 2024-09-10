@@ -1,22 +1,34 @@
-﻿using NuGet.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using NuGet.Common;
 
 namespace NestAlbania.Data
 {
     public class Agent : BaseEntity
 
     {
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+        
+        [Required]
         public string Surname { get; set; }
+        
         public string? Image {  get; set; }
        
+        [Required]
         public string PhoneNumber { get; set; }
+        
+        [Required]
         public int LicenseNumber { get; set; }
+        
+        [Required]
         public string Motto { get; set; }
+        
+        [Required]
         public int YearsOfExeperience { get; set; }
 
         
 
-        public string? UserId { get; set; } // do te perdoret qe kur te krijhet te lidhet, te krijohet automatikisht nje user me te njejtin email dhe password
+        public string? UserId { get; set; }
         public string Email { get; set; }
         public string? Password { get; set; }
 

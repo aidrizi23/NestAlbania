@@ -83,29 +83,3 @@ namespace NestAlbania.Data
     }
 }
 
-
-/*
- * Lidh Userin me Agjentin
- * Lidh Userin me Property
- * Bej manipulimin e database me LinQ
- * 
- * 
- * Ose Lidh Agjentin me Property ne lidhje 1 me n ==> 1 agjent ka sh propety dhe nje propety mund te shitet vetem nga nje agjent.
- */
-
-
-
-
-// if we ever need to access the users CustomuserName in any view, we can do it by thisds methodd 
-/*
- * @using Microsoft.AspNetCore.Identity
-@using NestAlbania.Data
-
-@inject UserManager<ApplicationUser> UserManager
-
- * @if (User.Identity.IsAuthenticated)
-{
-    var user = await UserManager.GetUserAsync(User);
-    <span>@User.Identity.Name - @user.CustomUserName</span>
-}
- */

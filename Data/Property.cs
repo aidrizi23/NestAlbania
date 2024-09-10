@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NestAlbania.Data.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,20 +7,42 @@ namespace NestAlbania.Data
 {
     public class Property : BaseEntity
     {
+        [Required]
         public string Name { get; set; }
+        
+        [Required]
         public string Description { get; set; }
         public string? MainImage { get; set; }
-        public int Price { get; set; }
-        public int FullArea { get; set; }
-        public int InsideArea { get; set; }
-         public int BedroomCount { get; set; }
+        
+        [Required]
+        public double Price { get; set; }
+        
+        [Required]
+        public double FullArea { get; set; }
+        
+        [Required]
+        public double InsideArea { get; set; }
+        
+        [Required]
+        public int BedroomCount { get; set; }
+        
+        [Required]
         public int BathroomCount { get; set; }
+        
+        
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
+        
         public bool IsFavorite { get; set; }
 
+        
+        [Required]
         public Category Category { get; set; }
+        
+        [Required]
         public PropertyStatus Status { get; set; }
+        
+        [Required]
         public City City { get; set; }
 
 
@@ -27,16 +50,19 @@ namespace NestAlbania.Data
         public int? AgentId { get; set; }
         public virtual Agent? Agent { get; set; }
 
+        
+        [Required]
         public DateTime PostedOn { get; set; }
+        
+        
         public DateTime? LastEdited { get; set; }
 
-        public double PricePerMeterSquared  =>  (double)Price / FullArea;
+        [Required]
+        public double PricePerMeterSquared  =>  Price / FullArea;
         
-        // public bool? isDeleted { get; set; }
+        [Required]
         public bool? isSold { get; set; }
-        
-        
-        // public bool HasParking { get; set; }
+
         
     }
    

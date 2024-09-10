@@ -111,11 +111,7 @@ namespace NestAlbania.Controllers
         {
             var agent = await _agent.GetAgentById(id);
             var user = await _userService.GetUserByIdAsync(agent.UserId);
-            
-            if (agent == null)
-            {
-                return NotFound();
-            }
+
             
             user.IsDeleted = false;
             user.LockoutEnd = null;
