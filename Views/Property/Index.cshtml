@@ -174,11 +174,14 @@
                                 <button type="submit" class="btn btn-danger btn-sm">SoftDelete</button>
                             </form>
                             
-                            <button type="button" class="btn @((item.IsFavorite ? "btn-success" : "btn-warning")) btn-sm"
+                          @*   <button type="button" class="btn @((item.IsFavorite ? "btn-success" : "btn-warning")) btn-sm"
                                     onclick="toggleFavorite('@item.Id', this)">
                                 <i class="fas fa-star"></i> Toggle Favorite
-                            </button>
-
+                            </button> *@
+                            <form asp-controller="Favorite" asp-action="AddFavorite" method="post">
+                                <input type="hidden" name="propertyId" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-primary">Add to Favorites</button>
+                            </form>
 
 
                         </div>

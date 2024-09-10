@@ -6,6 +6,7 @@ using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
+    [RequireHttps]
     [Route("favorite")]
     public class FavoriteController : Controller
     {
@@ -27,29 +28,27 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
-        // [Route("add")]
         public async Task<IActionResult> AddFavorite(int propertyId)
         {
             var user = await _userManager.GetUserAsync(User);
-            var success = await _favoriteService.AddFavoriteAsync(user.Id, propertyId);
+            var success = await _favoriteService.AddFavoriteAsync(user.Id, propertyId); 
 
-            if (!success)
-            {
-             
-                return BadRequest("Property is already a favorite.");
-            }
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Property");
         }
 
         [HttpPost]
+        [Route("removefavorite")]
         public async Task<IActionResult> RemoveFavorite(int favoriteId)
         {
+            if (favoriteId <= 0)
+            {
+                return BadRequest("Invalid favorite ID.");
+            }
+
             await _favoriteService.RemoveFavoriteAsync(favoriteId);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Favorite");
         }
 
-       
     }
 
 }

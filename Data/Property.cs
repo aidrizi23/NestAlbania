@@ -16,12 +16,11 @@ namespace NestAlbania.Data
         public int BathroomCount { get; set; }
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
-        public bool IsFavorite { get; set; }
 
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
         public City City { get; set; }
-
+        public virtual ICollection<UserFavorite> UserFavorites { get; set; }
 
         [ForeignKey("AgentId")]
         public int? AgentId { get; set; }
@@ -29,15 +28,16 @@ namespace NestAlbania.Data
 
         public DateTime PostedOn { get; set; }
         public DateTime? LastEdited { get; set; }
-
         public double PricePerMeterSquared  =>  (double)Price / FullArea;
         
         // public bool? isDeleted { get; set; }
         public bool? isSold { get; set; }
-        
-        
-        // public bool HasParking { get; set; }
-        
-    }
+
    
+
+
+        // public bool HasParking { get; set; }
+
+    }
+
 }

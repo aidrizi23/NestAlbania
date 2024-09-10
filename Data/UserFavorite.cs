@@ -9,13 +9,17 @@ namespace NestAlbania.Data
         [Key]
         public int Id { get; set; } 
 
-        [ForeignKey("User")]
+        [ForeignKey("UserId")]
         public string UserId { get; set; } 
         public  ApplicationUser User { get; set; }
 
-        [ForeignKey("Property")]
+        [ForeignKey("PropertyId")]
         public int PropertyId { get; set; } 
         public Property Property { get; set; }
+      
+        //[ForeignKey("AgentId")]
+        //public int AgentId { get; set; }
+        //public  Agent Agent{ get; set; }
 
 
     }

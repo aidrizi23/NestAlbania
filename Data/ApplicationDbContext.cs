@@ -79,6 +79,7 @@ namespace NestAlbania.Data
                 .OnDelete(DeleteBehavior.SetNull);
 
 
+
         }
     }
 }

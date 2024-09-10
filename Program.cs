@@ -52,6 +52,7 @@ builder.Services.AddScoped<JobApplyRepository, JobApplyRepository>();
 builder.Services.AddScoped<CountryRepository, CountryRepository>();
 builder.Services.AddScoped<PropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<AgentRepository, AgentRepository>();
+builder.Services.AddScoped<FavoriteRepository, FavoriteRepository>();
 #endregion
 
 #region Transient
@@ -63,6 +64,7 @@ builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
 builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
+builder.Services.AddTransient<IFavoriteService, FavoriteService>();
 #endregion
 
 var app = builder.Build();
