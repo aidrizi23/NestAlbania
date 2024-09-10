@@ -33,13 +33,7 @@ namespace NestAlbania.Controllers
             _userRoleService = userRoleService;
             _userService = userService;
         }
-        //public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
-        //{
-        //    ViewBag.PageIndex = pageIndex;
-        //    ViewBag.PageSize = pageSize;
-        //    var agent = await _agent.GetPaginatedAgent(pageIndex, pageSize);
-        //    return View(agent);
-        //}
+
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
@@ -54,19 +48,10 @@ namespace NestAlbania.Controllers
         
         
         [Route("delete/{id}")]
+        [Authorize(Roles="admin")]
         public async Task<IActionResult> Delete(int id)
         {
 
-            var currentUserRoles = User.Claims
-      .Where(c => c.Type == ClaimTypes.Role)
-      .Select(c => c.Value)
-      .ToList();
-
-            // Kontrolloni nëse përdoruesi aktual është agjent
-            if (currentUserRoles.Contains("Agent"))
-            {
-                return Forbid();
-            }
             var agent = await _agent.GetAgentById(id);
             if (agent.UserId != null)
             {
@@ -99,21 +84,20 @@ namespace NestAlbania.Controllers
             {
                 return NotFound();
             }
-            var agent_user = await _userService.GetUserByIdAsync(agent.UserId);
+            var agentUser = await _userService.GetUserByIdAsync(agent.UserId);
             
-            agent_user.IsDeleted = true;
-            agent_user.LockoutEnabled = true;
+            agentUser.IsDeleted = true;
+            agentUser.LockoutEnabled = true;
 
             foreach (var item in agent.Properties)
             {
                 item.AgentId = null;
                 item.Agent = null;
             }
-                
             
-            agent_user.LockoutEnd = DateTimeOffset.MaxValue;
+            agentUser.LockoutEnd = DateTimeOffset.MaxValue;
     
-            await _userService.UpdateUserAsync(agent_user);
+            await _userService.UpdateUserAsync(agentUser);
     
             // Proceed to soft-delete the agent
             await _agent.SoftDeleteAgentAsync(agent);

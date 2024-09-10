@@ -2,17 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using NestAlbania.Data;
 using NestAlbania.Models;
-using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Humanizer;
 using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
@@ -41,8 +32,6 @@ namespace NestAlbania.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(string? returnUrl = null)
         {
-            // await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // ben clear te gjitha cookies (funksionon edhe pa kete rresht kodi) per te bere nje clear login process
-            ViewBag.Error = false;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -53,7 +42,6 @@ namespace NestAlbania.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        // [Route("login-user")]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -77,8 +65,7 @@ namespace NestAlbania.Controllers
                     return View(model);
                 }
             }
-
-            // If model state is not valid, return to login view with errors
+            
             return View(model);
         }
       
@@ -91,53 +78,6 @@ namespace NestAlbania.Controllers
             await _signInManager.SignOutAsync();
             _logger.LogInformation($"Logout");
             return RedirectToAction("Login", "Account");
-
-        }
-
-
-        [HttpGet]
-        [AllowAnonymous]    
-        [Route("register")]
-        public async Task<IActionResult> Register(string? returnUrl = null)
-        {
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        [Route("register")]
-        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            var user = new ApplicationUser
-            {
-                UserName = model.Email,
-                Email = model.Email
-            };
-            user.Id = Guid.NewGuid().ToString();
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "User");
-            }
-            var userRole = new ApplicationUserRole()
-            {
-                UserId = user.Id,
-                RoleId = "e13fc5b7-cc45-4a6c-a8d2-02ab1298e678",
-            };
-            try
-            {
-                await _userRoleService.CreateAsync(userRole);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error creating user role.");
-
-            }
-            return View(model);
 
         }
         
