@@ -1,5 +1,6 @@
 ﻿using NestAlbania.Data;
 using NestAlbania.Repositories;
+using NuGet.Protocol.Core.Types;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace NestAlbania.Services
             var favorite = new UserFavorite
             {
                 UserId = userId,
-                PropertyId = propertyId
+                PropertyId = propertyId,
             };
 
             await _favoriteRepository.AddFavoriteAsync(favorite);
@@ -38,5 +39,12 @@ namespace NestAlbania.Services
         {
             await _favoriteRepository.RemoveFavoriteAsync(favoriteId);
         }
+
+        public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
+        {
+            return await _favoriteRepository.GetFavoritePropertiesByAgentIdAsync(agentId);
+        }
+
+
     }
 }

@@ -64,12 +64,12 @@ namespace NestAlbania.Services
         {
             return await _repository.GetFavoritePropertiesByUserIdAsync(userId);
         }
-
+  
         public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
         {
             return await _repository.GetFavoritePropertiesByAgentIdAsync(agentId);
         }
-        
+
         public async Task SoftDeletePropertyAsync(Property property)
         {
             await _repository.SoftDeletePropertyAsync(property);

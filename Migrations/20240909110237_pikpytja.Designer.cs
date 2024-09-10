@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NestAlbania.Data;
 
@@ -11,9 +12,11 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240909110237_pikpytja")]
+    partial class pikpytja
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,13 +292,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8face564-a610-49cc-ab68-a54748e09b09",
+                            ConcurrencyStamp = "86c5fff0-6006-489f-9051-8cacecb5865a",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECP68bnD0sJgmgI3CXWMzVDODcY70Pf91X8D7meAOCYxCsCLCqm96WksvyHDureUIQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO2Fg3Z25HpbmxV3ReKunVlusAXRfA7WgPtc4C/jFUkDvI8g9EM+9zljpOL1L2zb1Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -459,7 +462,7 @@ namespace NestAlbania.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AgentId")
+                    b.Property<int>("AgentId")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyId")
@@ -546,9 +549,11 @@ namespace NestAlbania.Migrations
 
             modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
                 {
-                    b.HasOne("NestAlbania.Data.Agent", null)
+                    b.HasOne("NestAlbania.Data.Agent", "Agent")
                         .WithMany("UserFavorites")
-                        .HasForeignKey("AgentId");
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NestAlbania.Data.Property", "Property")
                         .WithMany("UserFavorites")
@@ -561,6 +566,8 @@ namespace NestAlbania.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Agent");
 
                     b.Navigation("Property");
 

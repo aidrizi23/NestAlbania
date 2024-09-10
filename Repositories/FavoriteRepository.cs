@@ -36,8 +36,27 @@ namespace NestAlbania.Repositories
             if (favorite != null)
             {
                 _context.Favorites.Remove(favorite);
+
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
+        {
+            return await _context.Favorites
+                .Where(f => f.UserId == userId)
+                .Include(f => f.Property)
+                .Select(f => f.Property)
+                .ToListAsync();
+        }
+
+        // Retrieves favorite properties based on agent ID
+        public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
+        {
+            return await _context.Favorites
+                .Where(f => f.Property.AgentId == agentId)
+                .Include(f => f.Property)
+                .Select(f => f.Property)
+                .ToListAsync();
         }
 
         public async Task<bool> IsFavoriteExistsAsync(string userId, int propertyId)

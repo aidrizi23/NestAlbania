@@ -7,6 +7,5 @@ namespace NestAlbania.Services
         Task<IEnumerable<UserFavorite>> GetUserFavoritesAsync(string userId);
         Task<bool> AddFavoriteAsync(string userId, int propertyId);
         Task RemoveFavoriteAsync(int favoriteId);
-
     }
 }

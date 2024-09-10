@@ -1,4 +1,5 @@
 ﻿using NuGet.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NestAlbania.Data
 {
@@ -23,7 +24,7 @@ namespace NestAlbania.Data
         public string? RoleId { get; set; }
 
         public ICollection<Property>? Properties { get; set;}
-        
+        public ICollection<UserFavorite>? UserFavorites { get; set; }
 
     }
 }
