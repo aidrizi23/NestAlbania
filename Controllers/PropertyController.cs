@@ -18,7 +18,6 @@ namespace NestAlbania.Controllers
     [Route("property")]
     public class PropertyController : Controller
     {
-
         private readonly IPropertyService _propertyService;
         private readonly IFileHandlerService _fileHandlerService;
         private readonly IConfiguration _configuration;
@@ -47,6 +46,15 @@ namespace NestAlbania.Controllers
             var user = await _userManager.GetUserAsync(User);
             var userId = await _userManager.GetUserIdAsync(user);
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
+
+            var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent");
+            if (!Directory.Exists(uploadsFolderAgent))
+                Directory.CreateDirectory(uploadsFolderAgent);
+
+            var uploadsFolderProperty = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property");
+            if (!Directory.Exists(uploadsFolderProperty))
+                Directory.CreateDirectory(uploadsFolderProperty);
+
 
             PaginatedList<Property> properties;
             if (agent == null)

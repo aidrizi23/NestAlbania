@@ -49,6 +49,7 @@ namespace NestAlbania.Controllers
             return RedirectToAction("Index", "Favorite");
         }
 
+
     }
 
 }

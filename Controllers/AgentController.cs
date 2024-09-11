@@ -16,6 +16,7 @@ namespace NestAlbania.Controllers
     [Route("agent")]
     public class AgentController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public readonly IAgentService _agent;
         private readonly IConfiguration _configuration;
         private readonly IFileHandlerService _fileHandlerService;
@@ -24,8 +25,9 @@ namespace NestAlbania.Controllers
         public readonly IUserRoleService _userRoleService;
         public readonly IUserService _userService;
 
-        public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager, IUserService userService)
+        public AgentController(IWebHostEnvironment webHostEnvironment, IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager, IUserService userService)
         {
+            _webHostEnvironment = webHostEnvironment;
             _agent = agentService;
             _configuration = configuration;
             _fileHandlerService = fileHandlerService;
@@ -209,11 +211,20 @@ namespace NestAlbania.Controllers
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
-                var uploadDir = _configuration["Uploads:AgentImg"];
-                var fileName = $"{agent.Name}_{agent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
-                fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+                var userDirectoryName = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+                var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
+                if (!Directory.Exists(uploadsFolderAgent))
+                    Directory.CreateDirectory(uploadsFolderAgent);
+
+                var fileName = Guid.NewGuid().ToString().Substring(0, 8);
                 agent.Image = fileName;
+
                 await _agent.EditAgent(agent);
+
+                using (var stream = new FileStream(uploadsFolderAgent, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
             }
 
             return RedirectToAction("Index");
