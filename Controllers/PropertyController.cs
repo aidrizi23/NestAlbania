@@ -17,12 +17,12 @@
     using System.Threading.Tasks;
 
 
-    namespace NestAlbania.Controllers
+namespace NestAlbania.Controllers
+{
+    [Authorize]
+    [Route("property")]
+    public class PropertyController : Controller
     {
-        [Authorize]
-        [Route("property")]
-        public class PropertyController : Controller
-        {
 
         private readonly IPropertyService _propertyService;
         private readonly IFileHandlerService _fileHandlerService;
@@ -43,14 +43,14 @@
 
         }
 
-            [HttpGet]
-            [Authorize]
-            [Route("list")]
-            public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var userId = await _userManager.GetUserIdAsync(user);
-                var agent = await _agentService.GetAgentByUserIdAsync(userId);
+        [HttpGet]
+        [Authorize]
+        [Route("list")]
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
             PaginatedList<Property> properties;
             if (agent == null)
@@ -67,29 +67,29 @@
 
 
 
-            [Route("delete/{id}")]
-            public async Task<IActionResult> Delete(int id)
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-
-                await _propertyService.HardDeletePropertyAsync(property);
-                return RedirectToAction("Index");
+                return NotFound();
             }
-            
 
-            [HttpPost]
-            [Route("softdelete")]
-            public async Task<IActionResult> SoftDelete(int id)
+            await _propertyService.HardDeletePropertyAsync(property);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [Route("softdelete")]
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
             try
             {
@@ -106,33 +106,33 @@
             return RedirectToAction("Index");
         }
 
-            
- 
-            [HttpPost]
-            [Route("undelete")]
-            public async Task<IActionResult> UnDelete(int id)
-            {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
 
-                await _propertyService.UnDeletePropertyAsync(property);
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
-            }
-            
-            
-            [HttpPost]
-            [Route("sell")]
-            public async Task<IActionResult> Sell(int id)
+
+        [HttpPost]
+        [Route("undelete")]
+        public async Task<IActionResult> UnDelete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+
+            await _propertyService.UnDeletePropertyAsync(property);
+            await _propertyService.EditPropertyAsync(property);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [Route("sell")]
+        public async Task<IActionResult> Sell(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
 
             try
             {
@@ -144,24 +144,24 @@
                 return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
             }
 
-                return RedirectToAction("Index");
-            }
-            
-
-            [HttpGet]
-            [Route("create")]
-            public IActionResult Create()
-            {
-                PopulateViewBags();
-                return View(new PropertyForCreationDto());
-            }
+            return RedirectToAction("Index");
+        }
 
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            [Route("create")]
-            public async Task<IActionResult> Create(PropertyForCreationDto dto)
-            {
+        [HttpGet]
+        [Route("create")]
+        public IActionResult Create()
+        {
+            PopulateViewBags();
+            return View(new PropertyForCreationDto());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("create")]
+        public async Task<IActionResult> Create(PropertyForCreationDto dto)
+        {
 
             // Handle main image upload
             string? mainImagePath = null;
@@ -279,49 +279,49 @@
         //    return RedirectToAction("Index");
         //}
 
-            [HttpGet]
-            [Route("details/{id}")]
-            public async Task<IActionResult> Details(int id)
+        [HttpGet]
+        [Route("details/{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdWithAgentAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdWithAgentAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-
-                return View(property);
+                return NotFound();
             }
 
+            return View(property);
+        }
 
-            [HttpGet]
-            [Route("edit/{id}")]
-            public async Task<IActionResult> Edit(int id)
+
+        [HttpGet]
+        [Route("edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-                PopulateViewBags();
-                return View(property);
+                return NotFound();
             }
+            PopulateViewBags();
+            return View(property);
+        }
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            [Route("edit/{id}")]
-            public async Task<IActionResult> Edit(Property property)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("edit/{id}")]
+        public async Task<IActionResult> Edit(Property property)
+        {
+            if (property != null)
             {
-                if (property != null)
+                try
                 {
-                    try
+
+                    var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
+                    if (existingProperty == null)
                     {
-                        
-                        var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
-                        if (existingProperty == null)
-                        {
-                            
-                            return NotFound();
-                        }
+
+                        return NotFound();
+                    }
 
                     existingProperty.Name = property.Name;
                     existingProperty.Description = property.Description;
@@ -334,10 +334,10 @@
                     existingProperty.Status = property.Status;
                     existingProperty.City = property.City;
 
-                    if (existingProperty.Price != property.Price)
-                    {
-                        existingProperty.PreviousPrice = existingProperty.Price;
-                    }
+                    //if (existingProperty.Price != property.Price)
+                    //{
+                    //    existingProperty.PreviousPrice = existingProperty.Price;
+                    //}
                     await _propertyService.EditPropertyAsync(existingProperty);
                     return RedirectToAction("Index");
                 }
@@ -347,34 +347,32 @@
                 }
             }
 
-                PopulateViewBags();
-                return View(property);
-            }
-            
-            
-            [HttpGet]
-            [Route("filter")]
-            public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
-            {
-                var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
-    
-                ViewData["CurrentNameFilter"] = query.Name ?? "";
-                ViewData["CurrentFullAreaFilter"] = query.FullArea;
-                ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
-                ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
-                ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
-                ViewData["CurrentMinPriceFilter"] = query.MinPrice;
-                ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
-                ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
-                ViewData["CurrentSortOrder"] = sortOrder;
-
-                // Add this line to handle the ShowAdditionalFilters state
-                ViewData["ShowAdditionalFilters"] = ShowAdditionalFilters ?? false;
-
-            return View("Index", properties);
+            PopulateViewBags();
+            return View(property);
         }
-    }
+
+
+        [HttpGet]
+        [Route("filter")]
+        public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
+        {
+            var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
+
+            ViewData["CurrentNameFilter"] = query.Name ?? "";
+            ViewData["CurrentFullAreaFilter"] = query.FullArea;
+            ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
+            ViewData["CurrentBedroomCountFilter"] = query.BedroomCount;
+            ViewData["CurrentBathroomCountFilter"] = query.BathroomCount;
+            ViewData["CurrentMinPriceFilter"] = query.MinPrice;
+            ViewData["CurrentMaxPriceFilter"] = query.MaxPrice;
+            ViewData["CurrentAgentFilter"] = query.AgentName ?? "";
+            ViewData["CurrentSortOrder"] = sortOrder;
+
+            // Add this line to handle the ShowAdditionalFilters state
+            ViewData["ShowAdditionalFilters"] = ShowAdditionalFilters ?? false;
+
             return View("Index", properties);
+
         }
         public async Task<IActionResult> PropertiesByCategory(string category)
         {
@@ -401,5 +399,5 @@
             return View(favoriteProperties);
         }
     }
-
 }
+    
