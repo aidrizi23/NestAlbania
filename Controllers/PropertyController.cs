@@ -7,6 +7,7 @@
     using NestAlbania.Data.Enums;
     using NestAlbania.FilterHelpers;
     using NestAlbania.Models;
+    using NestAlbania.Models.DtoForEdit;
     using NestAlbania.Repositories.Pagination;
     using NestAlbania.Services;
     using NestAlbania.Services.Extensions;
@@ -288,67 +289,112 @@
             }
 
 
+            // [HttpGet]
+            // [Route("edit/{id}")]
+            // public async Task<IActionResult> Edit(int id)
+            // {
+            //     var property = await _propertyService.GetPropertyByIdAsync(id);
+            //     if (property == null)
+            //     {
+            //         return NotFound();
+            //     }
+            //     PopulateViewBags();
+            //     return View(property);
+            // }
+            //
+            // [HttpPost]
+            // [ValidateAntiForgeryToken]
+            // [Route("edit/{id}")]
+            // public async Task<IActionResult> Edit(Property property)
+            // {
+            //     if (property != null)
+            //     {
+            //         try
+            //         {
+            //             
+            //             var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
+            //             if (existingProperty == null)
+            //             {
+            //                 
+            //                 return NotFound();
+            //             }
+            //
+            //             existingProperty.Name = property.Name;
+            //             existingProperty.Description = property.Description;
+            //             existingProperty.Price = property.Price;
+            //             existingProperty.FullArea = property.FullArea;
+            //             existingProperty.InsideArea = property.InsideArea;
+            //             existingProperty.BedroomCount = property.BedroomCount;
+            //             existingProperty.BathroomCount = property.BathroomCount;
+            //             existingProperty.Category = property.Category;
+            //             existingProperty.Status = property.Status;
+            //             existingProperty.City = property.City;
+            //             //existingProperty.AgentId = property.AgentId;
+            //
+            //             var files = HttpContext.Request.Form.Files;
+            //             if (files.Count > 0)
+            //             {
+            //                 var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
+            //                 existingProperty.OtherImages.AddRange(fileNames);
+            //             }
+            //
+            //             await _propertyService.EditPropertyAsync(existingProperty);
+            //             return RedirectToAction("Index");
+            //         }
+            //         catch (Exception ex)
+            //         {
+            //             ModelState.AddModelError("", "Error editing property: " + ex.Message);
+            //         }
+            //     }
+            //
+            //     PopulateViewBags();
+            //     return View(property);
+            // }
+            
+            
             [HttpGet]
+            [Authorize]
             [Route("edit/{id}")]
             public async Task<IActionResult> Edit(int id)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-                PopulateViewBags();
-                return View(property);
+                var dto = new PropertyForEditDto();
+                var property = await _propertyService.GetPropertyByIdWithAgentAsync(id);
+                dto.Description = property.Description;
+                dto.Status = property.Status;
+                dto.Price = property.Price;
+                dto.Name = property.Name;
+                dto.MainImage = property.MainImage;
+                dto.Documentation = property.Documentation;
+                dto.OtherImages = property.OtherImages;
+
+                return View(dto);
             }
 
             [HttpPost]
             [ValidateAntiForgeryToken]
             [Route("edit/{id}")]
-            public async Task<IActionResult> Edit(Property property)
+
+            public async Task<IActionResult> Edit( PropertyForEditDto dto)
             {
-                if (property != null)
+                var property = await _propertyService.GetPropertyByIdAsync(dto.Id);
+                if (property == null)
                 {
-                    try
-                    {
-                        
-                        var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
-                        if (existingProperty == null)
-                        {
-                            
-                            return NotFound();
-                        }
-
-                        existingProperty.Name = property.Name;
-                        existingProperty.Description = property.Description;
-                        existingProperty.Price = property.Price;
-                        existingProperty.FullArea = property.FullArea;
-                        existingProperty.InsideArea = property.InsideArea;
-                        existingProperty.BedroomCount = property.BedroomCount;
-                        existingProperty.BathroomCount = property.BathroomCount;
-                        existingProperty.Category = property.Category;
-                        existingProperty.Status = property.Status;
-                        existingProperty.City = property.City;
-                        //existingProperty.AgentId = property.AgentId;
-
-                        var files = HttpContext.Request.Form.Files;
-                        if (files.Count > 0)
-                        {
-                            var fileNames = await _fileHandlerService.UploadAsync(files, "images/properties");
-                            existingProperty.OtherImages.AddRange(fileNames);
-                        }
-
-                        await _propertyService.EditPropertyAsync(existingProperty);
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", "Error editing property: " + ex.Message);
-                    }
+                    return NotFound();
                 }
+                // Update property object
+                property.Name = dto.Name;
+                property.Description = dto.Description;
+                property.Price = dto.Price;
+                property.Status = dto.Status;
+                property.LastEdited = DateTime.Now.Date;
 
-                PopulateViewBags();
-                return View(property);
+                await _propertyService.EditPropertyAsync(property);
+
+                return RedirectToAction("Index");
+
             }
+
+
             
             
             [HttpGet]
