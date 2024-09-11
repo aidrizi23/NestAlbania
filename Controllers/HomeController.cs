@@ -14,7 +14,7 @@ using NestAlbania.Data;
 namespace NestAlbania.Controllers
 {
     [Authorize]
-    [Route("home")]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
