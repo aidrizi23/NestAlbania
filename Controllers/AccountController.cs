@@ -28,7 +28,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous] //  lejon userin te navigoje ne webpage edhe pse nuk eshte i loguar sepse useri sdo jete i loguar deri ketu
+        [AllowAnonymous]
         [Route("login")]
         public async Task<IActionResult> Login(string? returnUrl = null)
         {
@@ -37,7 +37,6 @@ namespace NestAlbania.Controllers
         }
 
         
-
         [Route("login")]
         [HttpPost]
         [AllowAnonymous]
