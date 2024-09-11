@@ -6,6 +6,8 @@ using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Services
 {
+
+
     public interface IAgentService
     {
         Task<IEnumerable<Agent>> GetAllAgents();
@@ -23,6 +25,6 @@ namespace NestAlbania.Services
         
         Task SoftDeleteAgentAsync(Agent agent);
         Task UnDeleteAgentAsync(Agent agent);
-
+        Task<Agent> GetTopSellingAgentAsync();
     }
 }

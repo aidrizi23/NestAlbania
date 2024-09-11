@@ -32,6 +32,8 @@ namespace NestAlbania.Data
         
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
+        public bool IsFavorite { get; set; }
+        public int PreviousPrice { get; set; }
 
         
         [Required]
@@ -60,7 +62,9 @@ namespace NestAlbania.Data
         
         [Required]
         public bool? isSold { get; set; }
-
+        public DateTime PriceChangedDate { get; set; }  
+        
+        // public bool HasParking { get; set; }
         
     }
    

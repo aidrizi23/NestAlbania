@@ -40,7 +40,7 @@ namespace NestAlbania.Models
         [Required(ErrorMessage = "Status field is required")]
         public PropertyStatus Status { get; set; }
 
-        
+        public string LatestProperty { get; set; }
         public string? Documentation { get; set; }
         
         public List<string>? OtherImages { get; set; }

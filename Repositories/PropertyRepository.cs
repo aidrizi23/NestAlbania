@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NestAlbania.Data;
+using NestAlbania.Data.Enums;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories.Pagination;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +16,11 @@ namespace NestAlbania.Repositories
         public PropertyRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<Property>> GetAllPropertiesAsync()
+        {
+            return await _context.Properties.ToListAsync();
         }
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesAsync(int pageIndex = 1, int pageSize = 10)
@@ -39,15 +46,13 @@ namespace NestAlbania.Repositories
                 .Where(x => x.isDeleted == false && x.isSold == false)
                 .AsQueryable();
 
-            // Apply filters from query
             if (!string.IsNullOrEmpty(query.Name))
             {
                 properties = properties.Where(p => p.Name.Contains(query.Name));
             }
             if (query.FullArea.HasValue)
             {
-                properties = properties.Where(p => p.FullArea >= query.FullArea * 0.9 && p.FullArea <= query.FullArea * 1.1); 
-                // Allow 10% of flexibility in the area
+                properties = properties.Where(p => p.FullArea >= query.FullArea * 0.9 && p.FullArea <= query.FullArea * 1.1);
             }
             if (query.InsideArea.HasValue)
             {
@@ -70,7 +75,6 @@ namespace NestAlbania.Repositories
                 properties = properties.Where(p => p.Price <= query.MaxPrice);
             }
 
-            // Apply sorting
             switch (sortOrder)
             {
                 case "price-asc":
@@ -79,7 +83,6 @@ namespace NestAlbania.Repositories
                 case "price-desc":
                     properties = properties.OrderByDescending(p => p.Price);
                     break;
-                // Add more sorting options if needed
                 default:
                     properties = properties.OrderBy(p => p.Id); // Default sorting
                     break;
@@ -128,17 +131,71 @@ namespace NestAlbania.Repositories
             property.isDeleted = true;
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task SellPropertyAsync(Property property)
         {
             property.isSold = true;
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task UnDeletePropertyAsync(Property property)
         {
             property.isDeleted = false;
             await _context.SaveChangesAsync();
+        }
+        public async Task<List<Property>> GetPropertiesByCategoryAsync(string category)
+        {
+            if (Enum.TryParse(typeof(Category), category, true, out var parsedCategory))
+            {
+                var enumCategory = (Category)parsedCategory;
+                return await _context.Properties
+                         .Where(p => p.Category == enumCategory)
+                         .ToListAsync();
+            }
+            return new List<Property>(); 
+        }
+        public async Task<PaginatedList<Property>> GetPropertiesWithChangedPricesAsync(int pageIndex = 1, int pageSize = 10)
+        {
+            var query = _context.Properties
+                .Where(p => p.PreviousPrice != p.Price)
+                .OrderByDescending(p => p.PriceChangedDate)
+                .AsQueryable();
+
+            return await PaginatedList<Property>.CreateAsync(query, pageIndex, pageSize);
+        }
+        public async Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync()
+        {
+            var soldProperties = _context.Properties
+                .Where(p => p.isSold == true) // Using isSold instead of SoldDate
+                .ToList();
+
+            var monthlySoldProperties = soldProperties
+                .GroupBy(p => p.PostedOn.ToString("yyyy-MM")) // Assuming PostedOn can be used for grouping
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    Count = g.Count()
+                })
+                .ToDictionary(g => g.Month, g => g.Count);
+
+            return monthlySoldProperties;
+        }
+        public async Task<Dictionary<string, int>> GetSoldPropertiesByDayAsync(int year, int month)
+        {
+            var startDate = new DateTime(year, month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            var dailySoldProperties = await _context.Properties
+                .Where(p => p.isSold == true && p.PostedOn >= startDate && p.PostedOn <= endDate)
+                .GroupBy(p => p.PostedOn.Date)
+                .Select(g => new
+                {
+                    Date = g.Key.ToString("yyyy-MM-dd"),
+                    Count = g.Count()
+                })
+                .ToDictionaryAsync(g => g.Date, g => g.Count);
+
+            return dailySoldProperties;
         }
         
         
