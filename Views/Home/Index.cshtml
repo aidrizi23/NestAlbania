@@ -1,4 +1,393 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using NestAlbania.Data
+@model HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Properties by Category";
 }
 
+<h1>@ViewData["Title"]</h1>
+
+@if (ViewBag.GroupedProperties != null && ((IEnumerable<dynamic>)ViewBag.GroupedProperties).Any())
+{
+    <div class="property-grid">
+        @foreach (var categoryGroup in (IEnumerable<dynamic>)ViewBag.GroupedProperties)
+        {
+            <div class="property-item">
+                @if (categoryGroup.LatestProperty != null)
+                {
+                    <div class="property-card">
+                        <img class="property-image" src="@Url.Content($"~/images/properties/{categoryGroup.LatestProperty.MainImage}")" alt="Property Image" />
+                        <div class="property-details">
+                            <h3>@categoryGroup.LatestProperty.Name</h3>
+                            <p class="price">€@string.Format("{0:N0}", categoryGroup.LatestProperty.Price)</p>
+                            <p class="category">@categoryGroup.Category</p>
+                        </div>
+                        <div class="category-button-container">
+                            <a href="@Url.Action("PropertiesByCategory", "Property", new { category = categoryGroup.Category })" class="category-button">
+                                View More
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="no-properties">Currently, there are no available properties.</p>
+}
+
+<!-- Sold Properties Section -->
+<h2>Last Sold Properties</h2>
+@if (ViewBag.SoldProperties != null && ((IEnumerable<Property>)ViewBag.SoldProperties).Any())
+{
+    <div class="property-grid">
+        @foreach (var property in ((IEnumerable<Property>)ViewBag.SoldProperties).Take(4))
+        {
+            <div class="property-item">
+                <div class="property-card">
+                    <img class="property-image" src="@Url.Content($"~/images/properties/{property.MainImage}")" alt="Property Image" />
+                    <div class="property-details">
+                        <h3>@property.Name</h3>
+                        <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="category-button">
+                            View Details
+                        </a>
+                        <div class="sold-badge">SOLD</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="no-properties">No sold properties are available.</p>
+}
+
+
+
+<!-- Top Selling Agent Section -->
+<h2>Top Selling Agent</h2>
+@if (ViewBag.TopSellingAgent != null)
+{
+    <div class="top-agent-card-container">
+        <div class="top-agent-card">
+            <div class="agent-image">
+                <img src="@Url.Content($"~/agentImg/{ViewBag.TopSellingAgent.Image}")" alt="Top Selling Agent" />
+            </div>
+            <div class="agent-details">
+                <h3>@ViewBag.TopSellingAgent.Name @ViewBag.TopSellingAgent.Surname</h3>
+                <p>Email: @ViewBag.TopSellingAgent.Email</p>
+                <p>Phone: @ViewBag.TopSellingAgent.PhoneNumber</p>
+            </div>
+            <div class="award-banner">
+                <span>Top Seller</span>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p class="no-agent">No agent data available.</p>
+}
+<h2>Sellings in one Month </h2>
+<div class="chart-container">
+    <div class="chart-box">
+        <canvas id="soldPropertiesChart" width="200" height="150"></canvas>
+    </div>
+  
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/0.4.0/json2.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var monthlySoldProperties = @Html.Raw(Json.Serialize(ViewBag.MonthlySoldProperties));
+        var labels = Object.keys(monthlySoldProperties);
+        var data = Object.values(monthlySoldProperties);
+
+        var ctx = document.getElementById('soldPropertiesChart').getContext('2d');
+        var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(75, 192, 192, 0.8)');
+        gradient.addColorStop(1, 'rgba(153, 102, 255, 0.8)');
+
+        var soldPropertiesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Sold Properties',
+                    data: data,
+                    backgroundColor: gradient,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    borderRadius: 10,
+                    barThickness: 25
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Playfair Display, serif',
+                                weight: 'bold',
+                            },
+                            color: '#333'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleFont: {
+                            size: 14,
+                            family: 'Roboto, sans-serif',
+                        },
+                        bodyFont: {
+                            size: 12,
+                            family: 'Roboto, sans-serif',
+                        },
+                        cornerRadius: 5,
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Roboto, sans-serif',
+                                size: 12,
+                            },
+                            color: '#666'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(200, 200, 200, 0.3)',
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Roboto, sans-serif',
+                                size: 12,
+                            },
+                            color: '#666'
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutBounce'
+                }
+            }
+        });
+    });
+</script>
+
+<style>
+    .chart-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .chart-box {
+        width: 50%;
+        height: 300px;
+    }
+
+    .chart-explanation {
+        width: 40%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        font-size: 0.9rem;
+    }
+
+        .chart-explanation h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 8px;
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+
+        .chart-explanation p {
+            font-family: 'Roboto', sans-serif;
+            color: #555;
+            line-height: 1.4;
+            margin: 5px 0;
+        }
+</style>
+<style>
+    .category-button-container {
+        display: flex;
+    }
+
+    .category-button {
+        display: inline-block;
+        padding: 10px 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .category-button:hover {
+            background-color: #0056b3;
+        }
+
+        .category-button:active {
+            background-color: #004085;
+        }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
+    h1, h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2em;
+        color: #444;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+
+    .no-properties, .no-agent {
+        font-size: 1.2em;
+        color: #777;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .property-item {
+        transition: transform 0.3s ease;
+    }
+
+        .property-item:hover {
+            transform: scale(1.05);
+        }
+
+    .property-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .property-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .property-details {
+        padding: 15px;
+        text-align: center;
+    }
+
+        .property-details h3 {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+    .price {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #007bff;
+        margin: 10px 0;
+    }
+
+    .sold-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: darkred;
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    .top-agent-card-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .top-agent-card {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        max-width: 900px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+        border: 1px solid #ddd;
+        overflow: hidden;
+    }
+
+    .agent-image img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #007bff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .agent-details {
+        flex: 1;
+        padding: 15px;
+        margin-left: 20px;
+        position: relative;
+        padding-right: 160px;
+    }
+
+        .agent-details h3 {
+            font-size: 1.4em;
+            margin: 0;
+            color: #333;
+        }
+
+        .agent-details p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+    .award-banner {
+        background-color: gold;
+        color: #333;
+        padding: 10px 15px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 0.95rem;
+    }
+</style>

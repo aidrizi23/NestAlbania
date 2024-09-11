@@ -77,17 +77,26 @@ namespace NestAlbania.Repositories
                 .Include(a => a.Properties)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
-        
+
         public async Task SoftDeleteAgentAsync(Agent agent)
         {
             agent.isDeleted = true;
             await Edit(agent);
         }
-        
+
         public async Task UnDeleteAgentAsync(Agent agent)
         {
             agent.isDeleted = false;
             await Edit(agent);
         }
+        public async Task<Agent> GetTopSellingAgentAsync()
+        {
+            // Ensure agents with properties and their property counts are included
+            return await _context.Agents
+                .Where(a => (bool)!a.isDeleted)
+                .OrderByDescending(a => a.Properties.Count) // Count of properties sold
+                .FirstOrDefaultAsync();
+        }
+
     }
 }

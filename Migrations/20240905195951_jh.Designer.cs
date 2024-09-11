@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NestAlbania.Data;
 
@@ -11,9 +12,11 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905195951_jh")]
+    partial class jh
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,13 +292,13 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "18413c38-cc35-4175-bcfe-6d663de8f08b",
+                            ConcurrencyStamp = "fd911645-964f-4e30-82e5-d8596dc7cf9e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFCFqHhPyplWliavtncEFlkeD5e/OIxS3fZ0ZXS/8CaH9PclqYJwZrnQcb3QrTNKfQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGGqcRvGdXYpWoZn7I5B6mbtmZIsafSMEz/c1BZzQvumhzWRQ1JtEzKWCiWs3YfvZw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -435,7 +438,7 @@ namespace NestAlbania.Migrations
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PreviousPrice")
+                    b.Property<int?>("PreviousPrice")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")

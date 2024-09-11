@@ -66,16 +66,21 @@ namespace NestAlbania.Services
         {
             return await _agentRepository.GetAgentByIdAsyncWProperties(id);
         }
-        
+
         public async Task SoftDeleteAgentAsync(Agent agent)
         {
             await _agentRepository.SoftDeleteAgentAsync(agent);
         }
-        
+
         public async Task UnDeleteAgentAsync(Agent agent)
         {
             await _agentRepository.UnDeleteAgentAsync(agent);
         }
+        public async Task<Agent> GetTopSellingAgentAsync()
+        {
+            return await _agentRepository.GetTopSellingAgentAsync();
+        }
+
     }
 }
 

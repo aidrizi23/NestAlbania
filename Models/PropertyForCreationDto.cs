@@ -16,14 +16,14 @@ namespace NestAlbania.Models
         public int BathroomCount { get; set; }
         public PropertyStatus Status { get; set; }
 
-
+        public string LatestProperty { get; set; }
         public string? Documentation { get; set; }
 
         public List<string>? OtherImages { get; set; }
         public Category Category { get; set; }
-      
-        public City SelectedCity { get; set; }
 
+        public City SelectedCity { get; set; }
+        public bool? isSold { get; set; }
 
         public IEnumerable<Agent> Agents { get; set; }
         public int? AgentId { get; set; }

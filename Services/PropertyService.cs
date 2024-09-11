@@ -1,8 +1,13 @@
-﻿using NestAlbania.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NestAlbania.Data;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
+using NestAlbania.Models; // Ensure you have the correct Models namespace
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using NestAlbania.Data.Enums;
 
 namespace NestAlbania.Services
 {
@@ -14,6 +19,20 @@ namespace NestAlbania.Services
         {
             _repository = repository;
         }
+        public async Task<IEnumerable<Property>> GetPropertiesWithChangedPricesAsync()
+        {
+            return await _repository.GetPropertiesWithChangedPricesAsync();
+        }
+
+
+        // Correct version of GetAllPropertiesAsync
+        public async Task<IEnumerable<Property>> GetAllPropertiesAsync()
+        {
+            // Get all properties from the database using the repository
+            return await _repository.GetAllPropertiesAsync();
+        }
+
+
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesAsync(int pageIndex = 1, int pageSize = 10)
         {
@@ -69,22 +88,31 @@ namespace NestAlbania.Services
         {
             return await _repository.GetFavoritePropertiesByAgentIdAsync(agentId);
         }
-        
+
         public async Task SoftDeletePropertyAsync(Property property)
         {
             await _repository.SoftDeletePropertyAsync(property);
         }
-        
+
         public async Task SellPropertyAsync(Property property)
         {
             await _repository.SellPropertyAsync(property);
         }
-        
+        public async Task<List<Property>> GetPropertiesByCategoryAsync(string category)
+        {
+            return await _repository.GetPropertiesByCategoryAsync(category);
+        }
+        public async Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync()
+        {
+            return await _repository.GetSoldPropertiesByMonthAsync(); // Ensure the return type matches
+        }
+        public async Task<Dictionary<string, int>> GetSoldPropertiesByDayAsync(int year, int month)
+        {
+            return await _repository.GetSoldPropertiesByDayAsync(year, month);
+        }
         public async Task UnDeletePropertyAsync(Property property)
         {
             await _repository.UnDeletePropertyAsync(property);
         }
-        
-        
     }
 }
