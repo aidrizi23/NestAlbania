@@ -43,7 +43,7 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex, int pageSize, string sortOrder)
         {
             var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
-                .Where(x => x.isDeleted == false && x.isSold == false)
+                .Where(x => x.isDeleted == false && x.IsSold == false)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(query.Name))
@@ -96,7 +96,7 @@ namespace NestAlbania.Repositories
         {
             var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
                 // .Include(x => x.Agent)
-                .Where(x => x.AgentId == id && x.isDeleted == false && x.isSold == false).AsQueryable();
+                .Where(x => x.AgentId == id && x.isDeleted == false && x.IsSold == false).AsQueryable();
             
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
@@ -134,7 +134,7 @@ namespace NestAlbania.Repositories
 
         public async Task SellPropertyAsync(Property property)
         {
-            property.isSold = true;
+            property.IsSold = true;
             await _context.SaveChangesAsync();
         }
 
@@ -166,7 +166,7 @@ namespace NestAlbania.Repositories
         public async Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync()
         {
             var soldProperties = _context.Properties
-                .Where(p => p.isSold == true) // Using isSold instead of SoldDate
+                .Where(p => p.IsSold == true) // Using isSold instead of SoldDate
                 .ToList();
 
             var monthlySoldProperties = soldProperties
@@ -186,7 +186,7 @@ namespace NestAlbania.Repositories
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
             var dailySoldProperties = await _context.Properties
-                .Where(p => p.isSold == true && p.PostedOn >= startDate && p.PostedOn <= endDate)
+                .Where(p => p.IsSold == true && p.PostedOn >= startDate && p.PostedOn <= endDate)
                 .GroupBy(p => p.PostedOn.Date)
                 .Select(g => new
                 {
@@ -203,7 +203,7 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Property>> GetAllPropertiesWithoutAgentAsync(int pageIndex = 1, int pageSize = 10)
         {
            var properties =  _context.Properties.AsNoTrackingWithIdentityResolution()
-               .Where(x => x.AgentId == null && x.isDeleted == false && x.isSold == false)
+               .Where(x => x.AgentId == null && x.isDeleted == false && x.IsSold == false)
                .AsQueryable(); // we use AsNoTrackingWithIdentityResolution to avoid tracking the entities and also, it avoids creating duplicate entities.
            
            return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);

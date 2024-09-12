@@ -61,10 +61,9 @@ namespace NestAlbania.Data
         public double PricePerMeterSquared  =>  Price / FullArea;
         
         [Required]
-        public bool? isSold { get; set; }
+        public bool? IsSold { get; set; }
         public DateTime PriceChangedDate { get; set; }  
         
-        // public bool HasParking { get; set; }
         
     }
    

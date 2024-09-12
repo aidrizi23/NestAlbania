@@ -345,6 +345,20 @@ namespace NestAlbania.Controllers
 
             var agent = await _agent.GetAgentById(dto.Id);
             
+            // // see if the current user is the agent
+            // var currentUser = await _userManager.GetUserAsync(User);
+            // if (agent.UserId != currentUser.Id && !User.IsInRole("admin"))
+            // {
+            //     return Unauthorized();
+            // }
+            
+            // make it so that the agent can only edit their own details or if the user is an admin
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (agent.UserId != currentUser.Id && !User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+            
             agent.Name = dto.Name;
             agent.Surname = dto.Surname;
             agent.PhoneNumber = dto.PhoneNumber;

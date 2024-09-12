@@ -205,7 +205,7 @@
                     AgentId = agent?.Id, // Assign agent ID to property
                     Agent = await _agentService.GetAgentById(agent.Id),
                     PostedOn = DateTime.Now.Date,
-                    isSold = false,
+                    IsSold = false,
                     isDeleted = false,
 
                 };

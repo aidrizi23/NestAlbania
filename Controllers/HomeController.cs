@@ -3,11 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NestAlbania.Models;
 using System.Diagnostics;
 using NestAlbania.Services;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using NestAlbania.Data.Enums;
 using NestAlbania.Data;
 
@@ -32,7 +27,7 @@ namespace NestAlbania.Controllers
 {
            try{
         var properties = await _propertyService.GetAllPropertiesAsync();
-        var soldProperties = properties.Where(p => p.isSold == true).ToList();
+        var soldProperties = properties.Where(p => p.IsSold == true).ToList();
 
         var monthlySoldProperties = soldProperties
             .GroupBy(p => p.PostedOn.ToString("MMMM yyyy")) 
@@ -44,7 +39,7 @@ namespace NestAlbania.Controllers
         ViewBag.MonthlySoldProperties = monthlySoldProperties;
 
         var groupedProperties = properties
-            .Where(p => p.isSold == false)
+            .Where(p => p.IsSold == false)
             .GroupBy(p => p.Category)
             .Select(g => new GroupedProperty
             {
