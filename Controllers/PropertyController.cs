@@ -32,7 +32,8 @@
             public readonly IUserRepository _userRepository;
             private readonly UserManager<ApplicationUser> _userManager;
             private readonly IAgentService _agentService;
-            public PropertyController(IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+            private readonly INotificationService _notificationService;
+            public PropertyController(INotificationService notificationService,IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
             {
                 _propertyService = propertyService;
                 _fileHandlerService = fileHandlerService;
@@ -41,6 +42,7 @@
                 _userManager = userManager;
                 _userRepository = userRepository;
                 _agentService = agentService;
+                _notificationService = notificationService;
 
             }
 
@@ -212,6 +214,16 @@
 
                 // Save the property
                 await _propertyService.CreatePropertyAsync(property);
+                
+                // Handling Notifications
+                
+                // get the admin user
+                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                string notificationMessage = $"New property '{property.Name}' has been created by agent {agent?.Name ?? "Unknown"}";
+                foreach (var admin in adminUsers)
+                {
+                    await _notificationService.CreateNotification(admin.Id, $"New property added: {property.Name}");
+                }
 
                 // Handle additional images upload
                 var otherFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();

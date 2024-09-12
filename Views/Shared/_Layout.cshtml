@@ -1,7 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using NestAlbania.Data
+@using NestAlbania.Services
 
 @inject UserManager<ApplicationUser> UserManager
+@inject INotificationService NotificationService
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var unreadNotifications = user != null ? await NotificationService.GetUnreadNotificationsAsync(user.Id) : new List<Notification>();
+    var unreadCount = unreadNotifications.Count();
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,12 +127,40 @@
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                   <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div> 
                     <ul class="navbar-nav  justify-content-end">
-@*                         <li class="nav-item d-flex align-items-center">
+                        @*                         <li class="nav-item d-flex align-items-center">
                             <a asp-action="GetAgentDetailsUser" asp-controller="Agent" class="nav-link text-white font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
                                
                             </a>
                         </li> *@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                                @if (unreadCount > 0)
+                                {
+                                <span class="badge bg-danger">@unreadCount</span>
+                                }
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="max-height: 300px; overflow-y: auto; width: 300px;">
+                                @if (unreadNotifications.Any())
+                                {
+                                foreach (var notification in unreadNotifications)
+                                {
+                                <li>
+                                    <div class="dropdown-item @(notification.IsRead ? "" : "unread")" style="white-space: normal;">
+                                        <p>@notification.Message</p>
+                                        <small>@notification.CreatedOn.ToString("g")</small>
+                                        <button class="btn btn-sm btn-danger float-end delete-notification" data-id="@notification.Id">Delete</button>
+                                    </div>
+                                </li>
+                                }
+                                }
+                                else
+                                {
+                                <li><div class="dropdown-item">No new notifications</div></li>
+                                }
+                            </ul>
+                        </li>
 
                         <li class="nav-item d-flex align-items-center user-icon-container">
                             <a asp-action="GetAgentDetailsUser" asp-controller="Agent" class="nav-link text-white font-weight-bold px-0">
@@ -172,7 +209,7 @@
     <script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="~/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="~/assets/js/plugins/chartjs.min.js"></script>
- <style>
+<style>
         .user-icon-container {
             position: relative;
             display: inline-block;
@@ -199,6 +236,23 @@
             display: block;
         }
     </style>
+    <style>
+        /* ... existing styles ... */
+
+        .notification-dropdown {
+            max-height: 300px;
+            overflow-y: auto;
+            width: 300px;
+        }
+        .notification-dropdown .dropdown-item {
+            white-space: normal;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .notification-dropdown .unread {
+            background-color: #f0f0f0;
+        }
+    </style>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -213,6 +267,103 @@
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="~/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+
+
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+@* <script src="~/lib/signalr/dist/browser/signalr.js"></script> *@
+
+<!-- Include SignalR from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.6/signalr.min.js"></script>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .build();
+
+        connection.on("ReceiveNotification", (message) => {
+            updateNotifications();
+        });
+
+        connection.start().catch(err => console.error(err));
+
+        function updateNotifications() {
+            $.ajax({
+                url: '@Url.Action("GetNotifications", "Notification")',
+                method: 'GET',
+                success: function(data) {
+                    console.log('Notifications data:', data); // Debugging line
+                    const dropdown = $('#notificationDropdown').next('ul');
+                    dropdown.empty();
+                    const unreadCount = data.filter(n => !n.isRead).length;
+                    const badgeElement = $('#notificationDropdown .badge');
+                    if (unreadCount > 0) {
+                        badgeElement.text(unreadCount).show();
+                    } else {
+                        badgeElement.hide();
+                    }
+                    if (data.length > 0) {
+                        data.forEach(notification => {
+                            dropdown.append(`
+                        <li>
+                            <div class="dropdown-item ${notification.isRead ? '' : 'unread'}">
+                                <p>${notification.message}</p>
+                                <small>${new Date(notification.createdOn).toLocaleString()}</small>
+                                <button class="btn btn-sm btn-danger float-end delete-notification" data-id="${notification.id}">Delete</button>
+                            </div>
+                        </li>
+                    `);
+                        });
+                    } else {
+                        dropdown.append('<li><div class="dropdown-item">No notifications</div></li>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching notifications:', status, error); // Debugging line
+                }
+            });
+
+    }
+
+        $('#notificationDropdown').on('show.bs.dropdown', function () {
+            $.ajax({
+                url: '@Url.Action("MarkAsRead", "Notification")',
+                method: 'POST',
+                success: function() {
+                    alert("Notifications marked as read");
+                    updateNotifications();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error marking notifications as read:', status, error); // Debugging line
+                    alert("Error marking notifications as read");
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-notification', function(e) {
+            e.stopPropagation();
+            const notificationId = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("DeleteNotification", "Notification")',
+                method: 'POST',
+                data: { id: notificationId },
+                success: function() {
+                    alert("Notification deleted");
+                    updateNotifications();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error deleting notifications:', status, error); // Debugging line
+                    alert("Error deleting notifications");
+                }
+            });
+        });
+
+        updateNotifications();
+    });
+</script>
+    
+    </body>
 
 </html>

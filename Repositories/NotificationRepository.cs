@@ -33,7 +33,8 @@ public class NotificationRepository
         await _context.SaveChangesAsync();
     }
     
-    public async Task MarkAsRead(string userId)
+    
+    public async Task<IEnumerable<Notification>> MarkAsReadAsync(string userId)
     {
         var unreadNotifications = await _context.Notifications
             .Where(n => n.UserId == userId && !n.IsRead)
@@ -45,6 +46,7 @@ public class NotificationRepository
         }
 
         await _context.SaveChangesAsync();
+        return unreadNotifications;
     }
     
     public async Task DeleteNotification(int notificationId)
@@ -55,5 +57,21 @@ public class NotificationRepository
             _context.Notifications.Remove(notification);
             await _context.SaveChangesAsync();
         }
+    }
+    
+    
+    
+    public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(string userId)
+    {
+        return await _context.Notifications
+            .Where(n => n.UserId == userId)
+            .OrderByDescending(n => n.CreatedOn)
+            .ToListAsync();
+    }
+    
+    public async Task<int> GetUnreadNotificationCountAsync(string userId)
+    {
+        return await _context.Notifications
+            .CountAsync(n => n.UserId == userId && !n.IsRead);
     }
 }
