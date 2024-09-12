@@ -9,6 +9,7 @@ using NestAlbania.Models;
 using NestAlbania.Services;
 using NestAlbania.Services.Extensions;
 using System.Security.Claims;
+using NestAlbania.Models.DtoForEdit;
 
 namespace NestAlbania.Controllers
 {
@@ -223,94 +224,163 @@ namespace NestAlbania.Controllers
             return View(agentToShowDetails);
         }
 
+        // [HttpGet]
+        // [Route("edit/{id}")]
+        // public async Task<IActionResult> Edit(int id)
+        // {
+        //     var agentToEdit = await _agent.GetAgentById(id);
+        //     return View(agentToEdit);
+        // }
+        //
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
+        // [Route("edit/{id}")]
+        // public async Task<IActionResult> Edit(Agent agent)
+        // {
+        //     var existingAgent = await _agent.GetAgentById(agent.Id);
+        //     if (existingAgent == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     var uploadDir = _configuration["Uploads:AgentImg"];
+        //
+        //     // Update properties of the existing agent
+        //     existingAgent.Name = agent.Name;
+        //     existingAgent.Surname = agent.Surname;
+        //     existingAgent.LicenseNumber = agent.LicenseNumber;
+        //     existingAgent.Motto = agent.Motto;
+        //     existingAgent.PhoneNumber = agent.PhoneNumber;
+        //     existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
+        //     existingAgent.RoleId = agent.RoleId;
+        //     existingAgent.Email = agent.Email;
+        //     existingAgent.Password = agent.Password;
+        //
+        //
+        //     var file = HttpContext.Request.Form.Files.FirstOrDefault();
+        //
+        //     if (file != null)
+        //     {
+        //         // Remove the existing image if a new one is being uploaded
+        //         if (!string.IsNullOrEmpty(existingAgent.Image))
+        //         {
+        //             _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
+        //         }
+        //
+        //         // Upload and set the new image
+        //         var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}";
+        //         existingAgent.Image = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+        //     }
+        //
+        //     // Update user details if they exist
+        //     var user = await _userManager.FindByIdAsync(existingAgent.UserId);
+        //     if (user != null)
+        //     {
+        //         // Update CustomUserName if needed
+        //         if (user.CustomUserName != $"{existingAgent.Name}_{existingAgent.Surname}")
+        //         {
+        //             user.CustomUserName = $"{existingAgent.Name}_{existingAgent.Surname}";
+        //         }
+        //
+        //         // Update email if different
+        //         if (user.Email != agent.Email)
+        //         {
+        //             user.Email = agent.Email;
+        //             user.UserName = agent.Email;
+        //         }
+        //
+        //         // Update password if provided
+        //         if (!string.IsNullOrEmpty(agent.Password))
+        //         {
+        //             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //             var result = await _userManager.ResetPasswordAsync(user, token, agent.Password);
+        //             if (!result.Succeeded)
+        //             {
+        //                 ModelState.AddModelError(string.Empty, "Error resetting password.");
+        //                 return View(existingAgent);
+        //             }
+        //         }
+        //
+        //         var updateResult = await _userManager.UpdateAsync(user);
+        //         if (!updateResult.Succeeded)
+        //         {
+        //             ModelState.AddModelError(string.Empty, "Error updating user details.");
+        //             return View(existingAgent);
+        //         }
+        //     }
+        //
+        //     await _agent.EditAgent(existingAgent);
+        //     return RedirectToAction("Index");
+        // }
+
+
         [HttpGet]
         [Route("edit/{id}")]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var agentToEdit = await _agent.GetAgentById(id);
-            return View(agentToEdit);
+            var agent = await _agent.GetAgentById(id);
+            var dto = new AgentForEditDto()
+            {
+                Id = agent.Id,
+                Name = agent.Name,
+                Surname = agent.Surname,
+                Image = agent.Image,
+                PhoneNumber = agent.PhoneNumber,
+                LicenseNumber = agent.LicenseNumber,
+                Motto = agent.Motto,
+                YearsOfExeperience = agent.YearsOfExeperience,
+                Email = agent.Email,
+                Password = agent.Password
+            };
+            
+            return View(dto);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
-        public async Task<IActionResult> Edit(Agent agent)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AgentForEditDto dto)
         {
-            var existingAgent = await _agent.GetAgentById(agent.Id);
-            if (existingAgent == null)
+
+            var agent = await _agent.GetAgentById(dto.Id);
+            
+            agent.Name = dto.Name;
+            agent.Surname = dto.Surname;
+            agent.PhoneNumber = dto.PhoneNumber;
+            agent.LicenseNumber = dto.LicenseNumber;
+            agent.Motto = dto.Motto;
+            agent.YearsOfExeperience = dto.YearsOfExeperience;
+            agent.Email = dto.Email;
+            // agent.Password = dto.Password;
+            
+            // now we will change the user details
+            var user = await _userManager.FindByIdAsync(agent.UserId);
+            
+            user.Email = dto.Email;
+            user.UserName = dto.Email;
+            user.CustomUserName = $"{dto.Name}_{dto.Surname}";
+
+            if (dto.Password != agent.Password)
             {
-                return NotFound();
+                // Update password if provided 
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, dto.Password);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Error resetting password.");
+                    return View(dto);
+                }
+                agent.Password = dto.Password;
             }
-
-            var uploadDir = _configuration["Uploads:AgentImg"];
-
-            // Update properties of the existing agent
-            existingAgent.Name = agent.Name;
-            existingAgent.Surname = agent.Surname;
-            existingAgent.LicenseNumber = agent.LicenseNumber;
-            existingAgent.Motto = agent.Motto;
-            existingAgent.PhoneNumber = agent.PhoneNumber;
-            existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-            existingAgent.RoleId = agent.RoleId;
-            existingAgent.Email = agent.Email;
-            existingAgent.Password = agent.Password;
-
-
-            var file = HttpContext.Request.Form.Files.FirstOrDefault();
-
-            if (file != null)
-            {
-                // Remove the existing image if a new one is being uploaded
-                if (!string.IsNullOrEmpty(existingAgent.Image))
-                {
-                    _fileHandlerService.RemoveImageFile(uploadDir, existingAgent.Image);
-                }
-
-                // Upload and set the new image
-                var fileName = $"{existingAgent.Name}_{existingAgent.Id}_{Guid.NewGuid()}";
-                existingAgent.Image = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
-            }
-
-            // Update user details if they exist
-            var user = await _userManager.FindByIdAsync(existingAgent.UserId);
-            if (user != null)
-            {
-                // Update CustomUserName if needed
-                if (user.CustomUserName != $"{existingAgent.Name}_{existingAgent.Surname}")
-                {
-                    user.CustomUserName = $"{existingAgent.Name}_{existingAgent.Surname}";
-                }
-
-                // Update email if different
-                if (user.Email != agent.Email)
-                {
-                    user.Email = agent.Email;
-                    user.UserName = agent.Email;
-                }
-
-                // Update password if provided
-                if (!string.IsNullOrEmpty(agent.Password))
-                {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var result = await _userManager.ResetPasswordAsync(user, token, agent.Password);
-                    if (!result.Succeeded)
-                    {
-                        ModelState.AddModelError(string.Empty, "Error resetting password.");
-                        return View(existingAgent);
-                    }
-                }
-
-                var updateResult = await _userManager.UpdateAsync(user);
-                if (!updateResult.Succeeded)
-                {
-                    ModelState.AddModelError(string.Empty, "Error updating user details.");
-                    return View(existingAgent);
-                }
-            }
-
-            await _agent.EditAgent(existingAgent);
+            
+            await _userManager.UpdateAsync(user);
+            await _agent.EditAgent(agent);
             return RedirectToAction("Index");
+            
         }
+        
+        
 
         [HttpGet]
         [Route("filter")]
