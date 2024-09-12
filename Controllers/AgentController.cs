@@ -207,21 +207,25 @@ namespace NestAlbania.Controllers
 
             await _agent.CreateAgent(agent);
 
-            // Handle file upload if a file is provided
+            
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
                 var userDirectoryName = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
-                var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
+                var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
                 if (!Directory.Exists(uploadsFolderAgent))
                     Directory.CreateDirectory(uploadsFolderAgent);
 
-                var fileName = Guid.NewGuid().ToString().Substring(0, 8);
+                var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(file.FileName)}";
+                
+
+                var filePath = Path.Combine(uploadsFolderAgent, fileName);
+
                 agent.Image = fileName;
 
                 await _agent.EditAgent(agent);
 
-                using (var stream = new FileStream(uploadsFolderAgent, FileMode.Create))
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
