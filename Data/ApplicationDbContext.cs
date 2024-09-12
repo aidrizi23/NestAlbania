@@ -20,6 +20,8 @@ namespace NestAlbania.Data
 
         public DbSet<Agent> Agents { get; set; }
         public DbSet<UserFavorite> Favorites { get; set; }
+        
+        public DbSet<Notification> Notifications { get; set; }
      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

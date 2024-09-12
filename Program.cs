@@ -48,6 +48,7 @@ builder.Services.AddScoped<RoleRepository, RoleRepository>();
 builder.Services.AddScoped<PropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<AgentRepository, AgentRepository>();
 builder.Services.AddScoped<FavoriteRepository, FavoriteRepository>();
+builder.Services.AddScoped<NotificationRepository, NotificationRepository>();
 #endregion
 
 #region Transient
@@ -60,6 +61,8 @@ builder.Services.AddTransient<IPropertyService, PropertyService>();
 builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
 builder.Services.AddTransient<IFavoriteService, FavoriteService>();
+
+builder.Services.AddTransient<INotificationService, NotificationService>();
 #endregion
 
 var app = builder.Build();
