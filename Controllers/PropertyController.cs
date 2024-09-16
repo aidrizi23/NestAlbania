@@ -11,12 +11,6 @@
     using NestAlbania.Repositories.Pagination;
     using NestAlbania.Services;
     using NestAlbania.Services.Extensions;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-
 
     namespace NestAlbania.Controllers
     {
@@ -93,11 +87,19 @@
                 {
                     return NotFound();
                 }
+                var agent = await _agentService.GetAgentById(property.AgentId!.Value);
 
                 try
                 {
                     await _propertyService.SoftDeletePropertyAsync(property);
-                    await _propertyService.EditPropertyAsync(property); // Assuming this is needed to update the property status after soft delete
+                    await _propertyService.EditPropertyAsync(property); 
+                    var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                    string notificationMessage = $"New property '{property.Name}' has been soft deleted by agent {agent?.Name ?? "Unknown"}";
+                    foreach (var admin in adminUsers)
+                    {
+                        await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -132,6 +134,7 @@
             public async Task<IActionResult> Sell(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
+                var agent = await _agentService.GetAgentById(property.AgentId!.Value);
                 if (property == null)
                 {
                     return NotFound();
@@ -141,6 +144,14 @@
                 {
                     await _propertyService.SellPropertyAsync(property);
                     await _propertyService.EditPropertyAsync(property);
+                    
+                    var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                    string notificationMessage = $"New property '{property.Name}' has been sold by agent {agent?.Name ?? "Unknown"}";
+                    foreach (var admin in adminUsers)
+                    {
+                        await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -222,7 +233,7 @@
                 string notificationMessage = $"New property '{property.Name}' has been created by agent {agent?.Name ?? "Unknown"}";
                 foreach (var admin in adminUsers)
                 {
-                    await _notificationService.CreateNotification(admin.Id, $"New property added: {property.Name}");
+                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
                 }
 
                 // Handle additional images upload
@@ -274,23 +285,6 @@
 
 
         }
-
-        //[HttpPost]
-        //[Route("togglefavorite")]
-        //public async Task<IActionResult> ToggleFavorite(int id)
-        //{
-        //    var property = await _propertyService.GetPropertyByIdAsync(id);
-
-        //    if (property == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    property.IsFavorite = !property.IsFavorite;
-        //    await _propertyService.EditPropertyAsync(property);
-
-        //    return RedirectToAction("Index");
-        //}
 
             [HttpGet]
             [Route("details/{id}")]

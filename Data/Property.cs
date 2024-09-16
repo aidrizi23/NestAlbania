@@ -7,27 +7,24 @@ namespace NestAlbania.Data
 {
     public class Property : BaseEntity
     {
-        [Required]
-        public string Name { get; set; }
+     
+        public required string Name { get; set; }
         
-        [Required]
-        public string Description { get; set; }
+        
+        public required string Description { get; set; }
         public string? MainImage { get; set; }
         
-        [Required]
-        public double Price { get; set; }
+
+        public required double Price { get; set; }
         
-        [Required]
-        public double FullArea { get; set; }
+ 
+        public required double FullArea { get; set; }
         
-        [Required]
-        public double InsideArea { get; set; }
+        public required double InsideArea { get; set; }
         
-        [Required]
-        public int BedroomCount { get; set; }
+        public required int BedroomCount { get; set; }
         
-        [Required]
-        public int BathroomCount { get; set; }
+        public required int BathroomCount { get; set; }
         
         
         public string? Documentation { get; set; }
