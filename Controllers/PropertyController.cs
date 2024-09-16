@@ -140,22 +140,25 @@
                     return NotFound();
                 }
 
-                try
+                if (property.IsSold == false)
                 {
-                    await _propertyService.SellPropertyAsync(property);
-                    await _propertyService.EditPropertyAsync(property);
-                    
-                    var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                    string notificationMessage = $"New property '{property.Name}' has been sold by agent {agent?.Name ?? "Unknown"}";
-                    foreach (var admin in adminUsers)
+                    try
                     {
-                        await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
-                    }
+                        await _propertyService.SellPropertyAsync(property);
+                        await _propertyService.EditPropertyAsync(property);
+                    
+                        var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                        string notificationMessage = $"New property '{property.Name}' has been sold by agent {agent?.Name ?? "Unknown"}";
+                        foreach (var admin in adminUsers)
+                        {
+                            await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                        }
 
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
+                    }
                 }
 
                 return RedirectToAction("Index");

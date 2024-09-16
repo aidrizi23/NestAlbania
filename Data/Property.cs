@@ -33,32 +33,29 @@ namespace NestAlbania.Data
         public int PreviousPrice { get; set; }
 
         
-        [Required]
-        public Category Category { get; set; }
+        public required Category Category { get; set; }
         
-        [Required]
-        public PropertyStatus Status { get; set; }
+        public required PropertyStatus Status { get; set; }
+
+        public required City City { get; set; }
+       
         
-        [Required]
-        public City City { get; set; }
         public virtual ICollection<UserFavorite> UserFavorites { get; set; }
 
         [ForeignKey("AgentId")]
         public int? AgentId { get; set; }
         public virtual Agent? Agent { get; set; }
 
-        
-        [Required]
-        public DateTime PostedOn { get; set; }
+
+        public required DateTime PostedOn { get; set; }
         
         
         public DateTime? LastEdited { get; set; }
-
-        [Required]
+        
         public double PricePerMeterSquared  =>  Price / FullArea;
         
-        [Required]
-        public bool? IsSold { get; set; }
+
+        public required bool IsSold { get; set; }
         public DateTime PriceChangedDate { get; set; }  
         
         

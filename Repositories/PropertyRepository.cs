@@ -26,7 +26,7 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesAsync(int pageIndex = 1, int pageSize = 10)
         {
             var source = _context.Properties.AsNoTrackingWithIdentityResolution()
-                .Where(x => x.isDeleted == false)
+                .Where(x => x.isDeleted == false && x.IsSold == false)
                 .OrderByDescending(x => x.Id)
                 .AsQueryable();
             return await PaginatedList<Property>.CreateAsync(source, pageIndex, pageSize);

@@ -291,14 +291,14 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6979f19a-f56d-4b9b-a67e-96bb794a96d3",
+                            ConcurrencyStamp = "bb6b1db1-1e71-43ba-937f-0d383d753a11",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO0wpGsf6mz3uVSaXGGRSdDmCEONWtAX+9/hqds0ezV5et14QelDH/6ECuMeboplVQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEASVUx7y+pnhdd+bzxPN6Yt5EUplGcZ0ZrMsPPS07beuZqeym8g5u/8HTzFs83shOA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -402,8 +402,7 @@ namespace NestAlbania.Migrations
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsSold")
-                        .IsRequired()
+                    b.Property<bool>("IsSold")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastEdited")

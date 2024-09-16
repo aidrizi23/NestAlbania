@@ -332,7 +332,6 @@
                 url: '@Url.Action("MarkAsRead", "Notification")',
                 method: 'POST',
                 success: function() {
-                    alert("Notifications marked as read");
                     updateNotifications();
                 },
                 error: function(xhr, status, error) {
@@ -350,7 +349,6 @@
                 method: 'POST',
                 data: { id: notificationId },
                 success: function() {
-                    alert("Notification deleted");
                     updateNotifications();
                 },
                 error: function(xhr, status, error) {
