@@ -22,7 +22,7 @@ public interface IPropertyService
     Task SoftDeletePropertyAsync(Property property);
     Task SellPropertyAsync(Property property);
     Task UnDeletePropertyAsync(Property property);
-    Task<IEnumerable<Property>> GetPropertiesWithChangedPricesAsync();
+
     Task<List<Property>> GetPropertiesByCategoryAsync(string category);
     Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync();
     Task<Dictionary<string, int>> GetSoldPropertiesByDayAsync(int year, int month);

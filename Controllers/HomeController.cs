@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using NestAlbania.Data.Enums;
 using NestAlbania.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace NestAlbania.Controllers
 {
@@ -27,50 +28,111 @@ namespace NestAlbania.Controllers
             _agentService = agentService;
         }
 
-         public async Task<IActionResult> Index()
-{
-           try{
-        var properties = await _propertyService.GetAllPropertiesAsync();
-        var soldProperties = properties.Where(p => p.isSold == true).ToList();
-
-        var monthlySoldProperties = soldProperties
-            .GroupBy(p => p.PostedOn.ToString("MMMM yyyy")) 
-            .ToDictionary(g => g.Key, g => g.Count());
-
-        _logger.LogInformation("Monthly Sold Properties: {MonthlySoldProperties}", string.Join(", ", monthlySoldProperties.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
-
-       
-        ViewBag.MonthlySoldProperties = monthlySoldProperties;
-
-        var groupedProperties = properties
-            .Where(p => p.isSold == false)
-            .GroupBy(p => p.Category)
-            .Select(g => new GroupedProperty
+        public async Task<IActionResult> Index()
+        {
+            try
             {
-                Category = g.Key,
-                LatestProperty = g.OrderByDescending(p => p.PostedOn).FirstOrDefault()
-            })
-            .ToList();
+                // Fetch all properties
+                var properties = await _propertyService.GetAllPropertiesAsync();
 
-        ViewBag.GroupedProperties = groupedProperties;
+                // Get sold properties and sort them by the latest sold date
+                var soldProperties = properties
+                    .Where(p => p.isSold.HasValue && p.isSold.Value)
+                    .OrderByDescending(p => p.PostedOn) // Ensure we sort by the correct date field
+                    .ToList();
 
-        var topSellingAgent = await _agentService.GetTopSellingAgentAsync();
+                var latestSoldProperties = soldProperties.Take(4).ToList();
 
-        ViewBag.SoldProperties = soldProperties;
-        ViewBag.TopSellingAgent = topSellingAgent;
+                var monthlySoldProperties = soldProperties
+                    .GroupBy(p => p.PostedOn.ToString("MMMM yyyy"))
+                    .ToDictionary(g => g.Key, g => g.Count());
 
-        return View();
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "An error occurred while loading the home page.");
-        return StatusCode(500, "Internal server error.");
-    }
-}
+                _logger.LogInformation("Monthly Sold Properties: {MonthlySoldProperties}", string.Join(", ", monthlySoldProperties.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
 
+                ViewBag.MonthlySoldProperties = monthlySoldProperties;
 
+                var groupedProperties = properties
+                    .Where(p => !p.isSold.HasValue || !p.isSold.Value)
+                    .GroupBy(p => p.Category)
+                    .Select(g => new GroupedProperty
+                    {
+                        Category = g.Key,
+                        LatestProperty = g.OrderByDescending(p => p.PostedOn).FirstOrDefault()
+                    })
+                    .ToList();
 
-  public IActionResult Privacy()
+                ViewBag.GroupedProperties = groupedProperties;
+
+                // Conditionally get the top-selling agent
+                if (soldProperties.Any())
+                {
+                    var topSellingAgent = await _agentService.GetTopSellingAgentAsync();
+                    ViewBag.TopSellingAgent = topSellingAgent;
+                }
+                else
+                {
+                    ViewBag.TopSellingAgent = null; // or handle accordingly if needed
+                }
+
+                var totalProperties = properties.Count();
+
+                var total = await _agentService.GetAllAgents();
+                var totalAgents = total.Count();
+
+                var mostSoldCategory = soldProperties
+                    .GroupBy(p => p.Category)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.Key)
+                    .FirstOrDefault();
+                ViewBag.TotalProperties = totalProperties;
+                ViewBag.TotalAgents = totalAgents;
+                ViewBag.MostSoldCategory = mostSoldCategory;
+
+                ViewBag.SoldProperties = latestSoldProperties;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while loading the home page.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPropertyStatusData()
+        {
+            try
+            {
+                var allProperties = await _propertyService.GetAllPropertiesAsync();
+
+                int totalProperties = allProperties.Count();
+                int soldProperties = allProperties.Count(p => p.isSold.HasValue && p.isSold.Value);
+
+                // Calculate sales by day
+                var salesByDay = allProperties
+                    .Where(p => p.isSold.HasValue && p.isSold.Value)
+                    .GroupBy(p => p.PostedOn.Date)
+                    .ToDictionary(g => g.Key.ToString("yyyy-MM-dd"), g => g.Count());
+
+                var model = new PropertyStatusModel
+                {
+                    Total = totalProperties,
+                    Sold = soldProperties,
+                    Available = totalProperties - soldProperties,
+                    SalesByDay = salesByDay
+                };
+
+                return View("Index1", model); // Ensure that "Index1" is the correct view name
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching property status data.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }
@@ -81,161 +143,6 @@ namespace NestAlbania.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     internal class GroupedProperty
     {

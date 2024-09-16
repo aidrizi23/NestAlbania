@@ -17,7 +17,7 @@ namespace NestAlbania.Data
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
         public bool IsFavorite { get; set; }
-        public int PreviousPrice { get; set; }
+     
         public Category Category { get; set; }
         public PropertyStatus Status { get; set; }
         public City City { get; set; }
@@ -29,7 +29,7 @@ namespace NestAlbania.Data
 
         public DateTime PostedOn { get; set; }
         public DateTime? LastEdited { get; set; }
-
+        public DateTime? SoldDate { get; set; }
         public double PricePerMeterSquared  =>  (double)Price / FullArea;
         
         // public bool? isDeleted { get; set; }

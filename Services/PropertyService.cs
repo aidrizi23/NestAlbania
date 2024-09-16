@@ -19,11 +19,7 @@ namespace NestAlbania.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<Property>> GetPropertiesWithChangedPricesAsync()
-        {
-            return await _repository.GetPropertiesWithChangedPricesAsync();
-        }
-
+      
 
         // Correct version of GetAllPropertiesAsync
         public async Task<IEnumerable<Property>> GetAllPropertiesAsync()

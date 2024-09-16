@@ -326,10 +326,7 @@ namespace NestAlbania.Controllers
                     existingProperty.Status = property.Status;
                     existingProperty.City = property.City;
 
-                    if (existingProperty.Price != property.Price)
-                    {
-                        existingProperty.PreviousPrice = existingProperty.Price;
-                    }
+                
                     await _propertyService.EditPropertyAsync(existingProperty);
                     return RedirectToAction("Index");
                 }
