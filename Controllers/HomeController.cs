@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -32,13 +33,10 @@ namespace NestAlbania.Controllers
         {
             try
             {
-                // Fetch all properties
                 var properties = await _propertyService.GetAllPropertiesAsync();
-
-                // Get sold properties and sort them by the latest sold date
                 var soldProperties = properties
                     .Where(p => p.isSold.HasValue && p.isSold.Value)
-                    .OrderByDescending(p => p.PostedOn) // Ensure we sort by the correct date field
+                    .OrderByDescending(p => p.PostedOn) 
                     .ToList();
 
                 var latestSoldProperties = soldProperties.Take(4).ToList();
@@ -63,7 +61,6 @@ namespace NestAlbania.Controllers
 
                 ViewBag.GroupedProperties = groupedProperties;
 
-                // Conditionally get the top-selling agent
                 if (soldProperties.Any())
                 {
                     var topSellingAgent = await _agentService.GetTopSellingAgentAsync();
@@ -71,7 +68,7 @@ namespace NestAlbania.Controllers
                 }
                 else
                 {
-                    ViewBag.TopSellingAgent = null; // or handle accordingly if needed
+                    ViewBag.TopSellingAgent = null; 
                 }
 
                 var totalProperties = properties.Count();
@@ -90,6 +87,7 @@ namespace NestAlbania.Controllers
 
                 ViewBag.SoldProperties = latestSoldProperties;
 
+                ViewData["ActivePage"] = "dashboardIndex";
                 return View();
             }
             catch (Exception ex)
@@ -109,7 +107,6 @@ namespace NestAlbania.Controllers
                 int totalProperties = allProperties.Count();
                 int soldProperties = allProperties.Count(p => p.isSold.HasValue && p.isSold.Value);
 
-                // Calculate sales by day
                 var salesByDay = allProperties
                     .Where(p => p.isSold.HasValue && p.isSold.Value)
                     .GroupBy(p => p.PostedOn.Date)
@@ -123,7 +120,8 @@ namespace NestAlbania.Controllers
                     SalesByDay = salesByDay
                 };
 
-                return View("Index1", model); // Ensure that "Index1" is the correct view name
+                ViewData["ActivePage"] = "propertyOverviewIndex";
+                return View("Index1", model);
             }
             catch (Exception ex)
             {

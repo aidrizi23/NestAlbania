@@ -46,6 +46,7 @@ namespace NestAlbania.Controllers
             ViewBag.PageIndex = pageIndex;
             ViewBag.PageSize = pageSize;
 
+            ViewData["ActivePage"] = "agentIndex";
             return View(paginatedAgents);
         }
 
@@ -117,7 +118,10 @@ namespace NestAlbania.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+
             var dto = new AgentForCreationDto();
+
+            ViewData["ActivePage"] = "agentIndex";
             return View(dto);
         }
 
@@ -196,11 +200,14 @@ namespace NestAlbania.Controllers
                 await _agent.EditAgent(agent);
             }
 
+            ViewData["ActivePage"] = "agentIndex";
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> Details(int id)
         {
             var agentToShowDetails = await _agent.GetAgentWPropertiesAsync(id);
+
+            ViewData["ActivePage"] = "agentIndex";
             return View(agentToShowDetails);
         }
 
@@ -208,6 +215,8 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var agentToEdit = await _agent.GetAgentById(id);
+
+            ViewData["ActivePage"] = "agentIndex";
             return View(agentToEdit);
         }
         // [HttpPost]
@@ -319,6 +328,8 @@ namespace NestAlbania.Controllers
             }
 
             await _agent.EditAgent(existingAgent);
+
+            ViewData["ActivePage"] = "agentIndex";
             return RedirectToAction("Index");
         }
 
@@ -332,6 +343,7 @@ namespace NestAlbania.Controllers
             ViewData["CurrentYearsOfExperienceFilter"] = query.YearsOfExeperience;
             ViewData["CurrentEmailFilter"] = query.Email;
 
+            ViewData["ActivePage"] = "agentIndex";
             return View("Index", agents);
         }
         public async Task<IActionResult> GetAgentDetailsUser()
@@ -339,6 +351,8 @@ namespace NestAlbania.Controllers
             var user = await _userManager.GetUserAsync(User);
             var userId = await _userManager.GetUserIdAsync(user);
             var agent = await _agent.GetAgentByUserIdAsync(userId);
+
+            ViewData["ActivePage"] = "agentIndex";
             return View("Details", agent);
         }
     }

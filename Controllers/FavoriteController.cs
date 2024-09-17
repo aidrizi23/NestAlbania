@@ -21,6 +21,8 @@ namespace NestAlbania.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var favorites = await _favoriteService.GetUserFavoritesAsync(user.Id);
+
+            ViewData["ActivePage"] = "favoriteIndex";  
             return View(favorites);
         }
 
@@ -43,6 +45,8 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> RemoveFavorite(int favoriteId)
         {
             await _favoriteService.RemoveFavoriteAsync(favoriteId);
+
+            ViewData["ActivePage"] = "favoriteIndex";
             return RedirectToAction(nameof(Index));
         }
 

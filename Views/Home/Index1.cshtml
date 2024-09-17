@@ -2,8 +2,6 @@
 
 @{
     ViewData["Title"] = "PROPERTY STATUS CHART";
-
-    // Get the day with the highest number of sales
     var topSellingDay = Model.SalesByDay.OrderByDescending(d => d.Value).FirstOrDefault();
 }
 
@@ -67,22 +65,22 @@
         }
 
             .card h2 {
-                color: #2c3e50; /* Slightly darker shade for better contrast */
-                font-size: 28px; /* Slightly larger font size for more emphasis */
-                margin-bottom: 20px; /* Increased margin for better spacing */
-                font-family: 'Roboto', sans-serif; /* More modern font for headers */
-                font-weight: 700; /* Bold weight for emphasis */
-                text-transform: uppercase; /* Capitalize the text for a more impactful look */
-                letter-spacing: 1px; /* Add some spacing between letters for improved readability */
-                border-bottom: 3px solid #3498db; /* Accent line below header for visual interest */
-                padding-bottom: 10px; /* Padding to create space between text and border */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-                transition: color 0.3s ease, border-bottom-color 0.3s ease; /* Smooth transitions for hover effects */
+                color: #2c3e50;
+                font-size: 28px; 
+                margin-bottom: 20px; 
+                font-family: 'Roboto', sans-serif; 
+                font-weight: 700; 
+                text-transform: uppercase; 
+                letter-spacing: 1px;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px; 
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+                transition: color 0.3s ease, border-bottom-color 0.3s ease; 
             }
 
                 .card h2:hover {
-                    color: #3498db; /* Change text color on hover to match the accent border */
-                    border-bottom-color: #2c3e50; /* Darker border color on hover for contrast */
+                    color: #3498db;
+                    border-bottom-color: #2c3e50; 
                 }
 
 
@@ -91,18 +89,19 @@
                 font-size: 20px;
                 line-height: 1.9;
                 color: #555;
-                background-color: #f9f9f9; /* Subtle background color for better readability */
-                border-left: 5px solid #3498db; /* Accent border to the left for visual interest */
-                padding: 10px 15px; /* Padding around the text */
-                margin: 0; /* Remove default margin to align with card content */
-                border-radius: 5px; /* Rounded corners for a softer look */
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-                transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for hover effects */
+                background-color: #f9f9f9; 
+                border-left: 5px solid #3498db; 
+                padding: 10px 15px; 
+                margin: 0; 
+                border-radius: 5px; 
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+                transition: background-color 0.3s ease, color 0.3s ease;
+
             }
 
                 .card p:hover {
-                    background-color: #e3f2fd; /* Light blue background on hover for emphasis */
-                    color: #333; /* Darker text color on hover for better contrast */
+                    background-color: #e3f2fd; 
+                    color: #333; 
                 }
 
 
@@ -163,13 +162,11 @@
         <div class="card">
             <h2>Property Status Chart</h2>
             <div class="chart-container">
-                <!-- Canvas for the donut chart with adjusted size -->
                 <canvas id="propertyStatusChart" width="300" height="300"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Include Chart.js from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>

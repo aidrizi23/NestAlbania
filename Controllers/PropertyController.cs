@@ -57,6 +57,7 @@ namespace NestAlbania.Controllers
                 properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
             }
 
+            ViewData["ActivePage"] = "propertyIndex";
             return View(properties);
         }
 
@@ -115,7 +116,6 @@ namespace NestAlbania.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> Sell(int id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -143,6 +143,8 @@ namespace NestAlbania.Controllers
         public IActionResult Create()
         {
             PopulateViewBags();
+
+            ViewData["ActivePage"] = "propertyIndex";
             return View(new PropertyForCreationDto());
         }
 
@@ -216,6 +218,7 @@ namespace NestAlbania.Controllers
                 await _propertyService.EditPropertyAsync(property); // Update property with additional images
             }
 
+            ViewData["ActivePage"] = "propertyIndex";
             PopulateViewBags();
             return RedirectToAction("Index");
         }
@@ -265,6 +268,7 @@ namespace NestAlbania.Controllers
             property.IsFavorite = !property.IsFavorite;
             await _propertyService.EditPropertyAsync(property);
 
+            ViewData["ActivePage"] = "propertyIndex";
             return RedirectToAction("Index");
         }
 
@@ -285,6 +289,7 @@ namespace NestAlbania.Controllers
                 property.Agent = null; // Handle the case where AgentId is null as needed
             }
 
+            ViewData["ActivePage"] = "propertyIndex";
             return View(property);
         }
 
@@ -298,6 +303,8 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
             PopulateViewBags();
+
+            ViewData["ActivePage"] = "propertyIndex";
             return View(property);
         }
 
@@ -337,6 +344,8 @@ namespace NestAlbania.Controllers
             }
 
             PopulateViewBags();
+
+            ViewData["ActivePage"] = "propertyIndex";
             return View(property);
         }
 
