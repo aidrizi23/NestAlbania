@@ -55,6 +55,7 @@ namespace NestAlbania.Controllers
         {
 
             var agent = await _agent.GetAgentById(id);
+
             if (agent.UserId != null)
             {
                 var user = await _userService.GetUserByIdAsync(agent.UserId);
@@ -69,10 +70,30 @@ namespace NestAlbania.Controllers
                 }
                 await _agent.HardDeleteAgent(agent);
             }
-            else
+
+            if (agent == null)
             {
                 return NotFound();
             }
+
+            var agentDirectoryIdentity = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+            var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", agentDirectoryIdentity);
+
+            if (!string.IsNullOrEmpty(agent.Image))
+            {
+                var filePath = Path.Combine(uploadsFolderDirectory, agent.Image);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+
+            if (Directory.Exists(uploadsFolderDirectory))
+            {
+                Directory.Delete(uploadsFolderDirectory);
+            }
+
 
             return RedirectToAction("Index");
         }
@@ -211,6 +232,7 @@ namespace NestAlbania.Controllers
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
+
                 var userDirectoryName = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
                 var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
                 if (!Directory.Exists(uploadsFolderAgent))

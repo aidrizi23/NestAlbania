@@ -18,12 +18,18 @@
                             <div class="carousel-item active">
                                 <img src="@Url.Content("~/images/properties/" + Model.MainImage)" alt="Property Image" class="d-block w-100">
                             </div>
-                            @foreach (var image in Model?.OtherImages)
+                  
+
+                             @if (Model.OtherImages != null && Model.OtherImages.Any())
                             {
-                                <div class="carousel-item">
-                                    <img src="@Url.Content("/PropertyOtherImages/" + image)" alt="Property Image" class="d-block w-100">
-                                </div>
+                                @foreach (var image in Model.OtherImages)
+                                {
+                                    <div class="carousel-item">
+                                        <img src="~/files/property/@Model.Name.ToLower()-@Model.Id/@image" alt="Property Image" class="d-block w-100">
+                                    </div>
+                                }
                             }
+
                         </div>
                         <a class="carousel-control-prev" href="#propertyCarousel" role="button" data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

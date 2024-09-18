@@ -76,6 +76,19 @@
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
 
+                    <div class="form-group">
+                        <label asp-for="MainImage" class="control-label"></label>
+                        <input class="form-control" type="file" asp-for="MainImage" />
+                        <span asp-validation-for="MainImage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="OtherImages" class="control-label"></label>
+                        <input class="form-control" type="file" asp-for="OtherImages" />
+                        <span asp-validation-for="OtherImages" class="text-danger"></span>
+                    </div>
+
+
                     <div class="form-group mb-3 text-center">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
