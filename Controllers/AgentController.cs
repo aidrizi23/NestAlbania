@@ -49,6 +49,7 @@ namespace NestAlbania.Controllers
         
         
         [Route("delete/{id}")]
+        [HttpGet]
         [Authorize(Roles="admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -77,6 +78,7 @@ namespace NestAlbania.Controllers
         }
         
         [Route("softdelete/{id}")]
+        [HttpPost]
         [Authorize(Roles="admin")]
         public async Task<IActionResult> SoftDelete(int id)
         {
@@ -107,6 +109,7 @@ namespace NestAlbania.Controllers
         }
 
         
+        [HttpPost]
         [Route("undelete/{id}")]
         public async Task<IActionResult> UnDelete(int id)
         {

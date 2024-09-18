@@ -6,7 +6,7 @@ using NestAlbania.Services;
 
 namespace NestAlbania.Controllers
 {
-    [RequireHttps]
+    
     [Route("favorite")]
     public class FavoriteController : Controller
     {

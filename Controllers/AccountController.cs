@@ -80,6 +80,8 @@ namespace NestAlbania.Controllers
 
         }
         
+        
+        [HttpGet]
         public IActionResult Lockout()
         {
             return View();

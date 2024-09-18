@@ -37,6 +37,28 @@
     <_ContentIncludedByDefault Remove="Views\JobApply\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Views\JobApply\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Views\JobApply\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\appsettings.json" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\obj\LandingPageApi.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="LandingPageApi\Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="LandingPageApi\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="LandingPageApi\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="LandingPageApi\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="LandingPageApi\**" />
   </ItemGroup>
 
 </Project>

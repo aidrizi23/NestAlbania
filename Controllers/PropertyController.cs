@@ -25,7 +25,7 @@
             private readonly IWebHostEnvironment _webHostEnvironment;
             public readonly IUserRepository _userRepository;
             private readonly UserManager<ApplicationUser> _userManager;
-            private readonly IAgentService _agentService;
+            private readonly IAgentService _agentService; 
             private readonly INotificationService _notificationService;
             public PropertyController(INotificationService notificationService,IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
             {
@@ -65,6 +65,7 @@
 
 
             [Route("delete/{id}")]
+            [HttpGet]
             public async Task<IActionResult> Delete(int id)
             {
                 var property = await _propertyService.GetPropertyByIdAsync(id);
@@ -367,13 +368,18 @@
                 ViewData["ShowAdditionalFilters"] = ShowAdditionalFilters ?? false;
 
             return View("Index", properties);
-        }
+        } 
+            
+            [HttpGet]
+            [Route("properties-by-category/{category}")]
         public async Task<IActionResult> PropertiesByCategory(string category)
         {
             var properties = await _propertyService.GetPropertiesByCategoryAsync(category);
             return View(properties);
         }
 
+        [HttpGet]
+        [Route("favorites")]
         public async Task<IActionResult> Favorites()
         {
             var user = await _userManager.GetUserAsync(User);

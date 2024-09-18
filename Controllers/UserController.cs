@@ -32,6 +32,7 @@ namespace NestAlbania.Controllers
         
         
         [Route("delete/{id}")]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
@@ -91,6 +92,7 @@ namespace NestAlbania.Controllers
 
   
         [Route("role-delete/{id}")]
+        [HttpPost]
         public async Task<IActionResult> RoleDelete(string id)
         {
             await _roleService.DeleteAsync(id);
@@ -164,6 +166,7 @@ namespace NestAlbania.Controllers
 
 
         [Route("userrole-delete/{id}")]
+        [HttpPost]
         public async Task<IActionResult> UserRoleDelete(string id)
         {
             var user = await _userRoleService.GetUserRoleByRoleIdAsync(id);

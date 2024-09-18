@@ -23,7 +23,7 @@
                             <p class="category">@categoryGroup.Category</p>
                         </div>
                         <div class="category-button-container">
-                            <a href="@Url.Action("PropertiesByCategory", "Property", new { category = categoryGroup.Category })" class="category-button">
+                            <a href="@Url.Action("PropertiesByCategory", "PropertyApi", new { category = categoryGroup.Category })" class="category-button">
                                 View More
                             </a>
                         </div>
@@ -50,7 +50,7 @@ else
                     <img class="property-image" src="@Url.Content($"~/images/properties/{property.MainImage}")" alt="Property Image" />
                     <div class="property-details">
                         <h3>@property.Name</h3>
-                        <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="category-button">
+                        <a href="@Url.Action("Details", "PropertyApi", new { id = property.Id })" class="category-button">
                             View Details
                         </a>
                         <div class="sold-badge">SOLD</div>

@@ -41,6 +41,7 @@ public class NotificationController : Controller
         return Ok();
     }
 
+    
     private IActionResult Unauthorized()
     {
         throw new NotImplementedException();

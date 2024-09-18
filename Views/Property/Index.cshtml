@@ -86,7 +86,7 @@
 <body>
     <div class="container">
         
-        @using (Html.BeginForm("GetAllFilteredProperties", "Property", FormMethod.Get))
+        @using (Html.BeginForm("GetAllFilteredProperties", "PropertyApi", FormMethod.Get))
         {
         <div class="row mb-3">
             <div class="col-md-2">
@@ -320,7 +320,7 @@
         });
 
         $('#clearFilters').click(function () {
-            window.location.href = '@Url.Action("Index", "Property")';
+            window.location.href = '@Url.Action("Index", "PropertyApi")';
         });
 
         $("#toggleAdditionalFilters").click(function() {
