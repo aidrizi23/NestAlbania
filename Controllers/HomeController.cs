@@ -129,11 +129,11 @@ namespace NestAlbania.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

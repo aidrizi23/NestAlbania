@@ -47,7 +47,7 @@ namespace NestAlbania.Controllers
             await _favoriteService.RemoveFavoriteAsync(favoriteId);
 
             ViewData["ActivePage"] = "favoriteIndex";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Favorites","Property");
         }
 
        

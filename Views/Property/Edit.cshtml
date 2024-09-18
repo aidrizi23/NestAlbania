@@ -17,61 +17,61 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" />
+                        <label asp-for="Name" class="form-label">Name <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control" autocomplete="off" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Description" class="form-label"></label>
-                        <input asp-for="Description" class="form-control" placeholder="Enter the description here..." />
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <input asp-for="Description" class="form-control" placeholder="Enter the description here..." autocomplete="off" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Price" class="form-label"></label>
-                        <input asp-for="Price" class="form-control" />
+                        <label asp-for="Price" class="form-label">Price <span class="text-danger">*</span></label>
+                        <input asp-for="Price" class="form-control" type="number" min="0" autocomplete="off" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="FullArea" class="form-label"></label>
-                        <input asp-for="FullArea" class="form-control" />
+                        <label asp-for="FullArea" class="form-label">Full Area <span class="text-danger">*</span></label>
+                        <input asp-for="FullArea" class="form-control" type="number" min="0" autocomplete="off" />
                         <span asp-validation-for="FullArea" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="InsideArea" class="form-label"></label>
-                        <input asp-for="InsideArea" class="form-control" />
+                        <label asp-for="InsideArea" class="form-label">Inside Area <span class="text-danger">*</span></label>
+                        <input asp-for="InsideArea" class="form-control" type="number" min="0" autocomplete="off" />
                         <span asp-validation-for="InsideArea" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="BedroomCount" class="form-label"></label>
-                        <input asp-for="BedroomCount" class="form-control" />
+                        <label asp-for="BedroomCount" class="form-label">Bedroom Count <span class="text-danger">*</span></label>
+                        <input asp-for="BedroomCount" class="form-control" type="number" min="0" autocomplete="off" />
                         <span asp-validation-for="BedroomCount" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="BathroomCount" class="form-label"></label>
-                        <input asp-for="BathroomCount" class="form-control" />
+                        <label asp-for="BathroomCount" class="form-label">Bathroom Count <span class="text-danger">*</span></label>
+                        <input asp-for="BathroomCount" class="form-control" type="number" min="0" autocomplete="off" />
                         <span asp-validation-for="BathroomCount" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Category" class="form-label"></label>
+                        <label asp-for="Category" class="form-label">Category <span class="text-danger">*</span></label>
                         <select asp-for="Category" class="form-control" asp-items="ViewBag.Categories"></select>
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Status" class="form-label"></label>
+                        <label asp-for="Status" class="form-label">Status <span class="text-danger">*</span></label>
                         <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses"></select>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="City" class="form-label"></label>
+                        <label asp-for="City" class="form-label">City <span class="text-danger">*</span></label>
                         <select asp-for="City" class="form-control" asp-items="ViewBag.Cities"></select>
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
@@ -90,7 +90,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
