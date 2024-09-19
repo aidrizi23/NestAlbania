@@ -388,103 +388,82 @@ namespace NestAlbania.Controllers
             return View(property);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
-        public async Task<IActionResult> Edit(Agent agent)
+        public async Task<IActionResult> Edit(Property property)
         {
-            var existingAgent = await _agentService.GetAgentById(agent.Id);
-            if (existingAgent == null)
+            if (property != null)
             {
-                return NotFound();
-            }
-
-            var uploadDir = _configuration["Uploads:AgentImg"];
-
-            // Update properties of the existing agent
-            existingAgent.Name = agent.Name;
-            existingAgent.Surname = agent.Surname;
-            existingAgent.LicenseNumber = agent.LicenseNumber;
-            existingAgent.Motto = agent.Motto;
-            existingAgent.PhoneNumber = agent.PhoneNumber;
-            existingAgent.YearsOfExeperience = agent.YearsOfExeperience;
-            existingAgent.RoleId = agent.RoleId;
-            existingAgent.Email = agent.Email;
-            existingAgent.Password = agent.Password;
-
-
-
-
-
-            var file = HttpContext.Request.Form.Files.FirstOrDefault();
-
-            if (file != null)
-            {
-                if (!string.IsNullOrEmpty(existingAgent.Image))
+                try
                 {
-                    var uploadDir2 = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", $"{existingAgent.Name.ToLower()}-{existingAgent.Surname.ToLower()}-{existingAgent.Id}");
-                    _fileHandlerService.RemoveImageFile(uploadDir2, existingAgent.Image);
-                }
-            }
-            var userDirectoryName = $"{existingAgent.Name.ToLower()}-{existingAgent.Surname.ToLower()}-{existingAgent.Id}";
-            var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
 
-            if (!Directory.Exists(uploadsFolderAgent))
-                Directory.CreateDirectory(uploadsFolderAgent);
-
-            var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(file.FileName)}";
-            var filePath = Path.Combine(uploadsFolderAgent, fileName);
-
-            existingAgent.Image = fileName;
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-
-            // Update user details if they exist
-            var user = await _userManager.FindByIdAsync(existingAgent.UserId);
-            if (user != null)
-            {
-                // Update CustomUserName if needed
-                if (user.CustomUserName != $"{existingAgent.Name}_{existingAgent.Surname}")
-                {
-                    user.CustomUserName = $"{existingAgent.Name}_{existingAgent.Surname}";
-                }
-
-                // Update email if different
-                if (user.Email != agent.Email)
-                {
-                    user.Email = agent.Email;
-                    user.UserName = agent.Email;
-                }
-
-                // Update password if provided
-                if (!string.IsNullOrEmpty(agent.Password))
-                {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var result = await _userManager.ResetPasswordAsync(user, token, agent.Password);
-                    if (!result.Succeeded)
+                    var existingProperty = await _propertyService.GetPropertyByIdAsync(property.Id);
+                    if (existingProperty == null)
                     {
-                        ModelState.AddModelError(string.Empty, "Error resetting password.");
-                        return View(existingAgent);
-                    }
-                }
 
-                var updateResult = await _userManager.UpdateAsync(user);
-                if (!updateResult.Succeeded)
+                        return NotFound();
+                    }
+
+                    existingProperty.Name = property.Name;
+                    existingProperty.Description = property.Description;
+                    existingProperty.Price = property.Price;
+                    existingProperty.FullArea = property.FullArea;
+                    existingProperty.InsideArea = property.InsideArea;
+                    existingProperty.BedroomCount = property.BedroomCount;
+                    existingProperty.BathroomCount = property.BathroomCount;
+                    existingProperty.Category = property.Category;
+                    existingProperty.Status = property.Status;
+                    existingProperty.City = property.City;
+
+                    //existingProperty.AgentId = property.AgentId;
+
+
+                    var files = HttpContext.Request.Form.Files.FirstOrDefault();
+
+                    if (files != null)
+                    {
+                        if (!string.IsNullOrEmpty(existingProperty.MainImage))
+                        {
+                            var uploadDir2 = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{existingProperty.Name.ToLower()}-{existingProperty.Id}");
+                            _fileHandlerService.RemoveImageFile(uploadDir2, existingProperty.MainImage);
+                        }
+
+                        var userDirectoryName = $"{existingProperty.Name.ToLower()}-{existingProperty.Id}";
+                        var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
+
+                        if (!Directory.Exists(uploadsFolderAgent))
+                            Directory.CreateDirectory(uploadsFolderAgent);
+
+                        var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(files.FileName)}";
+                        var filePath = Path.Combine(uploadsFolderAgent, fileName);
+
+                        existingProperty.MainImage = fileName;
+
+                        property.MainImage = fileName;
+
+                        await _propertyService.EditPropertyAsync(property);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await files.CopyToAsync(stream);
+                        }
+                    }
+
+                    await _propertyService.EditPropertyAsync(existingProperty);
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, "Error updating user details.");
-                    return View(existingAgent);
+                    ModelState.AddModelError("", "Error editing property: " + ex.Message);
                 }
             }
 
-            await _agentService.EditAgent(existingAgent);
-            return RedirectToAction("Index");
+            PopulateViewBags();
+            return View(property);
         }
-    
-    
 
 
         // [HttpGet]
