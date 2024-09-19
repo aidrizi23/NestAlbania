@@ -17,6 +17,7 @@ namespace NestAlbania.Controllers
     [Route("agent")]
     public class AgentController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public readonly IAgentService _agent;
         private readonly IConfiguration _configuration;
         private readonly IFileHandlerService _fileHandlerService;
@@ -25,8 +26,9 @@ namespace NestAlbania.Controllers
         public readonly IUserRoleService _userRoleService;
         public readonly IUserService _userService;
 
-        public AgentController(IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager, IUserService userService)
+        public AgentController(IWebHostEnvironment webHostEnvironment, IAgentService agentService, IConfiguration configuration, IFileHandlerService fileHandlerService, IUserRoleService userRoleService, UserManager<ApplicationUser> userManager, IUserService userService)
         {
+            _webHostEnvironment = webHostEnvironment;
             _agent = agentService;
             _configuration = configuration;
             _fileHandlerService = fileHandlerService;
@@ -55,6 +57,7 @@ namespace NestAlbania.Controllers
         {
 
             var agent = await _agent.GetAgentById(id);
+
             if (agent.UserId != null)
             {
                 var user = await _userService.GetUserByIdAsync(agent.UserId);
@@ -69,10 +72,30 @@ namespace NestAlbania.Controllers
                 }
                 await _agent.HardDeleteAgent(agent);
             }
-            else
+
+            if (agent == null)
             {
                 return NotFound();
             }
+
+            var agentDirectoryIdentity = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+            var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", agentDirectoryIdentity);
+
+            if (!string.IsNullOrEmpty(agent.Image))
+            {
+                var filePath = Path.Combine(uploadsFolderDirectory, agent.Image);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+
+            if (Directory.Exists(uploadsFolderDirectory))
+            {
+                Directory.Delete(uploadsFolderDirectory);
+            }
+
 
             return RedirectToAction("Index");
         }
@@ -205,15 +228,29 @@ namespace NestAlbania.Controllers
 
             await _agent.CreateAgent(agent);
 
-            // Handle file upload if a file is provided
+            
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
-                var uploadDir = _configuration["Uploads:AgentImg"];
-                var fileName = $"{agent.Name}_{agent.Id}_{Guid.NewGuid()}"; // Ensure unique file name
-                fileName = await _fileHandlerService.UploadAndRenameFileAsync(file, uploadDir, fileName);
+
+                var userDirectoryName = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+                var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
+                if (!Directory.Exists(uploadsFolderAgent))
+                    Directory.CreateDirectory(uploadsFolderAgent);
+
+                var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(file.FileName)}";
+                
+
+                var filePath = Path.Combine(uploadsFolderAgent, fileName);
+
                 agent.Image = fileName;
+
                 await _agent.EditAgent(agent);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
             }
 
             return RedirectToAction("Index");

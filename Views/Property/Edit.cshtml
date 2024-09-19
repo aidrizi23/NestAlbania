@@ -155,6 +155,20 @@
                         <input asp-for="OtherImages" class="form-control" />
                         <span asp-validation-for="OtherImages" class="text-danger"></span>
                     </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="MainImage" class="control-label"></label>
+                        <input type="text" id="mainImagePath" class="form-control" value="~/images/@Model.MainImage" onchange="updateFilePath(this)" />
+                        <input type="file" id="mainImageFile" class="form-control-file" style="display: none;" onchange="updateFileName(this)" />
+                        <span asp-validation-for="MainImage" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="OtherImages" class="control-label"></label>
+                        <input class="form-control" type="file" asp-for="OtherImages" />
+                        <span asp-validation-for="OtherImages" class="text-danger"></span>
+                    </div>
+
 
                     <div class="form-group mb-3 text-center">
                         <input type="submit" value="Save" class="btn btn-primary" />
@@ -170,5 +184,20 @@
 </div>
 
 @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            document.getElementById('mainImagePath').addEventListener('click', function () {
+                document.getElementById('mainImageFile').click();
+            });
+
+            function updateFileName(input) {
+                const fileNameInput = document.getElementById('mainImagePath');
+                const fileName = input.files[0] ? input.files[0].name : '';
+                fileNameInput.value = '~/images/' + fileName;
+            }
+        </script>
+    }
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

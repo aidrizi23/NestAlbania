@@ -49,35 +49,78 @@
                 var userId = await _userManager.GetUserIdAsync(user);
                 var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
-                PaginatedList<Property> properties;
-                if (agent == null)
-                {
-                    properties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
-                }
-                else
-                {
-                    properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
-                }
+            var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent");
+            if (!Directory.Exists(uploadsFolderAgent))
+                Directory.CreateDirectory(uploadsFolderAgent);
+
+            var uploadsFolderProperty = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property");
+            if (!Directory.Exists(uploadsFolderProperty))
+                Directory.CreateDirectory(uploadsFolderProperty);
+
+
+            PaginatedList<Property> properties;
+            if (agent == null)
+            {
+                properties = await _propertyService.GetAllPaginatedPropertiesAsync(pageIndex, pageSize);
+            }
+            else
+            {
+                properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
+            }
 
                 return View(properties);
             }
 
 
 
-            [Route("delete/{id}")]
-            [HttpGet]
-            public async Task<IActionResult> Delete(int id)
-            {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
 
-                await _propertyService.HardDeletePropertyAsync(property);
-                return RedirectToAction("Index");
+
+            if (property == null)
+            {
+                return NotFound();
             }
-            
+
+            var propertyDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
+            var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
+
+
+            var filePath = Path.Combine(uploadsFolderDirectory, property.MainImage);
+
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            foreach (var fileName in property.OtherImages)
+            {
+
+                var uploadsFolderDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
+
+
+                var path = Path.Combine(uploadsFolderDirectory, fileName);
+
+
+                if (System.IO.File.Exists(path))
+                {
+
+                    System.IO.File.Delete(path);
+                }
+            }
+
+            if (Directory.Exists(uploadsFolderDirectory))
+                Directory.Delete(uploadsFolderDirectory);
+
+
+
+            await _propertyService.HardDeletePropertyAsync(property);
+            return RedirectToAction("Index");
+        }
+
 
             [HttpPost]
             [Route("softdelete")]
@@ -181,22 +224,29 @@
             public async Task<IActionResult> Create(PropertyForCreationDto dto)
             {
 
-                // Handle main image upload
-                string? mainImagePath = null;
-                if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
-                {
-                    var fileName = Guid.NewGuid().ToString();
-                    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
-                }
+            // Handle main image upload
+            string? mainImagePath = null;
+            if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString();
+                mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "images/properties", fileName);
+            }
 
-                // Handle documentation file upload if provided
-                string? documentationFileName = null;
-                var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
-                if (documentationFile != null && documentationFile.Length > 0)
-                {
-                    var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"];
-                    documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
-                }
+
+            //if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
+            //{
+            //    var fileName = Guid.NewGuid().ToString();
+            //    mainImagePath = await _fileHandlerService.UploadAndRenameFileAsync(dto.MainImageFile, "files/properties", fileName);
+            //}
+
+            // Handle documentation file upload if provided
+            string? documentationFileName = null;
+            var documentationFile = HttpContext.Request.Form.Files.FirstOrDefault();
+            if (documentationFile != null && documentationFile.Length > 0)
+            {
+                var documentationUploadDir = _configuration["Uploads:PropertyDocumentation"];
+                documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
+            }
 
                 // Retrieve agent based on current user
                 ApplicationUser? user = await _userManager.GetUserAsync(User);
@@ -227,33 +277,54 @@
 
                 };
 
-                // Save the property
-                await _propertyService.CreatePropertyAsync(property);
-                
-                // Handling Notifications
-                
-                // get the admin user
-                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                string notificationMessage = $"New property '{property.Name}' has been created by agent {agent?.Name ?? "Unknown"}";
-                foreach (var admin in adminUsers)
+            // Save the property
+            await _propertyService.CreatePropertyAsync(property);
+
+            // Handle additional images upload
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+            if (file != null)
+            {
+                var propertyDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
+                var uploadsFolderProperty = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
+                if (!Directory.Exists(uploadsFolderProperty))
+                    Directory.CreateDirectory(uploadsFolderProperty);
+
+                var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(file.FileName)}";
+
+
+                var filePath = Path.Combine(uploadsFolderProperty, fileName);
+
+                property.MainImage = fileName;
+
+                await _propertyService.EditPropertyAsync(property);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                    await file.CopyToAsync(stream);
+                }
+                var otherFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();
+
+
+                if (otherFiles != null && otherFiles.Any())
+                {
+                    foreach (var fi in otherFiles)
+                    {
+                        var fName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(fi.FileName)}";
+
+                        var fPath = Path.Combine(uploadsFolderProperty, fName);
+
+                        property.OtherImages.Add(fName);
+
+                        await _propertyService.EditPropertyAsync(property);
+
+                        using (var stream = new FileStream(fPath, FileMode.Create))
+                        {
+                            await fi.CopyToAsync(stream);
+                        }
+                    }
                 }
 
-                // Handle additional images upload
-                var otherFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();
-                if (otherFiles.Count > 0)
-                {
-                    var uploadDir = _configuration["Uploads:PropertyOtherImages132"];
-                    var fileCollection = new FormFileCollection();
-                    foreach (var file in otherFiles)
-                    {
-                        fileCollection.Add(file);
-                    }
-                    var fileNames = await _fileHandlerService.UploadAsync(fileCollection, uploadDir);
-                    property.OtherImages.AddRange(fileNames);
-                    await _propertyService.EditPropertyAsync(property); // Update property with additional images
-                }
+            }
 
                 PopulateViewBags();
                 return RedirectToAction("Index");
@@ -339,10 +410,46 @@
                 property.Status = dto.Status;
                 property.LastEdited = DateTime.Now.Date;
 
-                await _propertyService.EditPropertyAsync(property);
 
-                return RedirectToAction("Index");
+                    var files = HttpContext.Request.Form.Files.FirstOrDefault();
 
+                    if (files != null)
+                    {
+                        if (!string.IsNullOrEmpty(existingProperty.MainImage))
+                        {
+                            var uploadDir2 = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{existingProperty.Name.ToLower()}-{existingProperty.Id}");
+                            _fileHandlerService.RemoveImageFile(uploadDir2, existingProperty.MainImage);
+                        }
+
+                        var userDirectoryName = $"{existingProperty.Name.ToLower()}-{existingProperty.Id}";
+                        var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
+
+                        if (!Directory.Exists(uploadsFolderAgent))
+                            Directory.CreateDirectory(uploadsFolderAgent);
+
+                        var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(files.FileName)}";
+                        var filePath = Path.Combine(uploadsFolderAgent, fileName);
+
+                        existingProperty.MainImage = fileName;
+
+                        property.MainImage = fileName;
+
+                        await _propertyService.EditPropertyAsync(property);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await files.CopyToAsync(stream);
+                        }
+                    }
+
+                    await _propertyService.EditPropertyAsync(existingProperty);
+                    return RedirectToAction("Index");
+
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Error editing property: " + ex.Message);
+                }
             }
 
 

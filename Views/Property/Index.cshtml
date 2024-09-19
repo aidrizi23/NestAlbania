@@ -129,7 +129,20 @@
             {
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card custom-card">
-                        <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" width="100" />
+
+                        @if (!string.IsNullOrEmpty(item.MainImage))
+                        {
+                            <img class="card-img-top" src="~/files/property/@item.Name.ToLower()-@item.Id/@item.MainImage" alt="Property Image" />
+                        }
+                        else
+                        {
+                            <img class="card-img-top" src="~/files/property/" alt="No Image Available" />
+                        }
+
+
+                         
+
+
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                             <p class="card-text">
@@ -156,6 +169,7 @@
                                 <p><i class="fas fa-bath"></i> <strong>Bathrooms:</strong> @Html.DisplayFor(modelItem => item.BathroomCount)</p>
                                 <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> @Html.DisplayFor(modelItem => item.Status)</p>
                                 <p><i class="fas fa-file-alt"></i> <strong>Documentation:</strong> @Html.DisplayFor(modelItem => item.Documentation)</p>
+
                             </div>
                         </div>
                         <div class="card-footer">

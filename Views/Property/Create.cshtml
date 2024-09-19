@@ -113,17 +113,17 @@
                     <label asp-for="MainImageFile" class="control-label">
                         <i class="fas fa-image"></i> Upload Main Image
                     </label>
-                    <input type="file" id="mainImageInput" asp-for="MainImageFile" class="form-control-file" />
+                    <input type="file" id="mainImageInput" asp-for="MainImageFile" class="form-control-file" accept=".jpg, .jpeg, .png, .svg" required/>
                     <span asp-validation-for="MainImageFile" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
                 <div class="form-group">
-                    <label asp-for="OtherImages" class="control-label">
-                        <i class="fas fa-images"></i> @Html.DisplayNameFor(m => m.OtherImages)
+                    <label asp-for="OtherImagesFile" class="control-label">
+                        <i class="fas fa-images"></i> @Html.DisplayNameFor(m => m.OtherImagesFile)
                     </label>
-                    <input type="file" id="otherImagesInput" asp-for="OtherImages" name="OtherImages" accept="image/*" multiple class="form-control-file" />
-                    <span asp-validation-for="OtherImages" class="text-danger"></span>
+                    <input type="file" id="otherImagesInput" asp-for="OtherImagesFile" class="form-control-file" accept="image/*" accept=".jpg, .jpeg, .png, .svg" required  multiple class="form-control-file" />
+                    <span asp-validation-for="OtherImagesFile" class="text-danger"></span>
                 </div>
             </div>
         </div>

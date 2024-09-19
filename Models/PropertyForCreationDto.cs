@@ -16,7 +16,7 @@ namespace NestAlbania.Models
         [MaxLength(500, ErrorMessage = "Description must be at most 500 characters long")]
         public string Description { get; set; }
         
-        public string? MainImage { get; set; }
+        public  string? MainImage { get; set; }
         public IFormFile? MainImageFile { get; set; }
 
         [Required(ErrorMessage = "Price field is required")]
@@ -42,10 +42,8 @@ namespace NestAlbania.Models
 
         public string LatestProperty { get; set; }
         public string? Documentation { get; set; }
-        
-        public List<string>? OtherImages { get; set; }
-        
-        
+        public ICollection<IFormFile>? OtherImagesFile { get; set; }
+
         [Required(ErrorMessage = "Category field is required")]
         public Category Category { get; set; }
       
