@@ -1,5 +1,4 @@
 using LandingPageApi.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Services;
