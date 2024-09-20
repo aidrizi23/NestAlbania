@@ -291,14 +291,14 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bb6b1db1-1e71-43ba-937f-0d383d753a11",
+                            ConcurrencyStamp = "0df43ce4-357a-487e-a687-823a86ffa7c0",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEASVUx7y+pnhdd+bzxPN6Yt5EUplGcZ0ZrMsPPS07beuZqeym8g5u/8HTzFs83shOA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEoLT+rd/eSoXw0CXAFgLML6yXg7NRjspA4REy7H8FZ8f1hbvs2rXsalzwzNrdlpfQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -431,6 +431,9 @@ namespace NestAlbania.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Views")
                         .HasColumnType("int");
 
                     b.Property<bool>("isDeleted")

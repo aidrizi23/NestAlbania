@@ -274,6 +274,7 @@ namespace NestAlbania.Controllers
                 PostedOn = DateTime.Now.Date,
                 IsSold = false,
                 isDeleted = false,
+                Views = 0,
 
             };
 
@@ -370,6 +371,8 @@ namespace NestAlbania.Controllers
                 {
                     return NotFound();
                 }
+                property.Views++;
+                await _propertyService.EditPropertyAsync(property);
 
                 return View(property);
             }

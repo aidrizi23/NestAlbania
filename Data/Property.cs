@@ -58,6 +58,8 @@ namespace NestAlbania.Data
         public required bool IsSold { get; set; }
         public DateTime PriceChangedDate { get; set; }  
         
+        public required int Views { get; set; }
+        
         
     }
    
