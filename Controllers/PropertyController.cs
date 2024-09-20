@@ -12,42 +12,42 @@
     using NestAlbania.Services;
     using NestAlbania.Services.Extensions;
 
-    namespace NestAlbania.Controllers
+namespace NestAlbania.Controllers
+{
+    [Authorize]
+    [Route("property")]
+    public class PropertyController : Controller
     {
-        [Authorize]
-        [Route("property")]
-        public class PropertyController : Controller
+
+        private readonly IPropertyService _propertyService;
+        private readonly IFileHandlerService _fileHandlerService;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAgentService _agentService;
+        private readonly INotificationService _notificationService;
+        public PropertyController(INotificationService notificationService, IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
+            _propertyService = propertyService;
+            _fileHandlerService = fileHandlerService;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
+            _userRepository = userRepository;
+            _agentService = agentService;
+            _notificationService = notificationService;
 
-            private readonly IPropertyService _propertyService;
-            private readonly IFileHandlerService _fileHandlerService;
-            private readonly IConfiguration _configuration;
-            private readonly IWebHostEnvironment _webHostEnvironment;
-            public readonly IUserRepository _userRepository;
-            private readonly UserManager<ApplicationUser> _userManager;
-            private readonly IAgentService _agentService; 
-            private readonly INotificationService _notificationService;
-            public PropertyController(INotificationService notificationService,IPropertyService propertyService, IAgentService agentService, IUserRepository userRepository, UserManager<ApplicationUser> userManager, IFileHandlerService fileHandlerService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-            {
-                _propertyService = propertyService;
-                _fileHandlerService = fileHandlerService;
-                _configuration = configuration;
-                _webHostEnvironment = webHostEnvironment;
-                _userManager = userManager;
-                _userRepository = userRepository;
-                _agentService = agentService;
-                _notificationService = notificationService;
+        }
 
-            }
-
-            [HttpGet]
-            [Authorize]
-            [Route("list")]
-            public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var userId = await _userManager.GetUserIdAsync(user);
-                var agent = await _agentService.GetAgentByUserIdAsync(userId);
+        [HttpGet]
+        [Authorize]
+        [Route("list")]
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var agent = await _agentService.GetAgentByUserIdAsync(userId);
 
             var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent");
             if (!Directory.Exists(uploadsFolderAgent))
@@ -68,8 +68,8 @@
                 properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
             }
 
-                return View(properties);
-            }
+            return View(properties);
+        }
 
 
 
@@ -122,23 +122,77 @@
         }
 
 
-            [HttpPost]
-            [Route("softdelete")]
-            public async Task<IActionResult> SoftDelete(int id)
+        [HttpPost]
+        [Route("softdelete")]
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-                var agent = await _agentService.GetAgentById(property.AgentId!.Value);
+                return NotFound();
+            }
+            var agent = await _agentService.GetAgentById(property.AgentId!.Value);
 
+            try
+            {
+                await _propertyService.SoftDeletePropertyAsync(property);
+                await _propertyService.EditPropertyAsync(property);
+                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                string notificationMessage = $"New property '{property.Name}' has been soft deleted by agent {agent?.Name ?? "Unknown"}";
+                foreach (var admin in adminUsers)
+                {
+                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Consider adding a ViewBag or TempData message for the error
+                return BadRequest("An error occurred while trying to soft delete the property: " + ex.Message);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+
+        [HttpPost]
+        [Route("undelete")]
+        public async Task<IActionResult> UnDelete(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            await _propertyService.UnDeletePropertyAsync(property);
+            await _propertyService.EditPropertyAsync(property);
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [Route("sell")]
+        public async Task<IActionResult> Sell(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            var agent = await _agentService.GetAgentById(property.AgentId!.Value);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            if (property.IsSold == false)
+            {
                 try
                 {
-                    await _propertyService.SoftDeletePropertyAsync(property);
-                    await _propertyService.EditPropertyAsync(property); 
+                    await _propertyService.SellPropertyAsync(property);
+                    await _propertyService.EditPropertyAsync(property);
+
                     var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                    string notificationMessage = $"New property '{property.Name}' has been soft deleted by agent {agent?.Name ?? "Unknown"}";
+                    string notificationMessage = $"New property '{property.Name}' has been sold by agent {agent?.Name ?? "Unknown"}";
                     foreach (var admin in adminUsers)
                     {
                         await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
@@ -147,82 +201,28 @@
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception
-                    // Consider adding a ViewBag or TempData message for the error
-                    return BadRequest("An error occurred while trying to soft delete the property: " + ex.Message);
+                    return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
                 }
-
-                return RedirectToAction("Index");
             }
 
-            
- 
-            [HttpPost]
-            [Route("undelete")]
-            public async Task<IActionResult> UnDelete(int id)
-            {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-
-                await _propertyService.UnDeletePropertyAsync(property);
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
-            }
-            
-            
-            [HttpPost]
-            [Route("sell")]
-            public async Task<IActionResult> Sell(int id)
-            {
-                var property = await _propertyService.GetPropertyByIdAsync(id);
-                var agent = await _agentService.GetAgentById(property.AgentId!.Value);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-
-                if (property.IsSold == false)
-                {
-                    try
-                    {
-                        await _propertyService.SellPropertyAsync(property);
-                        await _propertyService.EditPropertyAsync(property);
-                    
-                        var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                        string notificationMessage = $"New property '{property.Name}' has been sold by agent {agent?.Name ?? "Unknown"}";
-                        foreach (var admin in adminUsers)
-                        {
-                            await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
-                    }
-                }
-
-                return RedirectToAction("Index");
-            }
-            
-
-            [HttpGet]
-            [Route("create")]
-            public IActionResult Create()
-            {
-                PopulateViewBags();
-                return View(new PropertyForCreationDto());
-            }
+            return RedirectToAction("Index");
+        }
 
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            [Route("create")]
-            public async Task<IActionResult> Create(PropertyForCreationDto dto)
-            {
+        [HttpGet]
+        [Route("create")]
+        public IActionResult Create()
+        {
+            PopulateViewBags();
+            return View(new PropertyForCreationDto());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("create")]
+        public async Task<IActionResult> Create(PropertyForCreationDto dto)
+        {
 
             // Handle main image upload
             string? mainImagePath = null;
@@ -248,34 +248,34 @@
                 documentationFileName = await _fileHandlerService.UploadAndRenameFileAsync(documentationFile, documentationUploadDir, dto.Name + "_" + Guid.NewGuid().ToString());
             }
 
-                // Retrieve agent based on current user
-                ApplicationUser? user = await _userManager.GetUserAsync(User);
-                string? userId = await _userManager.GetUserIdAsync(user);
-                Agent? agent = await _agentService.GetAgentByUserIdAsync(userId);
+            // Retrieve agent based on current user
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            string? userId = await _userManager.GetUserIdAsync(user);
+            Agent? agent = await _agentService.GetAgentByUserIdAsync(userId);
 
-                // Create property object
-                var property = new Property()
-                {
-                    Name = dto.Name,
-                    Description = dto.Description,
-                    Price = dto.Price,
-                    FullArea = dto.FullArea,
-                    InsideArea = dto.InsideArea,
-                    BedroomCount = dto.BedroomCount,
-                    BathroomCount = dto.BathroomCount,
-                    Documentation = documentationFileName,
-                    Category = dto.Category,
-                    Status = dto.Status,
-                    City = dto.SelectedCity,
-                    MainImage = mainImagePath,
-                    OtherImages = new List<string>(), // Initialize empty list for other images
-                    AgentId = agent?.Id, // Assign agent ID to property
-                    Agent = await _agentService.GetAgentById(agent.Id),
-                    PostedOn = DateTime.Now.Date,
-                    IsSold = false,
-                    isDeleted = false,
+            // Create property object
+            var property = new Property()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price,
+                FullArea = dto.FullArea,
+                InsideArea = dto.InsideArea,
+                BedroomCount = dto.BedroomCount,
+                BathroomCount = dto.BathroomCount,
+                Documentation = documentationFileName,
+                Category = dto.Category,
+                Status = dto.Status,
+                City = dto.SelectedCity,
+                MainImage = mainImagePath,
+                OtherImages = new List<string>(), // Initialize empty list for other images
+                AgentId = agent?.Id, // Assign agent ID to property
+                Agent = await _agentService.GetAgentById(agent.Id),
+                PostedOn = DateTime.Now.Date,
+                IsSold = false,
+                isDeleted = false,
 
-                };
+            };
 
             // Save the property
             await _propertyService.CreatePropertyAsync(property);
@@ -326,40 +326,40 @@
 
             }
 
-                PopulateViewBags();
-                return RedirectToAction("Index");
-            }
-
-
-            private void PopulateViewBags()
-            {
-                ViewBag.Categories = Enum.GetValues(typeof(Category))
-                    .Cast<Category>()
-                    .Select(e => new SelectListItem
-                    {
-                        Value = e.ToString(),
-                        Text = e.ToString()
-                    }).ToList();
-
-                ViewBag.Statuses = Enum.GetValues(typeof(PropertyStatus))
-                    .Cast<PropertyStatus>()
-                    .Select(e => new SelectListItem
-                    {
-                        Value = e.ToString(),
-                        Text = e.ToString()
-                    }).ToList();
-               
-                
-                ViewBag.Cities = Enum.GetValues(typeof(City))
-                       .Cast<City>()
-                       .Select(e => new SelectListItem
-                       {
-                           Value = e.ToString(),
-                           Text = e.ToString()
-                       }).ToList();
-
-
+            PopulateViewBags();
+            return RedirectToAction("Index");
         }
+
+
+        private void PopulateViewBags()
+        {
+            ViewBag.Categories = Enum.GetValues(typeof(Category))
+                .Cast<Category>()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                }).ToList();
+
+            ViewBag.Statuses = Enum.GetValues(typeof(PropertyStatus))
+                .Cast<PropertyStatus>()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                }).ToList();
+
+
+            ViewBag.Cities = Enum.GetValues(typeof(City))
+                   .Cast<City>()
+                   .Select(e => new SelectListItem
+                   {
+                       Value = e.ToString(),
+                       Text = e.ToString()
+                   }).ToList();
+        }
+
+
 
             [HttpGet]
             [Route("details/{id}")]
@@ -373,7 +373,7 @@
 
                 return View(property);
             }
-            
+
             [HttpGet]
             [Authorize]
             [Route("edit/{id}")]
@@ -392,17 +392,19 @@
                 return View(dto);
             }
 
+
             [HttpPost]
             [ValidateAntiForgeryToken]
             [Route("edit/{id}")]
-
-            public async Task<IActionResult> Edit( PropertyForEditDto dto)
+            public async Task<IActionResult> Edit(PropertyForEditDto dto)
             {
+                // Retrieve the existing property
                 var property = await _propertyService.GetPropertyByIdAsync(dto.Id);
                 if (property == null)
                 {
                     return NotFound();
                 }
+
                 // Update property object
                 property.Name = dto.Name;
                 property.Description = dto.Description;
@@ -410,57 +412,48 @@
                 property.Status = dto.Status;
                 property.LastEdited = DateTime.Now.Date;
 
+                var files = HttpContext.Request.Form.Files.FirstOrDefault();
 
-                    var files = HttpContext.Request.Form.Files.FirstOrDefault();
-
-                    if (files != null)
+                if (files != null && files.Length > 0) // Check if there is a file uploaded
+                {
+                    // Remove the old main image if it exists
+                    if (!string.IsNullOrEmpty(property.MainImage))
                     {
-                        if (!string.IsNullOrEmpty(existingProperty.MainImage))
-                        {
-                            var uploadDir2 = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{existingProperty.Name.ToLower()}-{existingProperty.Id}");
-                            _fileHandlerService.RemoveImageFile(uploadDir2, existingProperty.MainImage);
-                        }
-
-                        var userDirectoryName = $"{existingProperty.Name.ToLower()}-{existingProperty.Id}";
-                        var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
-
-                        if (!Directory.Exists(uploadsFolderAgent))
-                            Directory.CreateDirectory(uploadsFolderAgent);
-
-                        var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(files.FileName)}";
-                        var filePath = Path.Combine(uploadsFolderAgent, fileName);
-
-                        existingProperty.MainImage = fileName;
-
-                        property.MainImage = fileName;
-
-                        await _propertyService.EditPropertyAsync(property);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await files.CopyToAsync(stream);
-                        }
+                        var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{property.Name.ToLower()}-{property.Id}");
+                        _fileHandlerService.RemoveImageFile(uploadDir, property.MainImage);
                     }
 
-                    await _propertyService.EditPropertyAsync(existingProperty);
-                    return RedirectToAction("Index");
+                    // Create a new directory for the property if it doesn't exist
+                    var userDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
 
+                    if (!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
+
+                    // Generate a new file name and save the new image
+                    var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(files.FileName)}";
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    property.MainImage = fileName; // Set the new image name
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await files.CopyToAsync(stream);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Error editing property: " + ex.Message);
-                }
+
+                // Save the updated property to the database
+                await _propertyService.EditPropertyAsync(property);
+                return RedirectToAction("Index");
             }
 
 
-            
-            
             [HttpGet]
             [Route("filter")]
             public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
             {
                 var properties = await _propertyService.GetAllFilteredPropertiesAsync(query, pageIndex, pageSize, sortOrder);
-    
+
                 ViewData["CurrentNameFilter"] = query.Name ?? "";
                 ViewData["CurrentFullAreaFilter"] = query.FullArea;
                 ViewData["CurrentInsideAreaFilter"] = query.InsideArea;
@@ -474,37 +467,43 @@
                 // Add this line to handle the ShowAdditionalFilters state
                 ViewData["ShowAdditionalFilters"] = ShowAdditionalFilters ?? false;
 
-            return View("Index", properties);
-        } 
-            
+                return View("Index", properties);
+            }
+
+
             [HttpGet]
             [Route("properties-by-category/{category}")]
-        public async Task<IActionResult> PropertiesByCategory(string category)
-        {
-            var properties = await _propertyService.GetPropertiesByCategoryAsync(category);
-            return View(properties);
-        }
-
-        [HttpGet]
-        [Route("favorites")]
-        public async Task<IActionResult> Favorites()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var userId = await _userManager.GetUserIdAsync(user);
-            var agent = await _agentService.GetAgentByUserIdAsync(userId);
-
-            List<Property> favoriteProperties;
-            if (agent == null)
+            public async Task<IActionResult> PropertiesByCategory(string category)
             {
-                favoriteProperties = await _propertyService.GetFavoritePropertiesByUserIdAsync(userId);
-            }
-            else
-            {
-                favoriteProperties = await _propertyService.GetFavoritePropertiesByAgentIdAsync(agent.Id);
+                var properties = await _propertyService.GetPropertiesByCategoryAsync(category);
+                return View(properties);
             }
 
-            return View(favoriteProperties);
-        }
+
+            [HttpGet]
+            [Route("favorites")]
+            public async Task<IActionResult> Favorites()
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var userId = await _userManager.GetUserIdAsync(user);
+                var agent = await _agentService.GetAgentByUserIdAsync(userId);
+
+                List<Property> favoriteProperties;
+                if (agent == null)
+                {
+                    favoriteProperties = await _propertyService.GetFavoritePropertiesByUserIdAsync(userId);
+                }
+                else
+                {
+                    favoriteProperties = await _propertyService.GetFavoritePropertiesByAgentIdAsync(agent.Id);
+                }
+
+                return View(favoriteProperties);
+            }
     }
 }
+
+
+
+
     
