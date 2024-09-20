@@ -18,8 +18,10 @@
                         <p class="card-text"><strong>Price:</strong> @favorite.Property.Price $</p>
 
                         <form asp-controller="Favorite" asp-action="RemoveFavorite" method="post">
-                            <input type="hidden" name="favoriteId" value="@favorite.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger">Remove from Favorites</button>
+                            <input type="hidden" name="favoriteId" value="@property.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fas fa-star"></i> Remove from Favorites
+                            </button>
                         </form>
                     </div>
                 </div>

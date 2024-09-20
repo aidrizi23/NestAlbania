@@ -68,6 +68,7 @@ namespace NestAlbania.Controllers
                 properties = await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agent.Id, pageIndex, pageSize);
             }
 
+            ViewData["ActivePage"] = "propertyIndex";
             return View(properties);
         }
 
@@ -214,6 +215,8 @@ namespace NestAlbania.Controllers
         public IActionResult Create()
         {
             PopulateViewBags();
+
+            ViewData["ActivePage"] = "propertyIndex";
             return View(new PropertyForCreationDto());
         }
 
@@ -327,6 +330,7 @@ namespace NestAlbania.Controllers
 
             }
 
+            ViewData["ActivePage"] = "propertyIndex";
             PopulateViewBags();
             return RedirectToAction("Index");
         }
@@ -361,6 +365,9 @@ namespace NestAlbania.Controllers
         }
 
 
+            ViewData["ActivePage"] = "propertyIndex";
+            return RedirectToAction("Index");
+        }
 
             [HttpGet]
             [Route("details/{id}")]
@@ -374,8 +381,9 @@ namespace NestAlbania.Controllers
                 property.Views++;
                 await _propertyService.EditPropertyAsync(property);
 
-                return View(property);
-            }
+            ViewData["ActivePage"] = "propertyIndex";
+            return View(property);
+        }
 
             [HttpGet]
             [Authorize]
@@ -445,6 +453,11 @@ namespace NestAlbania.Controllers
                     }
                 }
 
+            PopulateViewBags();
+
+            ViewData["ActivePage"] = "propertyIndex";
+            return View(property);
+        }
                 // Save the updated property to the database
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");

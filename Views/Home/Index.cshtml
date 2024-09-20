@@ -5,102 +5,141 @@
     ViewData["Title"] = "Properties by Category";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-@if (ViewBag.GroupedProperties != null && ((IEnumerable<dynamic>)ViewBag.GroupedProperties).Any())
-{
-    <div class="property-grid">
-        @foreach (var categoryGroup in (IEnumerable<dynamic>)ViewBag.GroupedProperties)
-        {
-            <div class="property-item">
-                @if (categoryGroup.LatestProperty != null)
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<!-- Info Boxes -->
+<section class="info-box-container">
+    <div class="info-box">
+        <i class="icon fas fa-home"></i>
+        <h3>Total Properties</h3>
+        <p>@ViewBag.TotalProperties</p>
+    </div>
+    <div class="info-box">
+        <i class="icon fas fa-user"></i>
+        <h3>Total Agents</h3>
+        <p>@ViewBag.TotalAgents</p>
+    </div>
+    <div class="info-box">
+        <i class="icon fas fa-tag"></i>
+        <h3>Most Sold Category</h3>
+        <p>@ViewBag.MostSoldCategory</p>
+    </div>
+</section>
+<!--Property By Category -->
+<section class="property-carousel-section">
+    <h3 style="text-align:center;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-palette:dark;font-weight:bold">PROPERTIES GROUPED BY CATEGORY</h3>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            @if (ViewBag.GroupedProperties != null && ((IEnumerable<dynamic>)ViewBag.GroupedProperties).Any())
+            {
+                @foreach (var categoryGroup in (IEnumerable<dynamic>)ViewBag.GroupedProperties)
                 {
-                    <div class="property-card">
-                        <img class="property-image" src="@Url.Content($"~/images/properties/{categoryGroup.LatestProperty.MainImage}")" alt="Property Image" />
-                        <div class="property-details">
-                            <h3>@categoryGroup.LatestProperty.Name</h3>
-                            <p class="price">€@string.Format("{0:N0}", categoryGroup.LatestProperty.Price)</p>
-                            <p class="category">@categoryGroup.Category</p>
-                        </div>
-                        <div class="category-button-container">
-                            <a href="@Url.Action("PropertiesByCategory", "PropertyApi", new { category = categoryGroup.Category })" class="category-button">
-                                View More
-                            </a>
+                    <div class="swiper-slide">
+                        <div class="property-item">
+                            @if (categoryGroup.LatestProperty != null)
+                            {
+                                <div class="property-card">
+                                    <img class="property-image" src="@Url.Content($"~/images/properties/{categoryGroup.LatestProperty.MainImage}")" alt="Property Image" />
+                                    <div class="property-details">
+                                        <p class="price">€@string.Format("{0:N0}", categoryGroup.LatestProperty.Price)</p>
+                                        <p class="category">@categoryGroup.Category</p>
+                                    </div>
+                                    <div class="category-button-container">
+                                        <a href="@Url.Action("PropertiesByCategory", "Property", new { category = categoryGroup.Category })" class="category-button">
+                                            View More
+                                        </a>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 }
-            </div>
-        }
+            }
+            else
+            {
+                <p class="no-properties">Currently, there are no available properties.</p>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
-}
-else
-{
-    <p class="no-properties">Currently, there are no available properties.</p>
-}
+</section> 
 
 <!-- Sold Properties Section -->
-<h2>Last Sold Properties</h2>
-@if (ViewBag.SoldProperties != null && ((IEnumerable<Property>)ViewBag.SoldProperties).Any())
-{
-    <div class="property-grid">
-        @foreach (var property in ((IEnumerable<Property>)ViewBag.SoldProperties).Take(4))
-        {
-            <div class="property-item">
-                <div class="property-card">
-                    <img class="property-image" src="@Url.Content($"~/images/properties/{property.MainImage}")" alt="Property Image" />
-                    <div class="property-details">
-                        <h3>@property.Name</h3>
-                        <a href="@Url.Action("Details", "PropertyApi", new { id = property.Id })" class="category-button">
-                            View Details
-                        </a>
-                        <div class="sold-badge">SOLD</div>
+<section class="sold-properties-section">
+    <h3 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;text-align:center;">LATEST SOLD PROPERTIES</h3>
+
+    @if (ViewBag.SoldProperties != null && ((IEnumerable<Property>)ViewBag.SoldProperties).Any())
+    {
+        <div class="property-grid">
+            @foreach (var property in ((IEnumerable<Property>)ViewBag.SoldProperties)
+           .OrderByDescending(p => p.SoldDate) // Order by SoldDate in descending order
+           .Take(4)) // Take only the latest 4 properties
+            {
+                <div class="property-item">
+                    <div class="property-card">
+                        <img class="property-image" src="@Url.Content($"~/images/properties/{property.MainImage}")" alt="Property Image" />
+                        <div class="property-details">
+                            <h3>@property.Name</h3>
+                            <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="category-button">
+                                View Details
+                            </a>
+                            <div class="sold-badge">SOLD</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <p class="no-properties">No sold properties are available.</p>
-}
-
-
+            }
+        </div>
+    }
+    else
+    {
+        <p class="no-properties">No sold properties are available.</p>
+    }
+</section>
 
 <!-- Top Selling Agent Section -->
-<h2>Top Selling Agent</h2>
-@if (ViewBag.TopSellingAgent != null)
-{
-    <div class="top-agent-card-container">
-        <div class="top-agent-card">
-            <div class="agent-image">
-                <img src="@Url.Content($"~/agentImg/{ViewBag.TopSellingAgent.Image}")" alt="Top Selling Agent" />
-            </div>
-            <div class="agent-details">
-                <h3>@ViewBag.TopSellingAgent.Name @ViewBag.TopSellingAgent.Surname</h3>
-                <p>Email: @ViewBag.TopSellingAgent.Email</p>
-                <p>Phone: @ViewBag.TopSellingAgent.PhoneNumber</p>
-            </div>
-            <div class="award-banner">
-                <span>Top Seller</span>
+<section class="top-agent-section">
+    <h3 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-palette:dark;font-weight:bold;text-align:center;">TOP SELLING AGENT </h3>
+
+    @if (ViewBag.TopSellingAgent != null)
+    {
+        <div class="top-agent-card-container">
+            <div class="top-agent-card">
+                <div class="agent-image">
+                    <img src="@Url.Content($"~/agentImg/{ViewBag.TopSellingAgent.Image}")" alt="Top Selling Agent" />
+                </div>
+                <div class="agent-details">
+                    <h3>@ViewBag.TopSellingAgent.Name @ViewBag.TopSellingAgent.Surname</h3>
+                    <p>Email: @ViewBag.TopSellingAgent.Email</p>
+                    <p>Phone: @ViewBag.TopSellingAgent.PhoneNumber</p>
+                </div>
+                <div class="award-banner">
+                    <span>Top Seller</span>
+                </div>
             </div>
         </div>
+    }
+    else
+    {
+        <p class="no-agent">No agent data available.</p>
+    }
+</section>
+
+<!-- Chart Section -->
+<section class="chart-section">
+    <h3 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-palette:dark;font-weight:bold;text-align:center;">TOTAL NUMBER OF SELLINGS EACH MONTH</h3>
+
+    <div class="chart-container">
+        <div class="chart-box">
+            <canvas id="soldPropertiesChart" width="200" height="150"></canvas>
+        </div>
     </div>
-}
-else
-{
-    <p class="no-agent">No agent data available.</p>
-}
-<h2>Sellings in one Month </h2>
-<div class="chart-container">
-    <div class="chart-box">
-        <canvas id="soldPropertiesChart" width="200" height="150"></canvas>
-    </div>
-  
-</div>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/0.4.0/json2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -191,56 +230,244 @@ else
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3, 
+            spaceBetween: 30, 
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                }
+            }
+        });
+    });
+</script>
+
 <style>
-    .chart-container {
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+    }
+
+    .page-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin: 100px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-display: flex;
+    }
+
+    .info-box-container {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 15px;
-        margin: 20px 0;
+        justify-content: space-around;
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 20px;
     }
 
-    .chart-box {
-        width: 50%;
-        height: 300px;
-    }
-
-    .chart-explanation {
-        width: 40%;
-        padding: 10px;
+    .info-box {
+        background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-        font-size: 0.9rem;
+        width: 30%;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-        .chart-explanation h3 {
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 8px;
-            color: #007bff;
-            font-size: 1.1rem;
+        .info-box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .chart-explanation p {
-            font-family: 'Roboto', sans-serif;
-            color: #555;
-            line-height: 1.4;
+        .info-box .icon {
+            font-size: 2.5em;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .info-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: #007bff;
+            margin: 10px 0;
+        }
+
+        .info-box p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+    .property-carousel-section {
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 20px;
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #007bff;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .swiper-button-next {
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        position: absolute;
+    }
+
+    .swiper-button-prev {
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        position: absolute;
+    }
+
+    .swiper-pagination {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .swiper-pagination-bullet {
+        background: #007bff;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #0056b3;
+    }
+
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .property-item {
+        transition: transform 0.3s ease;
+    }
+
+    .property-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .property-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .property-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .property-details {
+        padding: 10px;
+        text-align: center;
+    }
+
+        .property-details h3 {
+            font-size: 1.3em;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: #333;
             margin: 5px 0;
         }
-</style>
-<style>
+
+    .price {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #007bff;
+        margin: 10px 0;
+    }
+
+    .category {
+        font-size: 1.4em;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color:darkslategrey;
+        font-weight:bold;
+    }
+
+    .sold-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: darkred;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
     .category-button-container {
         display: flex;
+        justify-content: center;
+        margin-top: 10px;
     }
 
     .category-button {
-        display: inline-block;
-        padding: 10px 10px;
+        display: inline-flex;
+        padding: 8px 16px;
         background-color: #007bff;
         color: white;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 4px;
         font-size: 1rem;
         transition: background-color 0.3s ease;
     }
@@ -253,101 +480,28 @@ else
             background-color: #004085;
         }
 
-    body {
-        font-family: 'Roboto', sans-serif;
-        color: #333;
-    }
-
-    h1, h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 2em;
-        color: #444;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #007bff;
-        padding-bottom: 10px;
-    }
-
-    .no-properties, .no-agent {
-        font-size: 1.2em;
-        color: #777;
-        text-align: center;
-        padding: 20px;
-    }
-
-    .property-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 20px;
-    }
-
-    .property-item {
-        transition: transform 0.3s ease;
-    }
-
-        .property-item:hover {
-            transform: scale(1.05);
-        }
-
-    .property-card {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
-
-    .property-image {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-    }
-
-    .property-details {
-        padding: 15px;
-        text-align: center;
-    }
-
-        .property-details h3 {
-            font-size: 1.3em;
-            color: #333;
-        }
-
-    .price {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #007bff;
-        margin: 10px 0;
-    }
-
-    .sold-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: darkred;
-        color: #fff;
-        padding: 5px 15px;
-        border-radius: 5px;
-        font-size: 0.9rem;
+    .top-agent-section {
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 20px;
     }
 
     .top-agent-card-container {
         display: flex;
         justify-content: center;
-        margin-top: 20px;
     }
 
     .top-agent-card {
         display: flex;
         align-items: center;
         padding: 20px;
-        max-width: 900px;
-        background-color: #f9f9f9;
+        background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         position: relative;
         border: 1px solid #ddd;
         overflow: hidden;
+        max-width: 900px;
     }
 
     .agent-image img {
@@ -356,15 +510,12 @@ else
         object-fit: cover;
         border-radius: 50%;
         border: 4px solid #007bff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .agent-details {
         flex: 1;
         padding: 15px;
         margin-left: 20px;
-        position: relative;
-        padding-right: 160px;
     }
 
         .agent-details h3 {
@@ -389,5 +540,34 @@ else
         border-radius: 5px;
         font-weight: bold;
         font-size: 0.95rem;
+    }
+
+    .no-properties,
+    .no-agent {
+        text-align: center;
+        color: #666;
+        font-size: 1.1em;
+        margin-top: 20px;
+    }
+
+    .chart-section {
+        margin: 20px auto;
+        max-width: 1200px;
+        padding: 0 20px;
+    }
+
+    .chart-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .chart-box {
+        width: 100%;
+        max-width: 800px;
+        height: 400px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
     }
 </style>

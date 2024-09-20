@@ -1,0 +1,208 @@
+﻿@model PropertyStatusModel
+
+@{
+    ViewData["Title"] = "PROPERTY STATUS CHART";
+    var topSellingDay = Model.SalesByDay.OrderByDescending(d => d.Value).FirstOrDefault();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: lightblue;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+            .card h2 {
+                color: #2c3e50;
+                font-size: 28px; 
+                margin-bottom: 20px; 
+                font-family: 'Roboto', sans-serif; 
+                font-weight: 700; 
+                text-transform: uppercase; 
+                letter-spacing: 1px;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px; 
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+                transition: color 0.3s ease, border-bottom-color 0.3s ease; 
+            }
+
+                .card h2:hover {
+                    color: #3498db;
+                    border-bottom-color: #2c3e50; 
+                }
+
+
+            .card p {
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-size: 20px;
+                line-height: 1.9;
+                color: #555;
+                background-color: #f9f9f9; 
+                border-left: 5px solid #3498db; 
+                padding: 10px 15px; 
+                margin: 0; 
+                border-radius: 5px; 
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+                transition: background-color 0.3s ease, color 0.3s ease;
+
+            }
+
+                .card p:hover {
+                    background-color: #e3f2fd; 
+                    color: #333; 
+                }
+
+
+        .chart-container {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ecf0f1;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: 300px;
+        }
+
+        footer {
+            background-color: #34495e;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+  
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>@ViewData["Title"]</h1>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Property Status Information</h2>
+            <div class="card-content">
+                <p>This card illustrates the distribution of properties in terms of their status. The 'Sold Properties' segment represents the number of properties that have been sold, while the 'Available Properties' segment shows those still on the market.</p>
+              
+                @if (topSellingDay.Key != null)
+                {
+                    <h3>TOP SELLING DAY</h3>
+                    <p>The day with the highest number of sales is <strong>@topSellingDay.Key</strong> with <strong>@topSellingDay.Value</strong> sales.</p>
+                }
+                else
+                {
+                    <p>No sales data available.</p>
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Property Status Chart</h2>
+            <div class="chart-container">
+                <canvas id="propertyStatusChart" width="300" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('propertyStatusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sold Properties', 'Available Properties'],
+                    datasets: [{
+                        label: 'Property Status',
+                        data: [@Model.Sold, @Model.Available],
+                        backgroundColor: ['#FF6384', '#36A2EB'],
+                        hoverBackgroundColor: ['#FF6384', '#36A2EB']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '50%'
+                }
+            });
+        });
+    </script>
+
+
+</body>
+</html>

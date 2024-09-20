@@ -154,15 +154,7 @@ namespace NestAlbania.Repositories
             }
             return new List<Property>(); 
         }
-        public async Task<PaginatedList<Property>> GetPropertiesWithChangedPricesAsync(int pageIndex = 1, int pageSize = 10)
-        {
-            var query = _context.Properties
-                .Where(p => p.PreviousPrice != p.Price)
-                .OrderByDescending(p => p.PriceChangedDate)
-                .AsQueryable();
-
-            return await PaginatedList<Property>.CreateAsync(query, pageIndex, pageSize);
-        }
+     
         public async Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync()
         {
             var soldProperties = _context.Properties

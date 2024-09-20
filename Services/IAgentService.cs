@@ -6,8 +6,6 @@ using NestAlbania.Repositories.Pagination;
 
 namespace NestAlbania.Services
 {
-
-
     public interface IAgentService
     {
         Task<IEnumerable<Agent>> GetAllAgents();

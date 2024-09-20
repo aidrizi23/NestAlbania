@@ -6,6 +6,8 @@ namespace NestAlbania.Data
     public class Agent : BaseEntity
 
     {
+        internal DateTime SaleDate;
+
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         

@@ -430,6 +430,9 @@ namespace NestAlbania.Migrations
                     b.Property<DateTime>("PriceChangedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("SoldDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 

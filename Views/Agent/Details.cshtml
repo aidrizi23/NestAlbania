@@ -8,68 +8,40 @@
 <!-- Link the agent-details.css file -->
 <link rel="stylesheet" href="~/css/agent-details.css" />
 
-<!-- Contact Agent Link -->
-@* <div class="mt-4">
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=@Model.Email" class="btn btn-info" target="_blank">Contact this agent</a>
-</div>
-
- *@
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="row">
         <!-- Profile Card -->
         <div class="col-md-4">
-            <div class="card text-center">
-                <img src="@Url.Content("~/agentImg/" + Model.Image)" class="card-img-top" alt="@Model.Name @Model.Surname">
-                <div class="card-body">
-                    <h5 class="card-title">@Model.Name @Model.Surname</h5>
+            <div class="card border-0 shadow-sm">
+                <img src="@Url.Content("~/agentImg/" + Model.Image)" class="card-img-top rounded-circle" alt="@Model.Name @Model.Surname">
+                <div class="card-body text-center">
+                    <h5 class="card-title font-weight-bold">@Model.Name @Model.Surname</h5>
+                    <p class="text-muted mb-4">@Model.Motto</p>
+                    <a href="mailto:@Model.Email" class="btn btn-outline-primary">Contact</a>
                 </div>
             </div>
         </div>
-
         <!-- Agent Details -->
         <div class="col-md-8">
-            <h2 class="mb-4">@Model.Name @Model.Surname</h2>
-
+            <h2 class="mb-4">Details</h2>
             <div class="row">
-                <div class="col-sm-4 detail-label">
-                    @Html.DisplayNameFor(model => model.Motto)
+                <div class="col-sm-6 detail-item">
+                    <strong>Email:</strong> @Html.DisplayFor(model => model.Email)
                 </div>
-                <div class="col-sm-8 detail-value">
-                    @Html.DisplayFor(model => model.Motto)
+                <div class="col-sm-6 detail-item">
+                    <strong>Phone:</strong> @Html.DisplayFor(model => model.PhoneNumber)
                 </div>
-
-                <div class="col-sm-4 detail-label">
-                    @Html.DisplayNameFor(model => model.Email)
+                <div class="col-sm-6 detail-item">
+                    <strong>License Number:</strong> @Html.DisplayFor(model => model.LicenseNumber)
                 </div>
-                <div class="col-sm-8 detail-value">
-                    @Html.DisplayFor(model => model.Email)
-                </div>
-
-                <div class="col-sm-4 detail-label">
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </div>
-                <div class="col-sm-8 detail-value">
-                    @Html.DisplayFor(model => model.PhoneNumber)
-                </div>
-
-                <div class="col-sm-4 detail-label">
-                    @Html.DisplayNameFor(model => model.LicenseNumber)
-                </div>
-                <div class="col-sm-8 detail-value">
-                    @Html.DisplayFor(model => model.LicenseNumber)
-                </div>
-
-                <div class="col-sm-4 detail-label">
-                    @Html.DisplayNameFor(model => model.YearsOfExeperience)
-                </div>
-                <div class="col-sm-8 detail-value">
-                    @Html.DisplayFor(model => model.YearsOfExeperience)
+                <div class="col-sm-6 detail-item">
+                    <strong>Experience:</strong> @Html.DisplayFor(model => model.YearsOfExeperience) years
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="mt-4">
-                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
                 <a class="btn btn-secondary" asp-action="Index">Back to List</a>
             </div>
         </div>
@@ -80,13 +52,13 @@
     <div class="row">
         @foreach (var property in Model?.Properties)
         {
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm">
                     <img src="@Url.Content("~/images/properties/" + property.MainImage)" class="property-agent-details" alt="Property Image">
                     <div class="card-body">
-                        <h5 class="card-title">@property.Name</h5>
-                        <p class="card-text">@property.Description</p>
-                        <a href="@Url.Action("Details", "PropertyApi", new { id = property.Id })" class="btn btn-primary">View Details</a>
+                        <h5 class="card-title font-weight-bold">@property.Name</h5>
+                        <p class="card-text text-muted">@property.Description</p>
+                        <a href="@Url.Action("Details", "Property", new { id = property.Id })" class="btn btn-outline-primary">View Details</a>
                     </div>
                 </div>
             </div>
@@ -102,42 +74,41 @@
 </script>
 
 <style>
-    /* agent-details.css */
-    .property-agent-details{
+    .property-agent-details {
         object-fit: cover;
-        height: 300px;
-        width: 300px;
-        margin: auto;
+        height: 200px;
+        width: 100%;
     }
 
     .card-img-top {
-        border-radius: 50%;
-        object-fit: cover;
-        height: 300px;
-        width: 300px;
+        height: 200px;
+        width: 200px;
         margin: auto;
     }
 
+    .detail-item {
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+
     .card-title {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: bold;
         margin-top: 10px;
     }
 
     .card-text {
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: #6c757d;
     }
 
-    .detail-label {
-        font-weight: bold;
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
     }
 
-    .detail-value {
-        margin-bottom: 15px;
-    }
-
-    .card {
-        margin-bottom: 20px;
-    }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
 </style>

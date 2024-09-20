@@ -12,63 +12,63 @@
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="Name" class="control-label">
-                        <i class="fas fa-home"></i> @Html.DisplayNameFor(m => m.Name)
+                        <i class="fas fa-home"></i> @Html.DisplayNameFor(m => m.Name) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" autocomplete="off" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="Price" class="control-label">
-                        <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(m => m.Price)
+                        <i class="fas fa-dollar-sign"></i> @Html.DisplayNameFor(m => m.Price) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="Price" class="form-control" />
+                    <input asp-for="Price" class="form-control" autocomplete="off" type="number" min="0.01" step="0.01" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
                 <div class="form-group">
                     <label asp-for="Description" class="control-label">
-                        <i class="fas fa-align-left"></i> @Html.DisplayNameFor(m => m.Description)
+                        <i class="fas fa-align-left"></i> @Html.DisplayNameFor(m => m.Description) <span class="text-danger">*</span>
                     </label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <textarea asp-for="Description" class="form-control" autocomplete="off"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="FullArea" class="control-label">
-                        <i class="fas fa-ruler-combined"></i> @Html.DisplayNameFor(m => m.FullArea)
+                        <i class="fas fa-ruler-combined"></i> @Html.DisplayNameFor(m => m.FullArea) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="FullArea" class="form-control" />
+                    <input asp-for="FullArea" class="form-control" autocomplete="off" type="number" min="0.01" step="0.01" />
                     <span asp-validation-for="FullArea" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="InsideArea" class="control-label">
-                        <i class="fas fa-ruler-vertical"></i> @Html.DisplayNameFor(m => m.InsideArea)
+                        <i class="fas fa-ruler-vertical"></i> @Html.DisplayNameFor(m => m.InsideArea) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="InsideArea" class="form-control" />
+                    <input asp-for="InsideArea" class="form-control" autocomplete="off" type="number" min="0.01" step="0.01" />
                     <span asp-validation-for="InsideArea" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="BedroomCount" class="control-label">
-                        <i class="fas fa-bed"></i> @Html.DisplayNameFor(m => m.BedroomCount)
+                        <i class="fas fa-bed"></i> @Html.DisplayNameFor(m => m.BedroomCount) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="BedroomCount" class="form-control" />
+                    <input asp-for="BedroomCount" class="form-control" autocomplete="off" type="number" min="1" />
                     <span asp-validation-for="BedroomCount" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="BathroomCount" class="control-label">
-                        <i class="fas fa-bath"></i> @Html.DisplayNameFor(m => m.BathroomCount)
+                        <i class="fas fa-bath"></i> @Html.DisplayNameFor(m => m.BathroomCount) <span class="text-danger">*</span>
                     </label>
-                    <input asp-for="BathroomCount" class="form-control" />
+                    <input asp-for="BathroomCount" class="form-control" autocomplete="off" type="number" min="1" />
                     <span asp-validation-for="BathroomCount" class="text-danger"></span>
                 </div>
             </div>

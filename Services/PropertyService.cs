@@ -3,7 +3,7 @@ using NestAlbania.Data;
 using NestAlbania.FilterHelpers;
 using NestAlbania.Repositories;
 using NestAlbania.Repositories.Pagination;
-using NestAlbania.Models; // Ensure you have the correct Models namespace
+using NestAlbania.Models; 
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,13 +19,7 @@ namespace NestAlbania.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<Property>> GetPropertiesWithChangedPricesAsync()
-        {
-            return await _repository.GetPropertiesWithChangedPricesAsync();
-        }
-
-
-        // Correct version of GetAllPropertiesAsync
+      
         public async Task<IEnumerable<Property>> GetAllPropertiesAsync()
         {
             // Get all properties from the database using the repository
