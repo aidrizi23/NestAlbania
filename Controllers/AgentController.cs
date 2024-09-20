@@ -266,7 +266,6 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var agentToShowDetails = await _agent.GetAgentWithPropertiesAsync(id);
-            var agentToShowDetails = await _agent.GetAgentWPropertiesAsync(id);
 
             ViewData["ActivePage"] = "agentIndex";
             return View(agentToShowDetails);
@@ -293,12 +292,9 @@ namespace NestAlbania.Controllers
                 Email = agent.Email,
                 Password = agent.Password
             };
-            
-            return View(dto);
-            var agentToEdit = await _agent.GetAgentById(id);
 
             ViewData["ActivePage"] = "agentIndex";
-            return View(agentToEdit);
+            return View(dto);
         }
 
         [HttpPost]
@@ -355,7 +351,6 @@ namespace NestAlbania.Controllers
             await _userManager.UpdateAsync(user);
             await _agent.EditAgent(agent);
 
-            await _agent.EditAgent(existingAgent);
 
             ViewData["ActivePage"] = "agentIndex";
             return RedirectToAction("Index");

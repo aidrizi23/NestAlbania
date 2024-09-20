@@ -30,7 +30,7 @@ namespace NestAlbania.Controllers
             {
                 var properties = await _propertyService.GetAllPropertiesAsync();
                 var soldProperties = properties
-                    .Where(p => p.isSold.HasValue && p.isSold.Value)
+                    .Where(p => p.IsSold == true)
                     .OrderByDescending(p => p.PostedOn) 
                     .ToList();
 
@@ -45,7 +45,7 @@ namespace NestAlbania.Controllers
                 ViewBag.MonthlySoldProperties = monthlySoldProperties;
 
                 var groupedProperties = properties
-                    .Where(p => !p.isSold.HasValue || !p.isSold.Value)
+                    .Where(p => !p.IsSold == false)
                     .GroupBy(p => p.Category)
                     .Select(g => new GroupedProperty
                     {
@@ -100,10 +100,10 @@ namespace NestAlbania.Controllers
                 var allProperties = await _propertyService.GetAllPropertiesAsync();
 
                 int totalProperties = allProperties.Count();
-                int soldProperties = allProperties.Count(p => p.isSold.HasValue && p.isSold.Value);
+                int soldProperties = allProperties.Count(p => p.IsSold == true);
 
                 var salesByDay = allProperties
-                    .Where(p => p.isSold.HasValue && p.isSold.Value)
+                    .Where(p => p.IsSold == true)
                     .GroupBy(p => p.PostedOn.Date)
                     .ToDictionary(g => g.Key.ToString("yyyy-MM-dd"), g => g.Count());
 

@@ -12,8 +12,8 @@ using NestAlbania.Data;
 namespace NestAlbania.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240911095318_Initial")]
-    partial class Initial
+    [Migration("20240920184519_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -294,14 +294,14 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9c80318f-339c-42dc-b08b-660a2d29fbcf",
+                            ConcurrencyStamp = "1dc0dc2b-001c-4a74-8081-17847e65fb8b",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKTCN3gv3sY2Uvt90QXoIjt0ULL9NPtX+oCRJ4LN/1CgRmZQlpIqRWvyf9d9NNPiXw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHI0+mZ+GDi5SLzEVD8uu4q64vPS2jZL0eFhTU+XUtJb90KNhxdUxnu0rwPQvD6BBw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -329,6 +329,41 @@ namespace NestAlbania.Migrations
                             UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             RoleId = "b18be9c0-aa65-4af8-bd17-00bd9344e576"
                         });
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Property", b =>
@@ -370,6 +405,9 @@ namespace NestAlbania.Migrations
                     b.Property<bool>("IsFavorite")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastEdited")
                         .HasColumnType("datetime2");
 
@@ -395,14 +433,16 @@ namespace NestAlbania.Migrations
                     b.Property<DateTime>("PriceChangedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("SoldDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
 
-                    b.Property<bool?>("isSold")
-                        .IsRequired()
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -493,6 +533,17 @@ namespace NestAlbania.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("NestAlbania.Data.Notification", b =>
+                {
+                    b.HasOne("NestAlbania.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NestAlbania.Data.Property", b =>

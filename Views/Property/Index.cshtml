@@ -265,6 +265,7 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
+
                 <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
                     <a class="page-link" href="@Url.Action("Index", "Property", new { pageIndex = Model.PageIndex + 1 })" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>

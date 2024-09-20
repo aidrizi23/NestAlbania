@@ -362,11 +362,10 @@ namespace NestAlbania.Controllers
                        Value = e.ToString(),
                        Text = e.ToString()
                    }).ToList();
-        }
+        
 
 
-            ViewData["ActivePage"] = "propertyIndex";
-            return RedirectToAction("Index");
+
         }
 
             [HttpGet]
@@ -381,9 +380,9 @@ namespace NestAlbania.Controllers
                 property.Views++;
                 await _propertyService.EditPropertyAsync(property);
 
-            ViewData["ActivePage"] = "propertyIndex";
-            return View(property);
-        }
+                ViewData["ActivePage"] = "propertyIndex";
+                return View(property);
+            }
 
             [HttpGet]
             [Authorize]
@@ -400,6 +399,8 @@ namespace NestAlbania.Controllers
                 dto.Documentation = property.Documentation;
                 dto.OtherImages = property.OtherImages;
 
+                ViewData["ActivePage"] = "propertyIndex";
+            
                 return View(dto);
             }
 
@@ -453,15 +454,15 @@ namespace NestAlbania.Controllers
                     }
                 }
 
-            PopulateViewBags();
-
-            ViewData["ActivePage"] = "propertyIndex";
-            return View(property);
-        }
-                // Save the updated property to the database
+                PopulateViewBags();
                 await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
-            }
+
+
+             }
+
+
+
 
 
             [HttpGet]

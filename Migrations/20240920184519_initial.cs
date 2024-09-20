@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NestAlbania.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,8 +102,10 @@ namespace NestAlbania.Migrations
                     AgentId = table.Column<int>(type: "int", nullable: true),
                     PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastEdited = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    isSold = table.Column<bool>(type: "bit", nullable: false),
+                    IsSold = table.Column<bool>(type: "bit", nullable: false),
+                    SoldDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PriceChangedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Views = table.Column<int>(type: "int", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -224,6 +226,30 @@ namespace NestAlbania.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Favorites",
                 columns: table => new
                 {
@@ -269,7 +295,7 @@ namespace NestAlbania.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomUserName", "Email", "EmailConfirmed", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "9c80318f-339c-42dc-b08b-660a2d29fbcf", null, "admin@admin.com", true, false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEKTCN3gv3sY2Uvt90QXoIjt0ULL9NPtX+oCRJ4LN/1CgRmZQlpIqRWvyf9d9NNPiXw==", null, false, "", false, "admin@admin.com" });
+                values: new object[] { "a18be9c0-aa65-4af8-bd17-00bd9344e575", 0, "1dc0dc2b-001c-4a74-8081-17847e65fb8b", null, "admin@admin.com", true, false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAIAAYagAAAAEHI0+mZ+GDi5SLzEVD8uu4q64vPS2jZL0eFhTU+XUtJb90KNhxdUxnu0rwPQvD6BBw==", null, false, "", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -331,6 +357,11 @@ namespace NestAlbania.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_UserId",
+                table: "Notifications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Properties_AgentId",
                 table: "Properties",
                 column: "AgentId");
@@ -358,13 +389,16 @@ namespace NestAlbania.Migrations
                 name: "Favorites");
 
             migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Agents");
