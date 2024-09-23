@@ -38,7 +38,7 @@ namespace LandingPageApi.Controllers
             {
                 return NotFound();
             }
-            var baseUrl = $"{_mvcUrl}/files/properties/";
+            var baseUrl = $"{_mvcUrl}/files/property/";
             
             // we will make this using the dto se spo gjeja dot naj menyr tjt me t mir lol
             var propertyDto = new PropertyDto
