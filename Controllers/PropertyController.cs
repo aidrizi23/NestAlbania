@@ -75,6 +75,7 @@ namespace NestAlbania.Controllers
 
 
         [Route("delete/{id}")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
