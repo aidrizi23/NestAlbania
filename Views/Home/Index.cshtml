@@ -7,13 +7,8 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-<!-- Info Boxes -->
 <section class="info-box-container">
-    <div class="info-box">
-        <i class="icon fas fa-home"></i>
-        <h3>Total Properties</h3>
-        <p>@ViewBag.TotalProperties</p>
-    </div>
+
     <div class="info-box">
         <i class="icon fas fa-user"></i>
         <h3>Total Agents</h3>
@@ -24,7 +19,13 @@
         <h3>Most Sold Category</h3>
         <p>@ViewBag.MostSoldCategory</p>
     </div>
+    <div class="info-box">
+        <i class="icon fas fa-door-open"></i>
+        <h3>Available Properties</h3>
+        <p>@ViewBag.AvailableProperties</p>
+    </div>
 </section>
+
 <!--Property By Category -->
 <section class="property-carousel-section">
     <h3 style="text-align:center;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-palette:dark;font-weight:bold">PROPERTIES GROUPED BY CATEGORY</h3>

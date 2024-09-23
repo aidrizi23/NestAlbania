@@ -28,13 +28,16 @@ namespace NestAlbania.Controllers
         {
             try
             {
+                // Get all properties excluding soft-deleted ones
                 var properties = await _propertyService.GetAllPropertiesAsync();
-                var soldProperties = properties
+                var nonDeletedProperties = properties.Where(p => !p.isDeleted).ToList();
+
+                var soldProperties = nonDeletedProperties
                     .Where(p => p.IsSold == true)
-                    .OrderByDescending(p => p.PostedOn) 
+                    .OrderByDescending(p => p.PostedOn)
                     .ToList();
 
-                var latestSoldProperties = soldProperties.Take(4).ToList();
+                var latestSoldProperties = soldProperties.Take(4).ToList().OrderByDescending(p => p.PostedOn);
 
                 var monthlySoldProperties = soldProperties
                     .GroupBy(p => p.PostedOn.ToString("MMMM yyyy"))
@@ -44,7 +47,7 @@ namespace NestAlbania.Controllers
 
                 ViewBag.MonthlySoldProperties = monthlySoldProperties;
 
-                var groupedProperties = properties
+                var groupedProperties = nonDeletedProperties
                     .Where(p => !p.IsSold == false)
                     .GroupBy(p => p.Category)
                     .Select(g => new GroupedProperty
@@ -63,22 +66,31 @@ namespace NestAlbania.Controllers
                 }
                 else
                 {
-                    ViewBag.TopSellingAgent = null; 
+                    ViewBag.TopSellingAgent = null;
                 }
 
-                var totalProperties = properties.Count();
+                // Total properties excluding soft-deleted
+                var totalProperties = nonDeletedProperties.Count();
 
+                // Total agents excluding soft-deleted properties
                 var total = await _agentService.GetAllAgents();
                 var totalAgents = total.Count();
 
+                // Most sold category excluding soft-deleted properties
                 var mostSoldCategory = soldProperties
                     .GroupBy(p => p.Category)
                     .OrderByDescending(g => g.Count())
                     .Select(g => g.Key)
                     .FirstOrDefault();
+
+                // Calculate available properties
+                var availableProperties = nonDeletedProperties.Count(p => !p.IsSold);
+
+                // Pass the calculated data to the view
                 ViewBag.TotalProperties = totalProperties;
                 ViewBag.TotalAgents = totalAgents;
                 ViewBag.MostSoldCategory = mostSoldCategory;
+                ViewBag.AvailableProperties = availableProperties; // New line for available properties
 
                 ViewBag.SoldProperties = latestSoldProperties;
 
@@ -97,12 +109,14 @@ namespace NestAlbania.Controllers
         {
             try
             {
+                // Get all properties, but exclude soft-deleted ones
                 var allProperties = await _propertyService.GetAllPropertiesAsync();
+                var nonDeletedProperties = allProperties.Where(p => !p.isDeleted).ToList(); // Filter out soft-deleted properties
 
-                int totalProperties = allProperties.Count();
-                int soldProperties = allProperties.Count(p => p.IsSold == true);
+                int totalProperties = nonDeletedProperties.Count();
+                int soldProperties = nonDeletedProperties.Count(p => p.IsSold == true);
 
-                var salesByDay = allProperties
+                var salesByDay = nonDeletedProperties
                     .Where(p => p.IsSold == true)
                     .GroupBy(p => p.PostedOn.Date)
                     .ToDictionary(g => g.Key.ToString("yyyy-MM-dd"), g => g.Count());
@@ -124,6 +138,7 @@ namespace NestAlbania.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
+
         public IActionResult Privacy()
         {
             return View();
