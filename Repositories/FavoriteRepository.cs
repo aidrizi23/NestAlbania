@@ -19,6 +19,7 @@ namespace NestAlbania.Repositories
         {
             return await _context.Favorites
                 .Include(f => f.Property)
+                .AsNoTrackingWithIdentityResolution()   
                 .Where(f => f.UserId == userId)
                 .ToListAsync();
         }
@@ -45,6 +46,7 @@ namespace NestAlbania.Repositories
             return await _context.Favorites
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Property)
+                .AsNoTrackingWithIdentityResolution()
                 .Select(f => f.Property)
                 .ToListAsync();
         }
@@ -55,6 +57,7 @@ namespace NestAlbania.Repositories
             return await _context.Favorites
                 .Where(f => f.Property.AgentId == agentId)
                 .Include(f => f.Property)
+                .AsNoTrackingWithIdentityResolution()
                 .Select(f => f.Property)
                 .ToListAsync();
         }

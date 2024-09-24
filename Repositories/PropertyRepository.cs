@@ -25,7 +25,8 @@ namespace NestAlbania.Repositories
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesAsync(int pageIndex = 1, int pageSize = 10)
         {
-            var source = _context.Properties.AsNoTracking()
+            var source = _context.Properties
+                .AsNoTracking()
                 .Where(x => !x.isDeleted && !x.IsSold)
                 .OrderByDescending(x => x.Id);
             return await PaginatedList<Property>.CreateAsync(source, pageIndex, pageSize);
@@ -33,7 +34,8 @@ namespace NestAlbania.Repositories
         
         public async Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10)
         {
-            var paginatedProperties = _context.Properties.AsNoTracking()
+            var paginatedProperties = _context.Properties
+                .AsNoTracking()
                 .Where(x => x.BedroomCount == nrOfBedrooms && !x.isDeleted)
                 .OrderByDescending(x => x.Id);
             return await PaginatedList<Property>.CreateAsync(paginatedProperties, pageIndex, pageSize);
@@ -41,7 +43,8 @@ namespace NestAlbania.Repositories
 
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex, int pageSize, string sortOrder)
         {
-            var properties = _context.Properties.AsNoTracking()
+            var properties = _context.Properties
+                .AsNoTracking()
                 .Where(x => !x.isDeleted && !x.IsSold);
 
             if (!string.IsNullOrEmpty(query.Name))
@@ -93,7 +96,7 @@ namespace NestAlbania.Repositories
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)
         {
-            var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
+            var properties = _context.Properties.AsNoTracking()
                 // .Include(x => x.Agent)
                 .Where(x => x.AgentId == id && x.isDeleted == false && x.IsSold == false).AsQueryable();
             
@@ -103,9 +106,9 @@ namespace NestAlbania.Repositories
         public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
         {
             return await _context.Favorites
-                .AsNoTracking()
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Property)
+                .AsNoTrackingWithIdentityResolution()
                 .Select(f => f.Property)
                 .ToListAsync();
         }
@@ -113,9 +116,9 @@ namespace NestAlbania.Repositories
         public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
         {
             return await _context.Favorites
-                .AsNoTracking()
                 .Where(f => f.Property.AgentId == agentId)
                 .Include(f => f.Property)
+                .AsNoTrackingWithIdentityResolution()
                 .Select(f => f.Property)
                 .ToListAsync();
         }

@@ -17,7 +17,7 @@ namespace NestAlbania.Repositories
         public async Task<PaginatedList<Agent>> GetPaginatedAgent(int pageIndex = 1, int pageSize = 10)
         {
             var agentsQuery = _context.Agents.Where(x => x.isDeleted == false)
-                .AsNoTrackingWithIdentityResolution()
+                .AsNoTracking()
                 .OrderByDescending(x => x.Id)
                 .AsQueryable();
 
@@ -27,7 +27,7 @@ namespace NestAlbania.Repositories
 
         public async Task<PaginatedList<Agent>> GetFilteredAgents(AgentObjectQuery query, int pageIndex = 1, int pageSize = 10)
         {
-            var agentsQuery = _context.Agents.AsNoTrackingWithIdentityResolution()
+            var agentsQuery = _context.Agents.AsNoTracking()
                 .Where(x => x.isDeleted == false)
                 .AsQueryable();
 
@@ -69,13 +69,17 @@ namespace NestAlbania.Repositories
         public async Task SoftDeleteAgentAsync(Agent agent)
         {
             agent.isDeleted = true;
-            await Edit(agent);
+            // await Edit(agent);
+            _context.Entry(agent).Property(x => x.isDeleted).IsModified = true;
+            await _context.SaveChangesAsync();
         }
+        
 
         public async Task UnDeleteAgentAsync(Agent agent)
         {
             agent.isDeleted = false;
-            await Edit(agent);
+            _context.Entry(agent).Property(x => x.isDeleted).IsModified = true;
+            await _context.SaveChangesAsync();
         }
         public async Task<Agent> GetTopSellingAgentAsync()
         {

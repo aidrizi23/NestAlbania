@@ -14,7 +14,7 @@ public class NotificationRepository
     
     public async Task<IEnumerable<Notification>> GetUnreadNotificationsAsync(string userId)
     {
-        return await _context.Notifications
+        return await _context.Notifications.AsNoTracking()
             .Where(n => n.UserId == userId && n.IsRead == false)
             .ToListAsync();
     }
@@ -65,6 +65,7 @@ public class NotificationRepository
     {
         return await _context.Notifications
             .Where(n => n.UserId == userId)
+            .AsNoTracking()
             .OrderByDescending(n => n.CreatedOn)
             .ToListAsync();
     }

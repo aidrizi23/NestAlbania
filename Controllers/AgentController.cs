@@ -116,12 +116,13 @@ namespace NestAlbania.Controllers
             agentUser.IsDeleted = true;
             agentUser.LockoutEnabled = true;
 
-            foreach (var item in agent.Properties)
-            {
-                item.AgentId = null;
-                item.Agent = null;
-            }
-            
+            if (agent.Properties != null)
+                foreach (var item in agent.Properties)
+                {
+                    item.AgentId = null;
+                    item.Agent = null;
+                }
+
             agentUser.LockoutEnd = DateTimeOffset.MaxValue;
     
             await _userService.UpdateUserAsync(agentUser);
