@@ -84,7 +84,7 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
 
-            var propertyDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
+            var propertyDirectoryName = $"{property.Id}";
             var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
 
 
@@ -268,8 +268,8 @@ namespace NestAlbania.Controllers
                 Status = dto.Status,
                 City = dto.SelectedCity,
                 MainImage = mainImagePath,
-                OtherImages = new List<string>(), // Initialize empty list for other images
-                AgentId = agent?.Id, // Assign agent ID to property
+                OtherImages = new List<string>(), 
+                AgentId = agent?.Id, 
                 Agent = await _agentService.GetAgentById(agent.Id),
                 PostedOn = DateTime.Now.Date,
                 IsSold = false,
@@ -284,7 +284,7 @@ namespace NestAlbania.Controllers
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
-                var propertyDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
+                var propertyDirectoryName = $"{property.Id}";
                 var uploadsFolderProperty = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
                 if (!Directory.Exists(uploadsFolderProperty))
                     Directory.CreateDirectory(uploadsFolderProperty);
@@ -385,70 +385,62 @@ namespace NestAlbania.Controllers
                 dto.Status = property.Status;
                 dto.Price = property.Price;
                 dto.Name = property.Name;
-                dto.MainImage = property.MainImage;
                 dto.Documentation = property.Documentation;
                 dto.OtherImages = property.OtherImages;
 
                 return View(dto);
             }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("edit/{id}")]
+        public async Task<IActionResult> Edit(PropertyForEditDto dto)
+        {
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            [Route("edit/{id}")]
-            public async Task<IActionResult> Edit(PropertyForEditDto dto)
+            var property = await _propertyService.GetPropertyByIdAsync(dto.Id);
+            if (property == null)
             {
-                // Retrieve the existing property
-                var property = await _propertyService.GetPropertyByIdAsync(dto.Id);
-                if (property == null)
-                {
-                    return NotFound();
-                }
-
-                // Update property object
-                property.Name = dto.Name;
-                property.Description = dto.Description;
-                property.Price = dto.Price;
-                property.Status = dto.Status;
-                property.LastEdited = DateTime.Now.Date;
-
-                var files = HttpContext.Request.Form.Files.FirstOrDefault();
-
-                if (files != null && files.Length > 0) // Check if there is a file uploaded
-                {
-                    // Remove the old main image if it exists
-                    if (!string.IsNullOrEmpty(property.MainImage))
-                    {
-                        var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{property.Name.ToLower()}-{property.Id}");
-                        _fileHandlerService.RemoveImageFile(uploadDir, property.MainImage);
-                    }
-
-                    // Create a new directory for the property if it doesn't exist
-                    var userDirectoryName = $"{property.Name.ToLower()}-{property.Id}";
-                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
-
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-
-                    // Generate a new file name and save the new image
-                    var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(files.FileName)}";
-                    var filePath = Path.Combine(uploadsFolder, fileName);
-
-                    property.MainImage = fileName; // Set the new image name
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await files.CopyToAsync(stream);
-                    }
-                }
-
-                // Save the updated property to the database
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
+                return NotFound();
             }
 
 
-            [HttpGet]
+            property.Name = dto.Name;
+            property.Description = dto.Description;
+            property.Price = dto.Price;
+            property.Status = dto.Status;
+            property.LastEdited = DateTime.Now.Date;
+
+
+            if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
+            {
+                if (!string.IsNullOrEmpty(property.MainImage))
+                {
+                    var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{property.Id}");
+                    _fileHandlerService.RemoveImageFile(uploadDir, property.MainImage);
+                }
+
+                var userDirectoryName = $"{property.Id}";
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", userDirectoryName);
+
+                var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(dto.MainImageFile.FileName)}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+            
+                property.MainImage = fileName;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.MainImageFile.CopyToAsync(stream);
+                }
+            }
+
+            await _propertyService.EditPropertyAsync(property);
+            return RedirectToAction("Index");
+        }
+
+
+
+        [HttpGet]
             [Route("filter")]
             public async Task<IActionResult> GetAllFilteredProperties([FromQuery] PropertyObjectQuery query, int pageIndex = 1, int pageSize = 10, string sortOrder = "", bool? ShowAdditionalFilters = null)
             {

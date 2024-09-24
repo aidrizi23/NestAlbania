@@ -11,8 +11,9 @@ public class PropertyForEditDto
     public string Name { get; set; }
 
     public string Description { get; set; }
-    public string? MainImage { get; set; }
-    
+
+    public IFormFile? MainImageFile { get; set; }
+
     public double Price { get; set; }
         
         

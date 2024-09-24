@@ -134,7 +134,7 @@
                     <div class="card custom-card">
                         @if (!string.IsNullOrEmpty(item.Image))
                         {
-                            <img class="card-img-top" src="~/files/agent/@item.Name.ToLower()-@item.Surname.ToLower()-@item.Id/@item.Image" alt="Agent Image" />
+                            <img class="card-img-top" src="~/files/agent/@item.Id/@item.Image" alt="Agent Image" />
                         }
                         else
                         {
