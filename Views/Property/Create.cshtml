@@ -137,21 +137,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script>
-        $(document).ready(function() {
-            var selectedCities = [];
-            $('#SelectedCities option:selected').each(function() {
-                selectedCities.push($(this).text());
-            });
-            $('#SelectedCity').attr('title', selectedCities.join(', '));
-            
-            $('#SelectedCity').change(function() {
-                selectedCities = [];
-                $('#SelectedCity option:selected').each(function() {
-                    selectedCities.push($(this).text());
-                });
-                $('#SelectedCity').attr('title', selectedCities.join(', '));
-            });
-        });
-    </script>
 }
