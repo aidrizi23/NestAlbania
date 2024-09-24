@@ -285,7 +285,6 @@ namespace NestAlbania.Controllers
                 Id = agent.Id,
                 Name = agent.Name,
                 Surname = agent.Surname,
-                Image = agent.Image,
                 PhoneNumber = agent.PhoneNumber,
                 LicenseNumber = agent.LicenseNumber,
                 Motto = agent.Motto,
@@ -348,8 +347,32 @@ namespace NestAlbania.Controllers
                 }
                 agent.Password = dto.Password;
             }
+
+
+            if (dto.Image != null && dto.Image.Length > 0)
             
-            await _userManager.UpdateAsync(user);
+                if (!string.IsNullOrEmpty(agent.Image))
+                {
+                    var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", $"{agent.Id}");
+                    _fileHandlerService.RemoveImageFile(uploadDir, agent.Image);
+                }
+
+                var userDirectoryName = $"{agent.Id}";
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
+
+                var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(dto.Image.FileName)}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+
+                agent.Image = fileName;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.Image.CopyToAsync(stream);
+                }
+
+
+                await _userManager.UpdateAsync(user);
             await _agent.EditAgent(agent);
 
 
