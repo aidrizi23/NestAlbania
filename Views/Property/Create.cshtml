@@ -101,15 +101,10 @@
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
-                    <label asp-for="SelectedCity" class="control-label">
-                        <i class="fas fa-city"></i> @Html.DisplayNameFor(m => m.SelectedCity)
+                    <label asp-for="Status" class="control-label">
+                        <i class="fas fa-info-circle"></i> @Html.DisplayNameFor(m => m.SelectedCity)
                     </label>
-                    <select asp-for="SelectedCity" class="form-control" asp-items="ViewBag.Cities" multiple="multiple" size="5">
-                        @foreach (var city in ViewBag.Cities)
-                        {
-                            <option value="@city.Value">@city.Text</option>
-                        }
-                    </select>
+                    <select asp-for="SelectedCity" class="form-control" asp-items="ViewBag.Cities"></select>
                     <span asp-validation-for="SelectedCity" class="text-danger"></span>
                 </div>
             </div>
