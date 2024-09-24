@@ -79,7 +79,7 @@ namespace NestAlbania.Controllers
                 return NotFound();
             }
 
-            var agentDirectoryIdentity = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+            var agentDirectoryIdentity = $"{agent.Id}";
             var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", agentDirectoryIdentity);
 
             if (!string.IsNullOrEmpty(agent.Image))
@@ -238,7 +238,7 @@ namespace NestAlbania.Controllers
             if (file != null)
             {
 
-                var userDirectoryName = $"{agent.Name.ToLower()}-{agent.Surname.ToLower()}-{agent.Id}";
+                var userDirectoryName = $"{agent.Id}";
                 var uploadsFolderAgent = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", userDirectoryName);
                 if (!Directory.Exists(uploadsFolderAgent))
                     Directory.CreateDirectory(uploadsFolderAgent);

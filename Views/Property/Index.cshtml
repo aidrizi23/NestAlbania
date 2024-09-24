@@ -206,7 +206,19 @@
                                onclick="toggleFavorite('@item.Id', this)"></i>
                         </div>
 
-                        <img class="card-img-top" src="@Url.Content("~/images/properties/" + item.MainImage)" alt="Property Image" />
+                        @if (!string.IsNullOrEmpty(item.MainImage))
+                        {
+                            <img class="card-img-top" src="~/files/property/@item.Id/@item.MainImage" alt="Property Image" />
+                        }
+                        else
+                        {
+                            <img class="card-img-top" src="~/files/property/" alt="No Image Available" />
+                        }
+
+
+                         
+
+
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                             <p class="card-text">
