@@ -101,16 +101,16 @@
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
-                    <label asp-for="SelectedCities" class="control-label">
-                        <i class="fas fa-city"></i> @Html.DisplayNameFor(m => m.SelectedCities)
+                    <label asp-for="SelectedCity" class="control-label">
+                        <i class="fas fa-city"></i> @Html.DisplayNameFor(m => m.SelectedCity)
                     </label>
-                    <select asp-for="SelectedCities" class="form-control" asp-items="ViewBag.Cities" multiple="multiple" size="5">
+                    <select asp-for="SelectedCity" class="form-control" asp-items="ViewBag.Cities" multiple="multiple" size="5">
                         @foreach (var city in ViewBag.Cities)
                         {
                             <option value="@city.Value">@city.Text</option>
                         }
                     </select>
-                    <span asp-validation-for="SelectedCities" class="text-danger"></span>
+                    <span asp-validation-for="SelectedCity" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -148,14 +148,14 @@
             $('#SelectedCities option:selected').each(function() {
                 selectedCities.push($(this).text());
             });
-            $('#SelectedCities').attr('title', selectedCities.join(', '));
+            $('#SelectedCity').attr('title', selectedCities.join(', '));
             
-            $('#SelectedCities').change(function() {
+            $('#SelectedCity').change(function() {
                 selectedCities = [];
-                $('#SelectedCities option:selected').each(function() {
+                $('#SelectedCity option:selected').each(function() {
                     selectedCities.push($(this).text());
                 });
-                $('#SelectedCities').attr('title', selectedCities.join(', '));
+                $('#SelectedCity').attr('title', selectedCities.join(', '));
             });
         });
     </script>
