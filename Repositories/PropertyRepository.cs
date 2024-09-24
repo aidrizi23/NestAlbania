@@ -20,31 +20,29 @@ namespace NestAlbania.Repositories
 
         public async Task<IEnumerable<Property>> GetAllPropertiesAsync()
         {
-            return await _context.Properties.ToListAsync();
+            return await _context.Properties.AsNoTracking().ToListAsync();
         }
 
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesAsync(int pageIndex = 1, int pageSize = 10)
         {
-            var source = _context.Properties.AsNoTrackingWithIdentityResolution()
-                .Where(x => x.isDeleted == false && x.IsSold == false)
-                .OrderByDescending(x => x.Id)
-                .AsQueryable();
+            var source = _context.Properties.AsNoTracking()
+                .Where(x => !x.isDeleted && !x.IsSold)
+                .OrderByDescending(x => x.Id);
             return await PaginatedList<Property>.CreateAsync(source, pageIndex, pageSize);
         }
         
-
         public async Task<PaginatedList<Property>> GetPropertiesByNumberOfBedroomsAsync(int nrOfBedrooms, int pageIndex = 1, int pageSize = 10)
         {
-            var paginatedProperties = _context.Properties.OrderByDescending(x => x.Id).AsQueryable();
-            paginatedProperties = paginatedProperties.Where(x => x.BedroomCount == nrOfBedrooms && x.isDeleted == false);
+            var paginatedProperties = _context.Properties.AsNoTracking()
+                .Where(x => x.BedroomCount == nrOfBedrooms && !x.isDeleted)
+                .OrderByDescending(x => x.Id);
             return await PaginatedList<Property>.CreateAsync(paginatedProperties, pageIndex, pageSize);
         }
 
         public async Task<PaginatedList<Property>> GetAllFilteredPropertiesAsync(PropertyObjectQuery query, int pageIndex, int pageSize, string sortOrder)
         {
-            var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
-                .Where(x => x.isDeleted == false && x.IsSold == false)
-                .AsQueryable();
+            var properties = _context.Properties.AsNoTracking()
+                .Where(x => !x.isDeleted && !x.IsSold);
 
             if (!string.IsNullOrEmpty(query.Name))
             {
@@ -52,7 +50,9 @@ namespace NestAlbania.Repositories
             }
             if (query.FullArea.HasValue)
             {
-                properties = properties.Where(p => p.FullArea >= query.FullArea * 0.9 && p.FullArea <= query.FullArea * 1.1);
+                var lowerBound = query.FullArea * 0.9;
+                var upperBound = query.FullArea * 1.1;
+                properties = properties.Where(p => p.FullArea >= lowerBound && p.FullArea <= upperBound);
             }
             if (query.InsideArea.HasValue)
             {
@@ -91,7 +91,6 @@ namespace NestAlbania.Repositories
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
 
-        
         public async Task<PaginatedList<Property>> GetAllPaginatedPropertiesByAgentIdAsync(int id, int pageIndex = 1, int pageSize = 10)
         {
             var properties = _context.Properties.AsNoTrackingWithIdentityResolution()
@@ -101,12 +100,10 @@ namespace NestAlbania.Repositories
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
 
-        
-        
-        
         public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
         {
             return await _context.Favorites
+                .AsNoTracking()
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Property)
                 .Select(f => f.Property)
@@ -116,39 +113,41 @@ namespace NestAlbania.Repositories
         public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
         {
             return await _context.Favorites
+                .AsNoTracking()
                 .Where(f => f.Property.AgentId == agentId)
                 .Include(f => f.Property)
                 .Select(f => f.Property)
                 .ToListAsync();
         }
-        
-        
-        
-        
 
         public async Task SoftDeletePropertyAsync(Property property)
         {
             property.isDeleted = true;
+            _context.Entry(property).Property(x => x.isDeleted).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
         public async Task SellPropertyAsync(Property property)
         {
             property.IsSold = true;
+            _context.Entry(property).Property(x => x.IsSold).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
         public async Task UnDeletePropertyAsync(Property property)
         {
             property.isDeleted = false;
+            _context.Entry(property).Property(x => x.isDeleted).IsModified = true;
             await _context.SaveChangesAsync();
         }
+
         public async Task<List<Property>> GetPropertiesByCategoryAsync(string category)
         {
             if (Enum.TryParse(typeof(Category), category, true, out var parsedCategory))
             {
                 var enumCategory = (Category)parsedCategory;
                 return await _context.Properties
+                         .AsNoTracking()
                          .Where(p => p.Category == enumCategory)
                          .ToListAsync();
             }
@@ -157,54 +156,39 @@ namespace NestAlbania.Repositories
      
         public async Task<Dictionary<string, int>> GetSoldPropertiesByMonthAsync()
         {
-            var soldProperties = _context.Properties
-                .Where(p => p.IsSold == true) // Using isSold instead of SoldDate
-                .ToList();
-
-            var monthlySoldProperties = soldProperties
-                .GroupBy(p => p.PostedOn.ToString("yyyy-MM")) // Assuming PostedOn can be used for grouping
-                .Select(g => new
-                {
-                    Month = g.Key,
-                    Count = g.Count()
-                })
-                .ToDictionary(g => g.Month, g => g.Count);
-
-            return monthlySoldProperties;
+            return await _context.Properties
+                .AsNoTracking()
+                .Where(p => p.IsSold)
+                .GroupBy(p => p.PostedOn.ToString("yyyy-MM"))
+                .Select(g => new { Month = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(g => g.Month, g => g.Count);
         }
+
         public async Task<Dictionary<string, int>> GetSoldPropertiesByDayAsync(int year, int month)
         {
             var startDate = new DateTime(year, month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            var dailySoldProperties = await _context.Properties
-                .Where(p => p.IsSold == true && p.PostedOn >= startDate && p.PostedOn <= endDate)
+            return await _context.Properties
+                .AsNoTracking()
+                .Where(p => p.IsSold && p.PostedOn >= startDate && p.PostedOn <= endDate)
                 .GroupBy(p => p.PostedOn.Date)
-                .Select(g => new
-                {
-                    Date = g.Key.ToString("yyyy-MM-dd"),
-                    Count = g.Count()
-                })
+                .Select(g => new { Date = g.Key.ToString("yyyy-MM-dd"), Count = g.Count() })
                 .ToDictionaryAsync(g => g.Date, g => g.Count);
-
-            return dailySoldProperties;
         }
         
-        
-        // method to get all the properties without an agent (Paginated).
         public async Task<PaginatedList<Property>> GetAllPropertiesWithoutAgentAsync(int pageIndex = 1, int pageSize = 10)
         {
-           var properties =  _context.Properties.AsNoTrackingWithIdentityResolution()
-               .Where(x => x.AgentId == null && x.isDeleted == false && x.IsSold == false)
-               .AsQueryable(); // we use AsNoTrackingWithIdentityResolution to avoid tracking the entities and also, it avoids creating duplicate entities.
+           var properties = _context.Properties.AsNoTracking()
+               .Where(x => x.AgentId == null && !x.isDeleted && !x.IsSold);
            
            return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
         
-        
         public async Task<Property?> GetPropertyByIdWithAgentAsync(int id)
         {
             return await _context.Properties
+                .AsNoTracking()
                 .Include(x => x.Agent)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
