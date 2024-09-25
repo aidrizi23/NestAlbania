@@ -8,7 +8,7 @@ public class AgentForEditDto
     
     public string Surname { get; set; }
         
-    public string? Image {  get; set; }
+    public IFormFile? Image {  get; set; }
     
     public string PhoneNumber { get; set; }
     
