@@ -13,12 +13,12 @@ namespace LandingPageApi.Controllers
     public class PropertyApiController : ControllerBase
     {
         private readonly IPropertyService _propertyService;
-        private readonly string _mvcUrl;
+   
 
         public PropertyApiController(IPropertyService propertyService, IConfiguration configuration)
         {
             _propertyService = propertyService;
-            _mvcUrl = configuration["MvcUrl"]!;
+   
             
         }
 
@@ -38,7 +38,7 @@ namespace LandingPageApi.Controllers
             {
                 return NotFound();
             }
-            var baseUrl = $"{_mvcUrl}/files/property/";
+            var fileUrl = $"https://localhost:44314/files/property/{property.Id}/{property.MainImage}";
             
             // we will make this using the dto se spo gjeja dot naj menyr tjt me t mir lol
             var propertyDto = new PropertyDto
@@ -55,8 +55,7 @@ namespace LandingPageApi.Controllers
                 InsideArea = property.InsideArea,
                 Status = property.Status,
                 BathroomCount = property.BathroomCount,
-                MainImage = property.MainImage != null ? $"{baseUrl}{property.Name.ToLower()}-{property.Id}/{property.MainImage}" : null,
-                OtherImages = property.OtherImages?.Select(img => $"{baseUrl}{property.Name.ToLower()}-{property.Id}/{img}").ToList(),
+                MainImage =fileUrl,
                 IsFavorite = property.IsFavorite,
                 PriceChangedDate = property.PriceChangedDate,
                 BedroomCount = property.BedroomCount,

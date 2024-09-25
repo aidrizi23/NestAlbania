@@ -38,13 +38,16 @@ namespace LandingPageApi.Controllers
             {
                 return NotFound();
             }
+
+          
+                var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
     
             var agentDto = new AgentDtoForAgentApi
             {
                 Id = agent.Id,
                 Name = agent.Name,
                 Surname = agent.Surname,
-                Image = agent.Image,
+                Image = fileUrl,
                 PhoneNumber = agent.PhoneNumber,
                 LicenseNumber = agent.LicenseNumber,
                 Motto = agent.Motto,
@@ -100,12 +103,13 @@ namespace LandingPageApi.Controllers
             {
                 return NotFound();
             }
+            var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
             var agentDto = new AgentDtoForAgentApi
             {
                 Id = agent.Id,
                 Name = agent.Name,
                 Surname = agent.Surname,
-                Image = agent.Image,
+                Image = fileUrl,
                 PhoneNumber = agent.PhoneNumber,
                 LicenseNumber = agent.LicenseNumber,
                 Motto = agent.Motto,
