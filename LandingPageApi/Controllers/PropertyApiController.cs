@@ -26,7 +26,22 @@ namespace LandingPageApi.Controllers
         [Route("all")]
         public async Task<ActionResult<PaginatedList<Property>>> GetProperties()
         {
-            return Ok(await _propertyService.GetAllPaginatedPropertiesAsync());
+            // return Ok(await _propertyService.GetAllPaginatedPropertiesAsync());
+            var properties = await _propertyService.GetAllPaginatedPropertiesAsync();
+            foreach (var property in properties)
+            {
+                var baseFileUrl = $"https://localhost:44314/files/property/{property.Id}";
+
+                // Update MainImage
+                property.MainImage = $"{baseFileUrl}/{property.MainImage}";
+
+                // Update OtherImages
+                property.OtherImages = property.OtherImages
+                    .Select(image => $"{baseFileUrl}/{image}")
+                    .ToList();
+            }
+            
+            return Ok(properties);
         }
 
         [HttpGet]
@@ -55,7 +70,7 @@ namespace LandingPageApi.Controllers
                 InsideArea = property.InsideArea,
                 Status = property.Status,
                 BathroomCount = property.BathroomCount,
-                MainImage =fileUrl,
+                MainImage = fileUrl,
                 IsFavorite = property.IsFavorite,
                 PriceChangedDate = property.PriceChangedDate,
                 BedroomCount = property.BedroomCount,
@@ -78,6 +93,12 @@ namespace LandingPageApi.Controllers
                 } : null
             };
             
+            for(int i = 0; i < property.OtherImages.Count; i++)
+            {
+                var otherFileUrl = $"https://localhost:44314/files/property/{property.Id}/{property.OtherImages[i]}";
+                propertyDto.OtherImages.Add(otherFileUrl);
+            }
+            
             return Ok(propertyDto); 
         }
 
@@ -85,12 +106,29 @@ namespace LandingPageApi.Controllers
         public async Task<ActionResult<PaginatedList<Property>>> GetPropertiesByAgentId(int agentId, [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
         {
             return Ok(await _propertyService.GetAllPaginatedPropertiesByAgentIdAsync(agentId, pageIndex, pageSize));
+            // if this will be used as a method we will need to fix the images' urls
         }
 
         [HttpGet("filters")]
         public async Task<ActionResult<IEnumerable<Property>>> GetAllFilteredProperties([FromQuery] PropertyObjectQuery filter)
         {
-            return Ok(await _propertyService.GetAllFilteredPropertiesAsync(filter));
+            
+            var properties = await _propertyService.GetAllFilteredPropertiesAsync(filter);
+            
+            foreach (var property in properties)
+            {
+                var baseFileUrl = $"https://localhost:44314/files/property/{property.Id}";
+
+                // Update MainImage
+                property.MainImage = $"{baseFileUrl}/{property.MainImage}";
+
+                // Update OtherImages
+                property.OtherImages = property.OtherImages
+                    .Select(image => $"{baseFileUrl}/{image}")
+                    .ToList();
+            }
+
+            return Ok(properties);
         }
         
         

@@ -23,8 +23,19 @@ namespace LandingPageApi.Controllers
         [Route("all")]
         public async Task<IActionResult> GetAgents(int pageIndex, int pageSize)
         {
-            return Ok(await _agentService.GetPaginatedAgentsAsync(pageIndex, pageSize));
+            // return Ok(await _agentService.GetPaginatedAgentsAsync(pageIndex, pageSize));
             // will not include the related entities here
+            
+            
+            var agents = await _agentService.GetPaginatedAgentsAsync(pageIndex, pageSize);
+            
+            foreach (var agent in agents)
+            {
+                var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
+                agent.Image = fileUrl;
+            }
+            
+            return Ok(agents);
         }
         
         
@@ -39,8 +50,8 @@ namespace LandingPageApi.Controllers
                 return NotFound();
             }
 
-          
-                var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
+            
+            var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
     
             var agentDto = new AgentDtoForAgentApi
             {
@@ -89,7 +100,17 @@ namespace LandingPageApi.Controllers
         [Route("filtered")]
         public async Task<IActionResult> GetFilteredAgents([FromQuery]AgentObjectQuery query, int pageIndex, int pageSize)
         {
-            return Ok(await _agentService.GetFilteredAgents(query, pageIndex, pageSize));
+            // return Ok(await _agentService.GetFilteredAgents(query, pageIndex, pageSize));
+            
+            var agents = await _agentService.GetFilteredAgents(query, pageIndex, pageSize);
+            
+            foreach (var agent in agents)
+            {
+                var fileUrl = $"https://localhost:44314/files/agent/{agent.Id}/{agent.Image}";
+                agent.Image = fileUrl;
+            }
+            
+            return Ok(agents);
         }
 
         [HttpGet]
