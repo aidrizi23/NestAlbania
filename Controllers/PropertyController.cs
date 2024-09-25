@@ -116,10 +116,15 @@ namespace NestAlbania.Controllers
 
             if (Directory.Exists(uploadsFolderDirectory))
                 Directory.Delete(uploadsFolderDirectory);
-
-
-
+            
             await _propertyService.HardDeletePropertyAsync(property);
+            TempData["SuccessMessage"] = "Property Deleted successfully!";
+            var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+            string notificationMessage = $"New property '{property.Name}' has been hard-deleted by agent {property.Agent?.Name ?? "Unknown"}";
+            foreach (var admin in adminUsers)
+            {
+                await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+            }
             return RedirectToAction("Index");
         }
 
@@ -139,12 +144,7 @@ namespace NestAlbania.Controllers
             {
                 await _propertyService.SoftDeletePropertyAsync(property);
                 await _propertyService.EditPropertyAsync(property);
-                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                string notificationMessage = $"New property '{property.Name}' has been soft deleted by agent {agent?.Name ?? "Unknown"}";
-                foreach (var admin in adminUsers)
-                {
-                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
-                }
+              
 
             }
             catch (Exception ex)
@@ -153,7 +153,13 @@ namespace NestAlbania.Controllers
                 // Consider adding a ViewBag or TempData message for the error
                 return BadRequest("An error occurred while trying to soft delete the property: " + ex.Message);
             }
-
+            TempData["SuccessMessage"] = "Property soft-deleted successfully!";
+            var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+            string notificationMessage = $"New property '{property.Name}' has been soft deleted by agent {agent?.Name ?? "Unknown"}";
+            foreach (var admin in adminUsers)
+            {
+                await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+            }
             return RedirectToAction("Index");
         }
 
@@ -171,6 +177,13 @@ namespace NestAlbania.Controllers
 
             await _propertyService.UnDeletePropertyAsync(property);
             await _propertyService.EditPropertyAsync(property);
+            TempData["SuccessMessage"] = "Property undeleted successfully!";
+            var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+            string notificationMessage = $"New property '{property.Name}' has been un-deleted deleted by agent {property.Agent?.Name ?? "Unknown"}";
+            foreach (var admin in adminUsers)
+            {
+                await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+            }
             return RedirectToAction("Index");
         }
 
@@ -206,7 +219,7 @@ namespace NestAlbania.Controllers
                     return BadRequest("An error occurred while trying to sell the property: " + ex.Message);
                 }
             }
-
+            TempData["SuccessMessage"] = "Property sold successfully!";
             return RedirectToAction("Index");
         }
 
@@ -333,6 +346,13 @@ namespace NestAlbania.Controllers
 
             ViewData["ActivePage"] = "propertyIndex";
             PopulateViewBags();
+            TempData["SuccessMessage"] = "Property created successfully!";
+            var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+            string notificationMessage = $"New property '{property.Name}' has been created by agent {agent?.Name ?? "Unknown"}";
+            foreach (var admin in adminUsers)
+            {
+                await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+            }
             return RedirectToAction("Index");
         }
 
@@ -449,6 +469,13 @@ namespace NestAlbania.Controllers
 
                 PopulateViewBags();
                 await _propertyService.EditPropertyAsync(property);
+                TempData["SuccessMessage"] = "Property edited successfully!";
+                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                string notificationMessage = $"New property '{property.Name}' has been edited by agent {property.Agent.Name ?? "Unknown"}";
+                foreach (var admin in adminUsers)
+                {
+                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                }
                 return RedirectToAction("Index");
 
 

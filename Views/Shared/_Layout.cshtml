@@ -29,6 +29,7 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="~/assets/css/nucleo-svg.css" rel="stylesheet" />
     <link id="pagestyle" href="~/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <style>
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -54,6 +55,7 @@
 
 <body class="g-sidenav-show   bg-gray-100">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @*     <div class="min-height-300 bg-primary position-absolute w-100"></div> *@
     <div class="min-height-300  position-absolute w-100"></div>
 
@@ -306,6 +308,13 @@
 
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery (required by Toastr) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Include Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
     $(document).ready(function() {
         const connection = new signalR.HubConnectionBuilder()
@@ -389,6 +398,37 @@
 
         updateNotifications();
     });
+
+   
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+            toastr.success('@TempData["SuccessMessage"]');
+            </text>
+        }
+    });
+
+
 </script>
     
     </body>
