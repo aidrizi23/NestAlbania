@@ -102,26 +102,7 @@ namespace NestAlbania.Repositories
             
             return await PaginatedList<Property>.CreateAsync(properties, pageIndex, pageSize);
         }
-
-        public async Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId)
-        {
-            return await _context.Favorites
-                .Where(f => f.UserId == userId)
-                .Include(f => f.Property)
-                .AsNoTrackingWithIdentityResolution()
-                .Select(f => f.Property)
-                .ToListAsync();
-        }
-
-        public async Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId)
-        {
-            return await _context.Favorites
-                .Where(f => f.Property.AgentId == agentId)
-                .Include(f => f.Property)
-                .AsNoTrackingWithIdentityResolution()
-                .Select(f => f.Property)
-                .ToListAsync();
-        }
+        
 
         public async Task SoftDeletePropertyAsync(Property property)
         {

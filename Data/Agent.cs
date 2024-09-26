@@ -43,7 +43,7 @@ namespace NestAlbania.Data
         public string RoleId { get; set; }
 
         public ICollection<Property>? Properties { get; set;}
-        public ICollection<UserFavorite>? UserFavorites { get; set; }
+        
 
     }
 }

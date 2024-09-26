@@ -50,7 +50,6 @@ builder.Services.AddScoped<UserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<RoleRepository, RoleRepository>();
 builder.Services.AddScoped<PropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<AgentRepository, AgentRepository>();
-builder.Services.AddScoped<FavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<NotificationRepository, NotificationRepository>();
 #endregion
 
@@ -58,13 +57,9 @@ builder.Services.AddScoped<NotificationRepository, NotificationRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
-
 builder.Services.AddTransient<IPropertyService, PropertyService>();
-
 builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IFileHandlerService, FileHandlerService>();
-builder.Services.AddTransient<IFavoriteService, FavoriteService>();
-
 builder.Services.AddTransient<INotificationService, NotificationService>();
 #endregion
 
