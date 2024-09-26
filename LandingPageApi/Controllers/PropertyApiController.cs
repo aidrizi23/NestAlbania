@@ -123,7 +123,7 @@ namespace LandingPageApi.Controllers
                 property.MainImage = $"{baseFileUrl}/{property.MainImage}";
 
                 // Update OtherImages
-                property.OtherImages = property.OtherImages
+                property.OtherImages = property.OtherImages!
                     .Select(image => $"{baseFileUrl}/{image}")
                     .ToList();
             }
