@@ -207,13 +207,7 @@
     <script>
         $(document).ready(function () {
             $('#clearFilters').click(function () {
-                // Clear all filter inputs
-                $('input[name="Name"]').val('');
-                $('input[name="Surname"]').val('');
-                $('input[name="YearsOfExperience"]').val('');
-                $('input[name="Email"]').val('');
-                // Submit the form to clear filters
-                $('form').submit();
+                window.location.href = '@Url.Action("Index", "Agent")';
             });
         });
     </script>

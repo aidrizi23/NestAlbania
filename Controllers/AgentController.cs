@@ -97,7 +97,7 @@ namespace NestAlbania.Controllers
                 Directory.Delete(uploadsFolderDirectory);
             }
 
-
+            TempData["SuccessMessage"] = "Agent deleted successfully!";
             return RedirectToAction("Index");
         }
         
@@ -129,6 +129,7 @@ namespace NestAlbania.Controllers
     
             // Proceed to soft-delete the agent
             await _agent.SoftDeleteAgentAsync(agent);
+            TempData["SuccessMessage"] = "Agent soft-deleted successfully!";
 
             return RedirectToAction("Index");
         }
@@ -152,6 +153,7 @@ namespace NestAlbania.Controllers
             }
 
             await _agent.UnDeleteAgentAsync(agent);
+            TempData["SuccessMessage"] = "Agent un-deleted successfully!";
             return RedirectToAction("Index");
         }
 
@@ -259,6 +261,7 @@ namespace NestAlbania.Controllers
             }
 
             ViewData["ActivePage"] = "agentIndex";
+            TempData["SuccessMessage"] = "Agent created successfully!";
             return RedirectToAction("Index");
         }
         
@@ -377,6 +380,7 @@ namespace NestAlbania.Controllers
 
 
             ViewData["ActivePage"] = "agentIndex";
+            TempData["SuccessMessage"] = "Agent edited successfully!";
             return RedirectToAction("Index");
             
         }
