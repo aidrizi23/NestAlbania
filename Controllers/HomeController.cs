@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace NestAlbania.Controllers
 {
     [Authorize]
+    [Route("[controller]")]
 
     public class HomeController : Controller
     {
@@ -24,6 +25,9 @@ namespace NestAlbania.Controllers
             _agentService = agentService;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        [Route("dashboard")]
         public async Task<IActionResult> Index()
         {
             try
@@ -105,6 +109,7 @@ namespace NestAlbania.Controllers
         }
 
         [HttpGet]
+        [Route("overview")]
         public async Task<IActionResult> GetPropertyStatusData()
         {
             try
