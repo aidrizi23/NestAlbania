@@ -402,6 +402,7 @@ namespace NestAlbania.Controllers
                 await _propertyService.EditPropertyAsync(property);
 
                 ViewData["ActivePage"] = "propertyIndex";
+              
                 return View(property);
             }
 
@@ -420,7 +421,7 @@ namespace NestAlbania.Controllers
                 dto.OtherImages = property.OtherImages;
 
                 ViewData["ActivePage"] = "propertyIndex";
-            
+                PopulateViewBags();
                 return View(dto);
             }
 
