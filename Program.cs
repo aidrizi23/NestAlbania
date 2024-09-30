@@ -65,6 +65,17 @@ builder.Services.AddTransient<INotificationService, NotificationService>();
 
 var app = builder.Build();
 
+
+// Preload the database context to avoid delay on first query
+Task.Run(() =>
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.EnsureCreated(); // Preload the database context
+    }
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -1,4 +1,5 @@
-﻿    using Microsoft.AspNetCore.Authorization;
+﻿    using System.Diagnostics;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,7 +38,6 @@ namespace NestAlbania.Controllers
             _userRepository = userRepository;
             _agentService = agentService;
             _notificationService = notificationService;
-
         }
 
         [HttpGet]
@@ -45,6 +45,8 @@ namespace NestAlbania.Controllers
         [Route("list")]
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
+
+            
             var user = await _userManager.GetUserAsync(User);
             var userId = await _userManager.GetUserIdAsync(user);
             var agent = await _agentService.GetAgentByUserIdAsync(userId);
@@ -69,6 +71,7 @@ namespace NestAlbania.Controllers
             }
 
             ViewData["ActivePage"] = "propertyIndex";
+            
             return View(properties);
         }
 
