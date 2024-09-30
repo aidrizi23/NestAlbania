@@ -126,6 +126,7 @@ namespace NestAlbania.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LicenseNumber")
@@ -291,14 +292,14 @@ namespace NestAlbania.Migrations
                         {
                             Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41247895-73b3-46a3-b16d-5fb8cd89e3f8",
+                            ConcurrencyStamp = "fef40193-1546-42a2-9e0a-1ba9456cf0e6",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGT6yepNdFS8IyRuG1tdSOlO3dGXq2n4ydUGHadKWyP6XawIRe3g66rUVyekVaBe7Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH4/mjgzlCFi9GnSdnsnbd95cUo2pOYVMXYaVFJP3zMEcZZjxT949f4UvCtgWxDRgQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -449,38 +450,6 @@ namespace NestAlbania.Migrations
                     b.ToTable("Properties");
                 });
 
-            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AgentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AgentId");
-
-                    b.HasIndex("PropertyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("NestAlbania.Data.ApplicationRole", null)
@@ -553,39 +522,9 @@ namespace NestAlbania.Migrations
                     b.Navigation("Agent");
                 });
 
-            modelBuilder.Entity("NestAlbania.Data.UserFavorite", b =>
-                {
-                    b.HasOne("NestAlbania.Data.Agent", null)
-                        .WithMany("UserFavorites")
-                        .HasForeignKey("AgentId");
-
-                    b.HasOne("NestAlbania.Data.Property", "Property")
-                        .WithMany("UserFavorites")
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NestAlbania.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Property");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NestAlbania.Data.Agent", b =>
                 {
                     b.Navigation("Properties");
-
-                    b.Navigation("UserFavorites");
-                });
-
-            modelBuilder.Entity("NestAlbania.Data.Property", b =>
-                {
-                    b.Navigation("UserFavorites");
                 });
 #pragma warning restore 612, 618
         }

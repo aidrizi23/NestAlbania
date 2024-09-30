@@ -13,8 +13,10 @@ namespace NestAlbania.Data
         
         [Required]
         public string Surname { get; set; }
-        
-        public string? Image {  get; set; }
+
+        [Required]
+
+        public string Image {  get; set; }
        
         [Required]
         public string PhoneNumber { get; set; }
