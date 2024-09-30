@@ -418,7 +418,6 @@ namespace NestAlbania.Controllers
                 dto.Price = property.Price;
                 dto.Name = property.Name;
                 dto.Documentation = property.Documentation;
-                dto.OtherImages = property.OtherImages;
 
                 ViewData["ActivePage"] = "propertyIndex";
                 PopulateViewBags();
@@ -443,7 +442,10 @@ namespace NestAlbania.Controllers
             property.Price = dto.Price;
             property.Status = dto.Status;
             property.LastEdited = DateTime.Now.Date;
+           
             
+            var propertyDirectoryName = $"{property.Id}";
+            var uploadsFolderDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", propertyDirectoryName);
 
 
             if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
@@ -460,31 +462,63 @@ namespace NestAlbania.Controllers
                 var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(dto.MainImageFile.FileName)}";
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
-            
+
                 property.MainImage = fileName;
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await dto.MainImageFile.CopyToAsync(stream);
                 }
+
             }
 
-                PopulateViewBags();
 
-                TempData["SuccessMessage"] = "Property edited successfully!";
-                var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
-                string notificationMessage = $"New property '{property.Name}' has been edited by agent {property.Agent.Name ?? "Unknown"}";
-                foreach (var admin in adminUsers)
+            if (dto.OtherImages != null && dto.OtherImages.Any())
+            {
+                foreach (var existingImage in property.OtherImages.ToList())
                 {
-                    await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                    if (!string.IsNullOrEmpty(existingImage))
+                    {
+
+
+                        var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "property", $"{property.Id}");
+                        _fileHandlerService.RemoveImageFile(uploadsFolderDirectory, existingImage);
+                    }
                 }
+
+
+                var otherImagesFiles = HttpContext.Request.Form.Files.Where(f => f.Name.StartsWith("OtherImages")).ToList();
+
+                foreach (var otherImageFile in otherImagesFiles)
+                {
+                    var fileName = $"{Guid.NewGuid().ToString().Substring(0, 8)}{Path.GetExtension(otherImageFile.FileName)}";
+                    var filePath = Path.Combine(uploadsFolderDirectory, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await otherImageFile.CopyToAsync(stream);
+                    }
+
+                    property.OtherImages.Add(fileName);
+                }
+            }
             
-                await _propertyService.EditPropertyAsync(property);
-                return RedirectToAction("Index");
+            PopulateViewBags();
+
+                    TempData["SuccessMessage"] = "Property edited successfully!";
+                    var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
+                    string notificationMessage = $"New property '{property.Name}' has been edited by agent {property.Agent.Name ?? "Unknown"}";
+                    foreach (var admin in adminUsers)
+                    {
+                        await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
+                    }
+
+                    await _propertyService.EditPropertyAsync(property);
+                    return RedirectToAction("Index");
 
 
-             }
-
+                }
+        
 
 
 

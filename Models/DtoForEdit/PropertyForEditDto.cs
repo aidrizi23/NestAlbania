@@ -19,7 +19,7 @@ public class PropertyForEditDto
         
     public string? Documentation { get; set; }
     
-    public List<string>? OtherImages { get; set; }
+    public List<IFormFile>? OtherImages { get; set; }
 
         
     public PropertyStatus Status { get; set; }

@@ -150,6 +150,13 @@
                         <input asp-for="Documentation" class="form-control" />
                         <span asp-validation-for="Documentation" class="text-danger"></span>
                     </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="OtherImages" class="control-label"></label>
+                        <input class="form-control" type="file" multiple  asp-for="OtherImages" />
+                        <span asp-validation-for="OtherImages" class="text-danger"></span>
+                    </div>
                     <!--
                     <div class="form-group mb-3">
                         <label asp-for="OtherImages" class="form-label"></label>

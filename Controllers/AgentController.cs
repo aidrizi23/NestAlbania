@@ -353,7 +353,7 @@ namespace NestAlbania.Controllers
 
 
             if (dto.Image != null && dto.Image.Length > 0)
-            
+            { 
                 if (!string.IsNullOrEmpty(agent.Image))
                 {
                     var uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "files", "agent", $"{agent.Id}");
@@ -374,13 +374,16 @@ namespace NestAlbania.Controllers
                     await dto.Image.CopyToAsync(stream);
                 }
 
-
-                await _userManager.UpdateAsync(user);
-            await _agent.EditAgent(agent);
+            }
+            await _userManager.UpdateAsync(user);
 
 
             ViewData["ActivePage"] = "agentIndex";
             TempData["SuccessMessage"] = "Agent edited successfully!";
+
+
+
+            await _agent.EditAgent(agent);
             return RedirectToAction("Index");
             
         }
