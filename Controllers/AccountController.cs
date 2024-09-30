@@ -56,6 +56,8 @@ namespace NestAlbania.Controllers
                 }
                 else if (result.IsLockedOut)
                 {
+                    // firtly the user should be logged out
+                    await _signInManager.SignOutAsync();
                     return RedirectToAction("Lockout");
                 }
                 else

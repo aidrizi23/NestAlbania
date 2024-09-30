@@ -44,6 +44,7 @@
     <_ContentIncludedByDefault Remove="LandingPageApi\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="LandingPageApi\obj\project.packagespec.json" />
     <_ContentIncludedByDefault Remove="LandingPageApi\Properties\launchSettings.json" />
+    <_ContentIncludedByDefault Remove="Views\Favorite\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

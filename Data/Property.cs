@@ -38,9 +38,7 @@ namespace NestAlbania.Data
         public required PropertyStatus Status { get; set; }
 
         public required City City { get; set; }
-       
         
-        public virtual ICollection<UserFavorite> UserFavorites { get; set; }
 
         [ForeignKey("AgentId")]
         public int? AgentId { get; set; }

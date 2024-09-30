@@ -430,7 +430,7 @@ namespace NestAlbania.Controllers
         public async Task<IActionResult> Edit(PropertyForEditDto dto)
         {
 
-            var property = await _propertyService.GetPropertyByIdAsync(dto.Id);
+            var property = await _propertyService.GetPropertyByIdWithAgentAsync(dto.Id);
             if (property == null)
             {
                 return NotFound();
@@ -442,6 +442,7 @@ namespace NestAlbania.Controllers
             property.Price = dto.Price;
             property.Status = dto.Status;
             property.LastEdited = DateTime.Now.Date;
+            
 
 
             if (dto.MainImageFile != null && dto.MainImageFile.Length > 0)
@@ -468,7 +469,7 @@ namespace NestAlbania.Controllers
             }
 
                 PopulateViewBags();
-                await _propertyService.EditPropertyAsync(property);
+
                 TempData["SuccessMessage"] = "Property edited successfully!";
                 var adminUsers = await _userManager.GetUsersInRoleAsync("admin");
                 string notificationMessage = $"New property '{property.Name}' has been edited by agent {property.Agent.Name ?? "Unknown"}";
@@ -476,6 +477,8 @@ namespace NestAlbania.Controllers
                 {
                     await _notificationService.CreateNotification(admin.Id, $"{notificationMessage}");
                 }
+            
+                await _propertyService.EditPropertyAsync(property);
                 return RedirectToAction("Index");
 
 
@@ -515,28 +518,7 @@ namespace NestAlbania.Controllers
                 var properties = await _propertyService.GetPropertiesByCategoryAsync(category);
                 return View(properties);
             }
-
-
-            [HttpGet]
-            [Route("favorites")]
-            public async Task<IActionResult> Favorites()
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var userId = await _userManager.GetUserIdAsync(user);
-                var agent = await _agentService.GetAgentByUserIdAsync(userId);
-
-                List<Property> favoriteProperties;
-                if (agent == null)
-                {
-                    favoriteProperties = await _propertyService.GetFavoritePropertiesByUserIdAsync(userId);
-                }
-                else
-                {
-                    favoriteProperties = await _propertyService.GetFavoritePropertiesByAgentIdAsync(agent.Id);
-                }
-
-                return View(favoriteProperties);
-            }
+            
     }
 }
 

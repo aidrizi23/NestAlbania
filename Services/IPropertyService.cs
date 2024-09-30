@@ -27,8 +27,6 @@ public interface IPropertyService
     Task<Dictionary<string, int>> GetSoldPropertiesByDayAsync(int year, int month);
     Task<PaginatedList<Property>> GetAllPaginatedPropertiesWithoutAgentAsync(int pageIndex = 1, int pageSize = 10);
     Task<Property?> GetPropertyByIdWithAgentAsync(int id);
-    Task<List<Property>> GetFavoritePropertiesByUserIdAsync(string userId);
-    Task<List<Property>> GetFavoritePropertiesByAgentIdAsync(int agentId);
 
 
 }

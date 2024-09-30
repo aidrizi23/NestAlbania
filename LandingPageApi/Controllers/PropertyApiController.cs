@@ -45,7 +45,7 @@ namespace LandingPageApi.Controllers
         }
 
         [HttpGet]
-        [Route("/one/{id}")]
+        [Route("one/{id}")]
         public async Task<ActionResult<Property>> GetProperty(int id)
         {
             var property = await _propertyService.GetPropertyByIdWithAgentAsync(id); // this gets the property by id without including the related entities.
@@ -123,7 +123,7 @@ namespace LandingPageApi.Controllers
                 property.MainImage = $"{baseFileUrl}/{property.MainImage}";
 
                 // Update OtherImages
-                property.OtherImages = property.OtherImages
+                property.OtherImages = property.OtherImages!
                     .Select(image => $"{baseFileUrl}/{image}")
                     .ToList();
             }

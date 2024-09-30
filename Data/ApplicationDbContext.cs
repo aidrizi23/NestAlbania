@@ -19,7 +19,7 @@ namespace NestAlbania.Data
         public DbSet<Property> Properties { get; set; }
 
         public DbSet<Agent> Agents { get; set; }
-        public DbSet<UserFavorite> Favorites { get; set; }
+
         
         public DbSet<Notification> Notifications { get; set; }
      
