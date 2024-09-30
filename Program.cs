@@ -178,20 +178,24 @@ var app = builder.Build();
 
 // Warmup middleware
 bool _warmupDone = false;
-app.Use(async (context, next) =>
+Task.Run(() =>
 {
-    if (!_warmupDone)
+    app.Use(async (context, next) =>
     {
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.MigrateAsync();
-        await dbContext.EnsureSeedDataAsync();
-        await dbContext.ApplicationUsers.FirstOrDefaultAsync();
-        _warmupDone = true;
-    }
-    await next();
-});
+        if (!_warmupDone)
+        {
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await dbContext.Database.MigrateAsync();
+            await dbContext.EnsureSeedDataAsync();
+            await dbContext.ApplicationUsers.FirstOrDefaultAsync();
+            _warmupDone = true;
+        }
 
+        await next();
+    });
+    
+});
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
