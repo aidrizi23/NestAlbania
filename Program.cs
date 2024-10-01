@@ -111,9 +111,9 @@
 
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+
+using NestAlbania.Data;using Microsoft.EntityFrameworkCore;
 using NestAlbania.Areas;
-using NestAlbania.Data;
 using NestAlbania.Repositories;
 using NestAlbania.Services;
 using NestAlbania.Hub;
