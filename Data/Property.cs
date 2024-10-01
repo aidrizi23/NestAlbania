@@ -24,13 +24,13 @@ namespace NestAlbania.Data
         
         public required int BedroomCount { get; set; }
         
-        public required int BathroomCount { get; set; }
+        public required int BathroomCount { get; set; } 
         
         
         public string? Documentation { get; set; }
         public List<string>? OtherImages { get; set; }
         public bool IsFavorite { get; set; }
-        public int PreviousPrice { get; set; }
+        public int? PreviousPrice { get; set; }
 
         
         public required Category Category { get; set; }
@@ -55,7 +55,7 @@ namespace NestAlbania.Data
 
         public required bool IsSold { get; set; }
         public DateTime? SoldDate { get; set; }
-        public DateTime PriceChangedDate { get; set; }  
+        public DateTime? PriceChangedDate { get; set; }  
         
         public required int Views { get; set; }
         

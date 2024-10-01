@@ -81,21 +81,24 @@
                         <dt class="col-sm-4"><i class="fa fa-calendar" aria-hidden="true" style="margin-right: 5px;"></i>Last Edited:</dt>
                         <dd class="col-sm-8">@Model.LastEdited?.ToString("yyyy-MM-dd")</dd>
                         <hr style="border: 1px solid #ccc;" class="col-sm-12">
-                        <div class="agent-card mt-4">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <img src="@Url.Content("~/agentImg/" + Model.Agent.Image)" alt="Agent Image" class="agent-img mb-3 rounded-circle" style="width: 80px; height: 80px;">
-                                    <!-- Adjust width and height as needed -->
-                                    <h5 class="card-title">@Html.DisplayFor(model => model.Agent.Name) @Html.DisplayFor(model => model.Agent.Surname)</h5>
-                                    <p class="card-text">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.Email)<br>
-                                        <i class="fa fa-phone" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.PhoneNumber)<br>
-                                    </p>
-                                    <a href="@Url.Action("Details", "Agent", new { id = Model.Agent.Id })" class="btn btn-primary">View Profile</a>
+                        @if (Model.Agent != null && Model.AgentId != 0)
+                        {
+                            <div class="agent-card mt-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <img src="@Url.Content("~/agentImg/" + Model.Agent.Image)" alt="Agent Image" class="agent-img mb-3 rounded-circle" style="width: 80px; height: 80px;">
+                                        <!-- Adjust width and height as needed -->
+                                        <h5 class="card-title">@Html.DisplayFor(model => model.Agent.Name) @Html.DisplayFor(model => model.Agent.Surname)</h5>
+                                        <p class="card-text">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.Email)<br>
+                                            <i class="fa fa-phone" aria-hidden="true"></i> @Html.DisplayFor(model => model.Agent.PhoneNumber)<br>
+                                        </p>
+                                        <a href="@Url.Action("Details", "Agent", new { id = Model.Agent.Id })" class="btn btn-primary">View Profile</a>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
+                        }
                     </dl>
                 </div>
             </div>

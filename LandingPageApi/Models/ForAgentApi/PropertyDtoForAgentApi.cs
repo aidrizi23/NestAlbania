@@ -18,7 +18,7 @@ public class PropertyDtoForAgentApi
     public string? Documentation { get; set; }
     public List<string>? OtherImages { get; set; }
     public bool IsFavorite { get; set; }
-    public int PreviousPrice { get; set; }
+    public int? PreviousPrice { get; set; }
     public required Category Category { get; set; }
     public required PropertyStatus Status { get; set; }
     public required City City { get; set; }
@@ -34,7 +34,7 @@ public class PropertyDtoForAgentApi
         
 
     public required bool IsSold { get; set; }
-    public DateTime PriceChangedDate { get; set; }
+    public DateTime? PriceChangedDate { get; set; }
     
     public required bool IsDeleted { get; set; }
   

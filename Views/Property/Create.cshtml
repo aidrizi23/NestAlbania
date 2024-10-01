@@ -6,7 +6,7 @@
 
 <h2 class="text-center mb-4">Create Property</h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Create"  enctype="multipart/form-data" method="post">
     <div class="container">
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -108,14 +108,12 @@
                     <span asp-validation-for="SelectedCity" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label asp-for="MainImageFile" class="control-label">
-                        <i class="fas fa-image"></i> Upload Main Image
-                    </label>
-                    <input type="file" id="mainImageInput" asp-for="MainImageFile" class="form-control-file" accept=".jpg, .jpeg, .png, .svg" required/>
-                    <span asp-validation-for="MainImageFile" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="MainImageFile" class="control-label">
+                    <i class="fas fa-image"></i> Upload Main Image
+                </label>
+                <input type="file" asp-for="MainImageFile" class="form-control-file" accept=".jpg, .jpeg, .png, .svg" />
+                <span asp-validation-for="MainImageFile" class="text-danger"></span>
             </div>
             <div class="col-md-12 mb-3">
                 <div class="form-group">

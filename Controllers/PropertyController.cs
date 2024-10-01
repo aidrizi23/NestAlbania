@@ -287,7 +287,7 @@ namespace NestAlbania.Controllers
                 MainImage = mainImagePath,
                 OtherImages = new List<string>(), 
                 AgentId = agent?.Id, 
-                Agent = await _agentService.GetAgentById(agent.Id),
+                Agent = agent,
                 PostedOn = DateTime.Now.Date,
                 IsSold = false,
                 isDeleted = false,
@@ -297,7 +297,7 @@ namespace NestAlbania.Controllers
 
             // Save the property
             await _propertyService.CreatePropertyAsync(property);
-
+            Console.WriteLine("Property created successfully!");
             // Handle additional images upload
             var file = HttpContext.Request.Form.Files.FirstOrDefault();
             if (file != null)
