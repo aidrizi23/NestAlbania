@@ -46,6 +46,28 @@
     <_ContentIncludedByDefault Remove="LandingPageApi\obj\project.packagespec.json" />
     <_ContentIncludedByDefault Remove="LandingPageApi\Properties\launchSettings.json" />
     <_ContentIncludedByDefault Remove="Views\Favorite\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\agent\1\2e783166.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\agent\1\d54e3308.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\agent\1\f9d7f2ef.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\agent\6\95e7f22c.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\agent\albi idrizi test per api-idrizi-9\faab1f4a.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\32\b8e4b84e.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\32\c855854d.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\33\0aaeb0f3.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\33\7b4da8ab.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\33\ce4e9e76.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\33\f35d5ccf.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\34\953724f2.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\34\9d14d933.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\34\c80f706b.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\34\f9933d2d.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\35\1c17b9dc.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\35\9b95720c.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\37\39fcc012.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\37\47dc28f8.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\37\5cd6d8c3.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\39\4c07565c.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\property\39\b72baa47.jpg" />
   </ItemGroup>
 
   <ItemGroup>

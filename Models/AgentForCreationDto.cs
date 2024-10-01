@@ -16,7 +16,7 @@ namespace NestAlbania.Models
         public string Surname { get; set; }
         
         // per momentin nuk do te jete required sepse file handling nuk eshte implementuar ende sakte
-        public string? Image { get; set; }
+        public IFormFile? Image { get; set; }
         
 
         [Required(ErrorMessage = "PhoneNumber field is required")]
@@ -27,7 +27,7 @@ namespace NestAlbania.Models
         public int LicenseNumber { get; set; }
         
         [Required(ErrorMessage = "Motto field is required")]
-        public string Motto { get; set; }
+        public string Motto { get; set; }   
         
         [Required(ErrorMessage = "Years of experience field is required")]
         [Range(1, 100, ErrorMessage = "Years of experience must be between 1 and 100")]

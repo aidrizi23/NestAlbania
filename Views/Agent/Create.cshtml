@@ -9,7 +9,7 @@
         <h4 class="card-title">Create Agent</h4>
         <hr />
 
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -61,14 +61,12 @@
             </div>
 
 
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label asp-for="Image" class="control-label">
-                        <i class="fas fa-image"></i> Upload Image
-                    </label>
-                    <input type="file" id="Image" asp-for="Image" class="form-control-file" accept=".jpg, .jpeg, .png, .svg" required />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">
+                    <i class="fas fa-image"></i> Upload Main Image
+                </label>
+                <input type="file" asp-for="Image" class="form-control-file" accept=".jpg, .jpeg, .png, .svg" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
             <div class="form-group">

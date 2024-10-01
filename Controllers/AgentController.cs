@@ -231,12 +231,15 @@ namespace NestAlbania.Controllers
                 RoleId = dto.RoleId,
                 Password = dto.Password,
                 isDeleted = false,
+                Image = dto.Image!.FileName,
             };
 
+           
             await _agent.CreateAgent(agent);
-
+            Console.WriteLine("Agent created successfully.");
             
-            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+            
+            var file =  Request.Form.Files.FirstOrDefault();
             if (file != null)
             {
 
@@ -252,14 +255,14 @@ namespace NestAlbania.Controllers
 
                 agent.Image = fileName;
 
-                await _agent.EditAgent(agent);
+                
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
             }
-
+            await _agent.EditAgent(agent);
             ViewData["ActivePage"] = "agentIndex";
             TempData["SuccessMessage"] = "Agent created successfully!";
             return RedirectToAction("Index");
